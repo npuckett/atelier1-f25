@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js GIF Animation Controls</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: normal;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+        }
+        
+        .subtitle {
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        .upload-section {
+            background: #111;
+            padding: 30px;
+            border: 1px solid #333;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #ccc;
+        }
+        
+        #fileName {
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        .gif-info-tile {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .gif-info-tile h3 {
+            margin-bottom: 15px;
+            font-weight: normal;
+            font-size: 1.2em;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .gif-details {
+            display: grid;
+            gap: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .detail-row .label {
+            min-width: 120px;
+            color: #ccc;
+        }
+
+        .detail-row .command {
+            color: #4a8;
+            font-style: italic;
+            margin-left: auto;
+            font-size: 0.8em;
+            text-decoration: none;
+            border-bottom: 1px dotted #4a8;
+            transition: color 0.2s ease;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .detail-row .command:hover {
+            color: #6ca;
+            border-bottom-color: #6ca;
+        }
+
+        .canvas-container {
+            background: #000;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .frame-strip {
+            background: #111;
+            border: 1px solid #333;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            /* Touch scrolling optimization */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .frame-strip h4 {
+            margin-bottom: 10px;
+            font-weight: normal;
+            color: #ccc;
+            font-size: 1em;
+        }
+
+        .frame-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            min-height: 120px;
+            /* Prevent text selection during touch */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .frame-item {
+            flex-shrink: 0;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .frame-item:hover {
+            opacity: 0.8;
+        }
+
+        .frame-item.active {
+            background: #333;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        .frame-canvas {
+            background: #000;
+            border: 1px solid #555;
+            margin-bottom: 5px;
+        }
+
+        .frame-number {
+            font-size: 0.8em;
+            color: #999;
+            font-family: 'Courier New', monospace;
+        }
+
+        .frame-controls {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .play-button {
+            background: #fff;
+            color: #000;
+            border: 1px solid #fff;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+
+        .play-button:hover {
+            background: #ccc;
+        }
+
+        .play-button:disabled {
+            background: #444;
+            color: #666;
+            border-color: #666;
+            cursor: not-allowed;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+        }
+
+        .slider-label {
+            color: #ccc;
+            min-width: 80px;
+        }
+
+        .slider {
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
+            height: 4px;
+            background: #444;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            /* Enhanced touch interaction */
+            padding: 15px 0;
+            touch-action: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #000;
+            /* Touch feedback */
+            transform: scale(1);
+            transition: transform 0.1s ease;
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+            background: #ccc;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border: 2px solid #000;
+            border-radius: 50%;
+            /* Touch feedback */
+            transform: scale(1);
+            transition: transform 0.1s ease;
+        }
+
+        .slider::-moz-range-thumb:active {
+            transform: scale(1.2);
+            background: #ccc;
+        }
+
+        .slider-value {
+            color: #fff;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #ccc;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            background: #000;
+            border: 1px solid #fff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            border-radius: 50%;
+        }
+
+        .radio-group input[type="radio"]:checked {
+            background: #fff;
+        }
+
+        .radio-group input[type="radio"]:checked::before {
+            content: '●';
+            position: absolute;
+            top: -4px;
+            left: 3px;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .radio-group:hover {
+            color: #fff;
+        }
+
+        .note {
+            background: #1a1a1a;
+            border-left: 3px solid #fff;
+            padding: 15px;
+            margin: 30px 0;
+            font-size: 0.9em;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .canvas-container {
+                min-height: 250px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .control-row {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .slider-group {
+                min-width: 200px;
+            }
+            
+            .play-button {
+                min-height: 44px; /* iOS recommended touch target */
+                font-size: 16px;
+            }
+            
+            .radio-group {
+                min-height: 44px;
+                padding: 8px;
+            }
+            
+            .radio-group input[type="radio"] {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .frame-item {
+                min-height: 44px;
+                min-width: 44px;
+                font-size: 11px;
+            }
+            
+            .slider {
+                min-height: 44px;
+            }
+            
+            .upload-btn {
+                min-height: 44px;
+                font-size: 16px;
+            }
+            
+            /* Prevent zoom on input focus */
+            input, select, textarea {
+                font-size: 16px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .frame-item:hover {
+                /* Disable hover effects on touch devices */
+                background: #333 !important;
+                border-color: #555 !important;
+            }
+            
+            .frame-item:active {
+                background: #666 !important;
+                border-color: #fff !important;
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>p5.js Animated GIF Control Methods</h1>
+        <p class="subtitle">Interactive examples demonstrating p5.js GIF animation capabilities</p>
+        
+        <!-- Mobile usage hint -->
+        <div id="mobileHint" style="background: #1a4a1a; padding: 15px; margin: 10px 0; border: 1px solid #4a8; font-size: 14px; display: none;">
+            📱 <strong>Mobile Tips:</strong> Tap frame numbers to jump between frames. Scroll horizontally in the frame strip to see all frames. All controls are optimized for touch.
+        </div>
+
+        <div class="upload-section">
+            <label for="fileInput" class="upload-btn">Choose GIF File</label>
+            <input type="file" id="fileInput" accept="image/gif">
+            <div id="fileName">No file selected</div>
+        </div>
+        
+        <!-- GIF Information Tile -->
+        <div class="gif-info-tile">
+            <h3>Current GIF Information</h3>
+            <div class="gif-details">
+                <div class="detail-row">
+                    <span class="label">Source:</span>
+                    <span id="gifSource">Loading...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Resolution:</span>
+                    <span id="gifResolution">Loading...</span>
+                    <span class="command">// img.width × img.height</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Count:</span>
+                    <span id="gifFrameCount">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/numFrames/" target="_blank" class="command">// img.numFrames()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Current Frame:</span>
+                    <span id="gifCurrentFrame">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/getCurrentFrame/" target="_blank" class="command">// img.getCurrentFrame()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Delay:</span>
+                    <span id="gifFrameDelay">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/delay/" target="_blank" class="command">// img.delay()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Playing:</span>
+                    <span id="gifPlaying">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/play/" target="_blank" class="command">// img.play()</a> / <a href="https://p5js.org/reference/p5.Image/pause/" target="_blank" class="command">img.pause()</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Canvas Container -->
+        <div class="canvas-container" id="mainCanvas">
+            <!-- p5.js canvas will be inserted here -->
+        </div>
+
+        <!-- Frame Strip -->
+        <div class="frame-strip" id="frameStrip" style="display: none;">
+            <h4>Individual Frames</h4>
+            <div class="frame-container" id="frameContainer">
+                <!-- Frame thumbnails will be inserted here -->
+            </div>
+            
+            <!-- Frame Controls -->
+            <div class="frame-controls">
+                <div class="control-row">
+                    <button class="play-button" id="playButton" onclick="togglePlayback()">Play</button>
+                    <div class="radio-group">
+                        <input type="radio" id="forwardRadio" name="playMode" value="forward" checked>
+                        <label for="forwardRadio">FORWARD</label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" id="reverseRadio" name="playMode" value="reverse">
+                        <label for="reverseRadio">REVERSE</label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" id="oscillateRadio" name="playMode" value="oscillate">
+                        <label for="oscillateRadio">OSCILLATE</label>
+                    </div>
+                    <div class="slider-group">
+                        <span class="slider-label">Speed:</span>
+                        <input type="range" class="slider" id="speedSlider" min="10" max="500" value="100" 
+                               oninput="updateSpeed(this.value)">
+                        <span class="slider-value" id="speedValue">100ms</span>
+                    </div>
+                </div>
+                
+                <div class="control-row">
+                    <div class="slider-group">
+                        <span class="slider-label">Start Frame:</span>
+                        <input type="range" class="slider" id="startFrameSlider" min="1" max="1" value="1"
+                               oninput="updateFrameRange()">
+                        <span class="slider-value" id="startFrameValue">1</span>
+                    </div>
+                    <div class="slider-group">
+                        <span class="slider-label">End Frame:</span>
+                        <input type="range" class="slider" id="endFrameSlider" min="1" max="1" value="1"
+                               oninput="updateFrameRange()">
+                        <span class="slider-value" id="endFrameValue">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Update debug status on page
+        function updateDebugStatus(message) {
+            const debugElement = document.getElementById('debugStatus');
+            if (debugElement) {
+                debugElement.textContent = message;
+            }
+        }
+        
+        function updateP5Status(message) {
+            const p5Element = document.getElementById('p5Status');
+            if (p5Element) {
+                p5Element.textContent = message;
+            }
+        }
+        
+        function updateCanvasStatus(message) {
+            const canvasElement = document.getElementById('canvasStatus');
+            if (canvasElement) {
+                canvasElement.textContent = message;
+            }
+        }
+        
+        function updateGifStatus(message) {
+            const gifElement = document.getElementById('gifStatus');
+            if (gifElement) {
+                gifElement.textContent = message;
+            }
+        }
+        
+        console.log('=== SCRIPT STARTING ===');
+        updateDebugStatus('Script loaded');
+        
+        console.log('p5 available:', typeof p5);
+        updateP5Status(typeof p5 !== 'undefined' ? 'Loaded' : 'NOT LOADED');
+        
+        // Global variables
+        let currentGif = null;
+        let p5Instance = null;
+        let uploadedGifData = null;
+        let currentFrameIndex = 0;
+        let isPlaying = true;
+        let customSpeed = 100;
+        let startFrame = 0;
+        let endFrame = 0;
+        let totalFrames = 0;
+        let lastFrameTime = 0;
+        let playMode = 'forward'; // 'forward', 'reverse', 'oscillate'
+        let oscillateDirection = 1; // 1 for forward, -1 for reverse in oscillate mode
+        
+        // Create frame strip thumbnails
+        function createFrameStrip(gif) {
+            console.log('Creating frame strip...');
+            
+            const frameContainer = document.getElementById('frameContainer');
+            frameContainer.innerHTML = '';
+            
+            if (!gif || typeof gif.numFrames !== 'function') {
+                console.log('GIF has no frames or is not animated');
+                document.getElementById('frameStrip').style.display = 'none';
+                return;
+            }
+            
+            const numFrames = gif.numFrames();
+            console.log('Creating', numFrames, 'frame indicators');
+            
+            if (numFrames <= 1) {
+                document.getElementById('frameStrip').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('frameStrip').style.display = 'block';
+            
+            // Set up slider ranges
+            totalFrames = numFrames;
+            startFrame = 0;
+            endFrame = numFrames - 1;
+            
+            document.getElementById('startFrameSlider').max = numFrames;
+            document.getElementById('endFrameSlider').max = numFrames;
+            document.getElementById('startFrameSlider').value = 1;
+            document.getElementById('endFrameSlider').value = numFrames;
+            document.getElementById('startFrameValue').textContent = '1';
+            document.getElementById('endFrameValue').textContent = numFrames;
+            
+            // Create frame indicator for each frame
+            for (let i = 0; i < numFrames; i++) {
+                createFrameIndicator(i, frameContainer);
+            }
+        }
+        
+        // Create individual frame indicator (simplified)
+        function createFrameIndicator(frameIndex, container) {
+            const frameItem = document.createElement('div');
+            frameItem.className = 'frame-item';
+            frameItem.id = `frame-item-${frameIndex}`;
+            frameItem.style.cssText = `
+                width: 80px;
+                height: 60px;
+                background: #333;
+                border: 2px solid #555;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 5px;
+                cursor: pointer;
+                transition: all 0.3s;
+            `;
+            
+            // Frame number display
+            const frameNumber = document.createElement('div');
+            frameNumber.className = 'frame-number';
+            frameNumber.textContent = `${frameIndex + 1}`;
+            frameNumber.style.cssText = `
+                color: #fff;
+                font-size: 14px;
+                font-weight: bold;
+            `;
+            frameItem.appendChild(frameNumber);
+            
+            // Click handler to jump to frame
+            frameItem.addEventListener('click', function() {
+                if (currentGif && typeof currentGif.setFrame === 'function') {
+                    currentGif.setFrame(frameIndex);
+                    currentGif.pause(); // Pause on the selected frame
+                    isPlaying = false;
+                    updatePlayButton();
+                    currentFrameIndex = frameIndex;
+                    updateFrameHighlight();
+                    updateGifInfo(currentGif, document.getElementById('gifSource').textContent);
+                }
+            });
+            
+            // Touch events for mobile devices
+            frameItem.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Prevent mouse events from firing
+                this.style.borderColor = '#fff';
+                this.style.background = '#666';
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            frameItem.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                // Reset visual state
+                if (!this.classList.contains('active')) {
+                    this.style.borderColor = '#555';
+                    this.style.background = '#333';
+                }
+                this.style.transform = 'scale(1)';
+                
+                // Trigger frame change
+                if (currentGif && typeof currentGif.setFrame === 'function') {
+                    currentGif.setFrame(frameIndex);
+                    currentGif.pause(); // Pause on the selected frame
+                    isPlaying = false;
+                    updatePlayButton();
+                    currentFrameIndex = frameIndex;
+                    updateFrameHighlight();
+                    updateGifInfo(currentGif, document.getElementById('gifSource').textContent);
+                }
+            });
+            
+            frameItem.addEventListener('touchcancel', function(e) {
+                e.preventDefault();
+                // Reset visual state
+                if (!this.classList.contains('active')) {
+                    this.style.borderColor = '#555';
+                    this.style.background = '#333';
+                }
+                this.style.transform = 'scale(1)';
+            });
+            
+            // Mouse hover effects (desktop only)
+            frameItem.addEventListener('mouseenter', function() {
+                if (!('ontouchstart' in window)) { // Only on non-touch devices
+                    this.style.borderColor = '#fff';
+                    this.style.background = '#444';
+                }
+            });
+            
+            frameItem.addEventListener('mouseleave', function() {
+                if (!('ontouchstart' in window)) { // Only on non-touch devices
+                    if (!this.classList.contains('active')) {
+                        this.style.borderColor = '#555';
+                        this.style.background = '#333';
+                    }
+                }
+            });
+            
+            container.appendChild(frameItem);
+        }
+        
+        // Update which frame is highlighted
+        function updateFrameHighlight() {
+            // Remove active class from all frames
+            document.querySelectorAll('.frame-item').forEach(item => {
+                item.classList.remove('active');
+                item.style.borderColor = '#555';
+                item.style.background = '#333';
+            });
+            
+            // Add active class to current frame
+            const activeFrame = document.getElementById(`frame-item-${currentFrameIndex}`);
+            if (activeFrame) {
+                activeFrame.classList.add('active');
+                activeFrame.style.borderColor = '#fff';
+                activeFrame.style.background = '#666';
+            }
+        }
+        function updateGifInfo(gif, source) {
+            console.log('Updating GIF info:', { gif, source });
+            
+            if (gif) {
+                document.getElementById('gifSource').textContent = source || 'Unknown';
+                document.getElementById('gifResolution').textContent = `${gif.width} × ${gif.height}`;
+                
+                if (typeof gif.numFrames === 'function') {
+                    document.getElementById('gifFrameCount').textContent = gif.numFrames();
+                } else {
+                    document.getElementById('gifFrameCount').textContent = '1 (static image)';
+                }
+                
+                if (typeof gif.getCurrentFrame === 'function') {
+                    currentFrameIndex = gif.getCurrentFrame();
+                    document.getElementById('gifCurrentFrame').textContent = currentFrameIndex + 1;
+                    updateFrameHighlight();
+                } else {
+                    document.getElementById('gifCurrentFrame').textContent = '1';
+                }
+                
+                document.getElementById('gifFrameDelay').textContent = 'Auto';
+                document.getElementById('gifPlaying').textContent = 'Yes';
+            } else {
+                document.getElementById('gifSource').textContent = 'Failed to load';
+                document.getElementById('gifResolution').textContent = 'N/A';
+                document.getElementById('gifFrameCount').textContent = 'N/A';
+                document.getElementById('gifCurrentFrame').textContent = 'N/A';
+                document.getElementById('gifFrameDelay').textContent = 'N/A';
+                document.getElementById('gifPlaying').textContent = 'N/A';
+            }
+        }
+        
+        // File upload handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            console.log('File input changed');
+            const file = e.target.files[0];
+            
+            if (file && file.type === 'image/gif') {
+                console.log('Valid GIF selected:', file.name);
+                document.getElementById('fileName').textContent = `Selected: ${file.name}`;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    console.log('File read complete, loading new GIF...');
+                    uploadedGifData = event.target.result;
+                    loadNewGif(uploadedGifData, `Uploaded: ${file.name}`);
+                };
+                reader.onerror = function(error) {
+                    console.error('File read error:', error);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                console.log('Invalid file or no file selected');
+                if (file) {
+                    alert('Please select a valid GIF file');
+                }
+            }
+        });
+        
+        // Load a new GIF (either default or uploaded)
+        function loadNewGif(gifPath, source) {
+            console.log('Loading GIF:', gifPath, source);
+            updateGifStatus(`Loading: ${source}`);
+            
+            if (!p5Instance) {
+                console.error('ERROR: p5Instance not available');
+                updateGifStatus('ERROR: No p5 instance');
+                return;
+            }
+            
+            console.log('p5Instance available, loading image...');
+            currentGif = p5Instance.loadImage(gifPath, 
+                function() {
+                    console.log('SUCCESS: GIF loaded successfully');
+                    console.log('GIF dimensions:', currentGif.width, 'x', currentGif.height);
+                    updateGifStatus(`Loaded: ${source}`);
+                    updateGifInfo(currentGif, source);
+                    createFrameStrip(currentGif);
+                },
+                function(err) {
+                    console.error('ERROR: Failed to load GIF:', err);
+                    updateGifStatus(`FAILED: ${source}`);
+                    updateGifInfo(null, 'Failed to load');
+                }
+            );
+        }
+        
+        // Initialize p5.js
+        function initializeP5() {
+            console.log('Initializing p5.js...');
+            updateDebugStatus('Initializing p5...');
+            
+            if (typeof p5 === 'undefined') {
+                updateP5Status('ERROR: p5.js not loaded');
+                updateDebugStatus('ERROR: p5.js not available');
+                return;
+            }
+            
+            p5Instance = new p5(function(p) {
+                p.setup = function() {
+                    console.log('p5 setup called');
+                    updateCanvasStatus('Creating canvas...');
+                    
+                    let canvas = p.createCanvas(600, 400);
+                    canvas.parent('mainCanvas');
+                    updateCanvasStatus('Canvas created');
+                    
+                    // Load default GIF with a small delay to ensure setup is complete
+                    console.log('Scheduling default GIF load...');
+                    updateGifStatus('Preparing to load default.gif...');
+                    setTimeout(function() {
+                        console.log('Loading default GIF...');
+                        updateGifStatus('Loading default.gif...');
+                        loadNewGif('images/default.gif', 'Default (images/default.gif)');
+                    }, 100);
+                };
+                
+                p.draw = function() {
+                    p.background(20);
+                    
+                    if (currentGif && currentGif.width > 0) {
+                        // Calculate size to fit in canvas while maintaining aspect ratio
+                        let imgWidth = currentGif.width;
+                        let imgHeight = currentGif.height;
+                        let maxWidth = p.width * 0.9;
+                        let maxHeight = p.height * 0.9;
+                        
+                        let scale = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
+                        let displayWidth = imgWidth * scale;
+                        let displayHeight = imgHeight * scale;
+                        
+                        p.imageMode(p.CENTER);
+                        p.image(currentGif, p.width/2, p.height/2, displayWidth, displayHeight);
+                        
+                        updateGifStatus('GIF displaying');
+                        
+                        // Check for frame changes and handle custom timing
+                        if (typeof currentGif.getCurrentFrame === 'function') {
+                            let currentTime = p.millis();
+                            
+                            // Custom frame advancement with speed control
+                            if (isPlaying && currentTime - lastFrameTime >= customSpeed) {
+                                let nextFrame = currentFrameIndex;
+                                
+                                if (playMode === 'forward') {
+                                    nextFrame = currentFrameIndex + 1;
+                                    if (nextFrame > endFrame) {
+                                        nextFrame = startFrame; // Loop back to start
+                                    }
+                                } else if (playMode === 'reverse') {
+                                    nextFrame = currentFrameIndex - 1;
+                                    if (nextFrame < startFrame) {
+                                        nextFrame = endFrame; // Loop back to end
+                                    }
+                                } else if (playMode === 'oscillate') {
+                                    nextFrame = currentFrameIndex + oscillateDirection;
+                                    
+                                    // Check if we hit a boundary
+                                    if (nextFrame > endFrame) {
+                                        oscillateDirection = -1; // Switch to reverse
+                                        nextFrame = endFrame - 1;
+                                    } else if (nextFrame < startFrame) {
+                                        oscillateDirection = 1; // Switch to forward
+                                        nextFrame = startFrame + 1;
+                                    }
+                                }
+                                
+                                currentGif.setFrame(nextFrame);
+                                currentFrameIndex = nextFrame;
+                                lastFrameTime = currentTime;
+                            }
+                            
+                            // Update display
+                            let displayFrameIndex = currentGif.getCurrentFrame();
+                            if (displayFrameIndex !== currentFrameIndex) {
+                                currentFrameIndex = displayFrameIndex;
+                            }
+                            
+                            document.getElementById('gifCurrentFrame').textContent = currentFrameIndex + 1;
+                            updateFrameHighlight();
+                        }
+                    } else {
+                        // Loading state
+                        p.fill(255);
+                        p.textAlign(p.CENTER, p.CENTER);
+                        p.textSize(16);
+                        p.text('Loading GIF...', p.width/2, p.height/2);
+                    }
+                };
+            });
+            
+            updateDebugStatus('p5 instance created');
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            updateDebugStatus('DOM loaded');
+            
+            // Detect mobile device and show hint
+            const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (isMobile) {
+                document.getElementById('mobileHint').style.display = 'block';
+                console.log('Mobile device detected');
+            }
+            
+            // Small delay to ensure everything is ready
+            setTimeout(function() {
+                initializeP5();
+            }, 100);
+        });
+        
+        // Playback control functions
+        function togglePlayback() {
+            if (!currentGif) return;
+            
+            if (isPlaying) {
+                currentGif.pause();
+                isPlaying = false;
+            } else {
+                currentGif.play();
+                isPlaying = true;
+            }
+            updatePlayButton();
+        }
+        
+        function updatePlayButton() {
+            const button = document.getElementById('playButton');
+            if (button) {
+                button.textContent = isPlaying ? 'Pause' : 'Play';
+            }
+        }
+        
+        function updateSpeed(value) {
+            customSpeed = parseInt(value);
+            document.getElementById('speedValue').textContent = customSpeed + 'ms';
+            
+            if (currentGif && typeof currentGif.delay === 'function') {
+                currentGif.delay(customSpeed);
+            }
+        }
+        
+        function updateFrameRange() {
+            const startSlider = document.getElementById('startFrameSlider');
+            const endSlider = document.getElementById('endFrameSlider');
+            
+            let newStart = parseInt(startSlider.value) - 1; // Convert to 0-based
+            let newEnd = parseInt(endSlider.value) - 1;     // Convert to 0-based
+            
+            // Ensure start is not greater than end
+            if (newStart > newEnd) {
+                if (startSlider === document.activeElement) {
+                    // Start slider was moved, adjust end
+                    newEnd = newStart;
+                    endSlider.value = newStart + 1;
+                } else {
+                    // End slider was moved, adjust start  
+                    newStart = newEnd;
+                    startSlider.value = newEnd + 1;
+                }
+            }
+            
+            startFrame = newStart;
+            endFrame = newEnd;
+            
+            document.getElementById('startFrameValue').textContent = (startFrame + 1);
+            document.getElementById('endFrameValue').textContent = (endFrame + 1);
+            
+            // Update frame strip visual indicators
+            updateFrameRangeVisual();
+        }
+        
+        function updateFrameRangeVisual() {
+            // Update visual indicators in frame strip
+            document.querySelectorAll('.frame-item').forEach((item, index) => {
+                if (index < startFrame || index > endFrame) {
+                    item.style.opacity = '0.3';
+                } else {
+                    item.style.opacity = '1';
+                }
+            });
+        }
+
+        // Radio button event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Play mode radio buttons
+            document.querySelectorAll('input[name="playMode"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        playMode = this.value;
+                        console.log('Play mode changed to:', playMode);
+                        
+                        // Reset oscillate direction when switching modes
+                        if (playMode === 'oscillate') {
+                            oscillateDirection = 1; // Start going forward
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

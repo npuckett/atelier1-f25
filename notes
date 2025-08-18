@@ -1,0 +1,4 @@
+prompts
+
+Set up custom instructions
+"Generate a blank copilot-instructions.md file in the standard GitHub Copilot repository custom instructions format for VS Code"

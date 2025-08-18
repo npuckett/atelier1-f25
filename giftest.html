@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js GIF Animation Controls</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: normal;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+        }
+        
+        .subtitle {
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        .upload-section {
+            background: #111;
+            padding: 30px;
+            border: 1px solid #333;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #ccc;
+        }
+        
+        #fileName {
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .example-card {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+        }
+        
+        .example-card h3 {
+            margin-bottom: 10px;
+            font-weight: normal;
+            font-size: 1.2em;
+        }
+        
+        .example-card .description {
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+        
+        .canvas-container {
+            background: #000;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            touch-action: none; /* Prevent default touch behaviors like scrolling */
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .info-display {
+            font-size: 0.85em;
+            margin-top: 10px;
+            padding: 8px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .slider-container {
+            margin-top: 10px;
+        }
+        
+        .slider {
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        .note {
+            background: #1a1a1a;
+            border-left: 3px solid #fff;
+            padding: 15px;
+            margin: 30px 0;
+            font-size: 0.9em;
+        }
+
+        .gif-info-tile {
+            background: #111;
+            border: 1px solid #333;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .gif-info-tile h3 {
+            margin-bottom: 15px;
+            font-weight: normal;
+            font-size: 1.2em;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .gif-details {
+            display: grid;
+            gap: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .detail-row .label {
+            min-width: 120px;
+            color: #ccc;
+        }
+
+        .detail-row .command {
+            color: #666;
+            font-style: italic;
+            margin-left: auto;
+            font-size: 0.8em;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .canvas-container {
+                min-height: 180px;
+            }
+            
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+            
+            .example-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>p5.js Animated GIF Control Methods</h1>
+        <p class="subtitle">Interactive examples demonstrating p5.js GIF animation capabilities</p>
+        
+        <div class="upload-section">
+            <label for="fileInput" class="upload-btn">Choose GIF File</label>
+            <input type="file" id="fileInput" accept="image/gif">
+            <div id="fileName">No file selected</div>
+        </div>
+        
+        <!-- GIF Information Tile -->
+        <div class="gif-info-tile">
+            <h3>Current GIF Information</h3>
+            <div class="gif-details">
+                <div class="detail-row">
+                    <span class="label">Source:</span>
+                    <span id="gifSource">Default (images/default.gif)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Resolution:</span>
+                    <span id="gifResolution">Loading...</span>
+                    <span class="command">// img.width × img.height</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Count:</span>
+                    <span id="gifFrameCount">Loading...</span>
+                    <span class="command">// img.numFrames()</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Current Frame:</span>
+                    <span id="gifCurrentFrame">0</span>
+                    <span class="command">// img.getCurrentFrame()</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Delay:</span>
+                    <span id="gifFrameDelay">Auto</span>
+                    <span class="command">// img.delay() to set</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Playing:</span>
+                    <span id="gifPlaying">Yes</span>
+                    <span class="command">// img.play() / img.pause()</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            Upload a GIF file to see it in action with various control methods. The default animation will be used if no file is uploaded.
+        </div>
+        
+        <!-- Simple test display -->
+        <div class="example-card">
+            <h3>Basic GIF Test</h3>
+            <p class="description">Testing basic GIF loading and display</p>
+            <div id="testCanvas" class="canvas-container"></div>
+        </div>
+        
+        <!-- Comment out all interactive examples for now
+        <div class="examples-grid">
+            <!-- Example 1: Click/Tap to Toggle -->
+            <div class="example-card">
+                <h3>Click/Tap to Play/Pause</h3>
+                <p class="description">Click or tap canvas to toggle playback (works on desktop and mobile)</p>
+                <div id="example1" class="canvas-container"></div>
+                <div id="playState1" class="info-display">State: Paused - Click canvas to play</div>
+            </div>
+            
+            <!-- Example 2: Swipe/Drag Navigation -->
+            <div class="example-card">
+                <h3>Swipe/Drag Frame Navigation</h3>
+                <p class="description">Swipe or drag horizontally to navigate frames</p>
+                <div id="example2" class="canvas-container"></div>
+                <div id="frameInfo" class="info-display">Frame: 0 / 0 - Swipe left/right</div>
+            </div>
+            
+            <!-- Example 3: Double Click/Tap to Reset -->
+            <div class="example-card">
+                <h3>Double Click/Tap to Reset</h3>
+                <p class="description">Double click or tap to reset animation to first frame</p>
+                <div id="example3" class="canvas-container"></div>
+                <div id="resetInfo3" class="info-display">Double-click canvas to reset animation</div>
+            </div>
+            
+            <!-- Example 4: Touch/Mouse Speed Control -->
+            <div class="example-card">
+                <h3>Touch/Mouse Speed Control</h3>
+                <p class="description">Hold and move vertically to control animation speed</p>
+                <div id="example4" class="canvas-container"></div>
+                <div id="speedInfo4" class="info-display">Speed: Normal - Hold and drag up/down</div>
+            </div>
+            
+            <!-- Example 5: Touch/Mouse Frame Scrubbing -->
+            <div class="example-card">
+                <h3>Touch/Mouse Frame Scrubbing</h3>
+                <p class="description">Touch or click and drag horizontally to scrub through frames</p>
+                <div id="example5" class="canvas-container"></div>
+                <div id="scrubInfo5" class="info-display">Frame: 0 - Touch and drag horizontally</div>
+            </div>
+            
+            <!-- Example 6: Hover/Touch Position Control -->
+            <div class="example-card">
+                <h3>Hover/Touch Position Control</h3>
+                <p class="description">Move mouse or touch position to control frame (works on desktop and mobile)</p>
+                <div id="example6" class="canvas-container"></div>
+                <div id="mouseInfo" class="info-display">Move mouse or touch over canvas</div>
+            </div>
+        </div>
+        -->
+    </div>
+    
+    <script>
+        console.log('=== GIFTEST DEBUG: Script starting ===');
+        console.log('p5 available:', typeof p5);
+        
+        let uploadedGif = null;
+        let defaultGifData = null;
+        let sketches = [];
+        
+        // Create default animated GIF data
+        function createDefaultGif() {
+            // This creates a simple animated pattern as fallback
+            return null; // Will be handled in p5 sketches
+        }
+        
+        // File upload handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            console.log('File selected:', file);
+            if (file && file.type === 'image/gif') {
+                console.log('Valid GIF file selected:', file.name);
+                document.getElementById('fileName').textContent = `Selected: ${file.name}`;
+                document.getElementById('gifSource').textContent = `Uploaded: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    console.log('File read successfully, reloading sketches...');
+                    uploadedGif = event.target.result;
+                    // Reload all sketches with new GIF
+                    reloadAllSketches();
+                };
+                reader.onerror = function(error) {
+                    console.error('File read error:', error);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                console.log('Invalid file type or no file selected');
+                if (file) {
+                    alert('Please select a GIF file');
+                }
+            }
+        });
+
+        function updateGifInfo(gif, source = null) {
+            console.log('Updating GIF info:', gif, source);
+            try {
+                if (gif && gif.width && gif.height) {
+                    document.getElementById('gifResolution').textContent = `${gif.width} × ${gif.height}`;
+                    
+                    if (typeof gif.numFrames === 'function') {
+                        const frameCount = gif.numFrames();
+                        document.getElementById('gifFrameCount').textContent = frameCount;
+                        console.log('Frame count:', frameCount);
+                    } else {
+                        document.getElementById('gifFrameCount').textContent = '1 (static)';
+                    }
+                    
+                    if (typeof gif.getCurrentFrame === 'function') {
+                        document.getElementById('gifCurrentFrame').textContent = gif.getCurrentFrame() + 1;
+                    } else {
+                        document.getElementById('gifCurrentFrame').textContent = '1';
+                    }
+                } else {
+                    console.warn('GIF object is invalid or has no dimensions');
+                    document.getElementById('gifResolution').textContent = 'Invalid';
+                    document.getElementById('gifFrameCount').textContent = 'N/A';
+                }
+                
+                if (source) {
+                    document.getElementById('gifSource').textContent = source;
+                }
+            } catch (error) {
+                console.error('Error updating GIF info:', error);
+            }
+        }
+        
+        function reloadAllSketches() {
+            console.log('Reloading all sketches...');
+            sketches.forEach((sketch, index) => {
+                if (sketch) {
+                    console.log(`Removing sketch ${index}`);
+                    sketch.remove();
+                }
+            });
+            sketches = [];
+            console.log('Initializing new sketches...');
+            initAllExamples();
+        }
+        
+        // Example 1: Click/Tap to Toggle Play/Pause
+        let example1Sketch;
+        let example1Gif;
+        let example1Playing = false;
+        
+        // Example 2: Swipe/Drag Navigation
+        let example2Sketch;
+        let example2Gif;
+        let example2StartX = 0;
+        let example2StartFrame = 0;
+        let example2Dragging = false;
+        
+        // Example 3: Double Click/Tap to Reset
+        let example3Sketch;
+        let example3Gif;
+        let example3LastClick = 0;
+        
+        // Example 4: Touch/Mouse Speed Control
+        let example4Sketch;
+        let example4Gif;
+        let example4StartY = 0;
+        let example4BaseDelay = 50;
+        let example4Controlling = false;
+        
+        // Example 5: Touch/Mouse Frame Scrubbing
+        let example5Sketch;
+        let example5Gif;
+        let example5Scrubbing = false;
+        
+        // Example 6: Hover/Touch Position Control
+        let example6Sketch;
+        let example6Gif;
+        
+        // Initialize all examples
+        function initAllExamples() {
+            console.log('=== GIFTEST DEBUG: initAllExamples called ===');
+            console.log('uploadedGif:', uploadedGif ? 'Present' : 'None');
+            
+            // Example 1: Simple test - just load and display an image
+            console.log('Creating Example 1...');
+            
+            let testSketch = new p5(function(p) {
+                let testImage;
+                
+                p.setup = function() {
+                    console.log('=== GIFTEST DEBUG: p5 setup called ===');
+                    p.createCanvas(300, 200);
+                    
+                    console.log('Attempting to load: images/default.gif');
+                    testImage = p.loadImage('images/default.gif', 
+                        function() {
+                            console.log('=== SUCCESS: Default GIF loaded ===');
+                            console.log('Image width:', testImage.width);
+                            console.log('Image height:', testImage.height);
+                            updateGifInfo(testImage, 'Default (images/default.gif)');
+                        },
+                        function(err) {
+                            console.error('=== ERROR: Failed to load default GIF ===', err);
+                        }
+                    );
+                };
+                
+                p.draw = function() {
+                    p.background(50);
+                    p.fill(255);
+                    p.textAlign(p.CENTER, p.CENTER);
+                    
+                    if (testImage && testImage.width > 0) {
+                        p.imageMode(p.CENTER);
+                        p.image(testImage, p.width/2, p.height/2);
+                    } else {
+                        p.text('Loading image...', p.width/2, p.height/2);
+                    }
+                };
+            }, 'example1');
+            
+            sketches.push(testSketch);
+            console.log('=== GIFTEST DEBUG: Example 1 created ===');
+            
+            /* TEMPORARILY COMMENTED OUT - ALL OTHER EXAMPLES
+            
+            // Example 2: Swipe/Drag Navigation
+            example2Sketch = new p5(function(p) {
+                p.setup = function() {
+                    p.createCanvas(300, 200);
+                    if (uploadedGif) {
+                        example2Gif = p.loadImage(uploadedGif, () => {
+                            example2Gif.pause();
+                            updateFrameInfo();
+                        });
+                    } else {
+                        example2Gif = p.loadImage('images/default.gif', () => {
+                            example2Gif.pause();
+                            updateFrameInfo();
+                        });
+                    }
+                };
+                
+                p.draw = function() {
+                    p.background(0);
+                    if (example2Gif) {
+                        p.imageMode(p.CENTER);
+                        p.image(example2Gif, p.width/2, p.height/2,
+                               Math.min(p.width * 0.8, example2Gif.width),
+                               Math.min(p.height * 0.8, example2Gif.height));
+                    }
+                };
+                
+                p.mousePressed = function() {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        example2StartX = p.mouseX;
+                        example2StartFrame = example2Gif ? example2Gif.getCurrentFrame() : 0;
+                        example2Dragging = true;
+                    }
+                };
+                
+                p.mouseDragged = function() {
+                    if (example2Dragging && example2Gif) {
+                        let deltaX = p.mouseX - example2StartX;
+                        let sensitivity = 2; // Adjust sensitivity
+                        let frameChange = Math.floor(deltaX / sensitivity);
+                        let newFrame = example2StartFrame + frameChange;
+                        let total = example2Gif.numFrames();
+                        newFrame = ((newFrame % total) + total) % total; // Wrap around
+                        example2Gif.setFrame(newFrame);
+                        updateFrameInfo();
+                    }
+                };
+                
+                p.mouseReleased = function() {
+                    example2Dragging = false;
+                };
+                
+                p.touchStarted = function() {
+                    p.mousePressed();
+                    return false;
+                };
+                
+                p.touchMoved = function() {
+                    p.mouseDragged();
+                    return false;
+                };
+                
+                p.touchEnded = function() {
+                    p.mouseReleased();
+                    return false;
+                };
+            }, 'example2');
+            sketches.push(example2Sketch);
+            
+            // Example 3: Double Click/Tap to Reset
+            example3Sketch = new p5(function(p) {
+                p.setup = function() {
+                    p.createCanvas(300, 200);
+                    if (uploadedGif) {
+                        example3Gif = p.loadImage(uploadedGif);
+                    } else {
+                        example3Gif = p.loadImage('images/default.gif');
+                    }
+                };
+                
+                p.draw = function() {
+                    p.background(0);
+                    if (example3Gif) {
+                        p.imageMode(p.CENTER);
+                        p.image(example3Gif, p.width/2, p.height/2,
+                               Math.min(p.width * 0.8, example3Gif.width),
+                               Math.min(p.height * 0.8, example3Gif.height));
+                    }
+                };
+                
+                p.mousePressed = function() {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        let currentTime = Date.now();
+                        if (currentTime - example3LastClick < 500) { // 500ms double-click threshold
+                            if (example3Gif) {
+                                example3Gif.reset();
+                                document.getElementById('resetInfo3').textContent = 'Animation reset! Double-click again to reset.';
+                                setTimeout(() => {
+                                    document.getElementById('resetInfo3').textContent = 'Double-click canvas to reset animation';
+                                }, 2000);
+                            }
+                        }
+                        example3LastClick = currentTime;
+                    }
+                };
+                
+                p.touchStarted = function() {
+                    p.mousePressed();
+                    return false;
+                };
+            }, 'example3');
+            sketches.push(example3Sketch);
+            
+            // Example 4: Touch/Mouse Speed Control
+            example4Sketch = new p5(function(p) {
+                p.setup = function() {
+                    p.createCanvas(300, 200);
+                    if (uploadedGif) {
+                        example4Gif = p.loadImage(uploadedGif, () => {
+                            example4Gif.delay(example4BaseDelay);
+                            example4Gif.play();
+                            document.getElementById('gifFrameDelay').textContent = `${example4BaseDelay}ms`;
+                        });
+                    } else {
+                        example4Gif = p.loadImage('images/default.gif', () => {
+                            example4Gif.delay(example4BaseDelay);
+                            example4Gif.play();
+                            document.getElementById('gifFrameDelay').textContent = `${example4BaseDelay}ms`;
+                        });
+                    }
+                };
+                
+                p.draw = function() {
+                    p.background(0);
+                    if (example4Gif) {
+                        p.imageMode(p.CENTER);
+                        p.image(example4Gif, p.width/2, p.height/2,
+                               Math.min(p.width * 0.8, example4Gif.width),
+                               Math.min(p.height * 0.8, example4Gif.height));
+                    }
+                };
+                
+                p.mousePressed = function() {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        example4StartY = p.mouseY;
+                        example4Controlling = true;
+                    }
+                };
+                
+                p.mouseDragged = function() {
+                    if (example4Controlling && example4Gif) {
+                        let deltaY = example4StartY - p.mouseY; // Negative because Y increases downward
+                        let speedMultiplier = 1 + (deltaY / 100); // Adjust sensitivity
+                        speedMultiplier = p.constrain(speedMultiplier, 0.1, 5); // Limit range
+                        let newDelay = example4BaseDelay / speedMultiplier;
+                        example4Gif.delay(newDelay);
+                        document.getElementById('gifFrameDelay').textContent = `${Math.round(newDelay)}ms`;
+                        
+                        let speedText = speedMultiplier > 1 ? 'Fast' : speedMultiplier < 1 ? 'Slow' : 'Normal';
+                        document.getElementById('speedInfo4').textContent = 
+                            `Speed: ${speedText} (${speedMultiplier.toFixed(1)}x) - Hold and drag up/down`;
+                    }
+                };
+                
+                p.mouseReleased = function() {
+                    if (example4Controlling) {
+                        example4Controlling = false;
+                        if (example4Gif) {
+                            example4Gif.delay(example4BaseDelay);
+                            document.getElementById('gifFrameDelay').textContent = `${example4BaseDelay}ms`;
+                        }
+                        document.getElementById('speedInfo4').textContent = 'Speed: Normal - Hold and drag up/down';
+                    }
+                };
+                
+                p.touchStarted = function() {
+                    p.mousePressed();
+                    return false;
+                };
+                
+                p.touchMoved = function() {
+                    p.mouseDragged();
+                    return false;
+                };
+                
+                p.touchEnded = function() {
+                    p.mouseReleased();
+                    return false;
+                };
+            }, 'example4');
+            sketches.push(example4Sketch);
+            
+            // Example 5: Touch/Mouse Frame Scrubbing
+            example5Sketch = new p5(function(p) {
+                p.setup = function() {
+                    p.createCanvas(300, 200);
+                    if (uploadedGif) {
+                        example5Gif = p.loadImage(uploadedGif, () => {
+                            example5Gif.pause();
+                        });
+                    } else {
+                        example5Gif = p.loadImage('images/default.gif', () => {
+                            example5Gif.pause();
+                        });
+                    }
+                };
+                
+                p.draw = function() {
+                    p.background(0);
+                    if (example5Gif) {
+                        p.imageMode(p.CENTER);
+                        p.image(example5Gif, p.width/2, p.height/2,
+                               Math.min(p.width * 0.8, example5Gif.width),
+                               Math.min(p.height * 0.8, example5Gif.height));
+                    }
+                };
+                
+                p.mousePressed = function() {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        example5Scrubbing = true;
+                        updateScrubFrame();
+                    }
+                };
+                
+                p.mouseDragged = function() {
+                    if (example5Scrubbing) {
+                        updateScrubFrame();
+                    }
+                };
+                
+                p.mouseReleased = function() {
+                    example5Scrubbing = false;
+                };
+                
+                function updateScrubFrame() {
+                    if (example5Gif) {
+                        let framePercent = p.mouseX / p.width;
+                        framePercent = p.constrain(framePercent, 0, 1);
+                        let frame = Math.floor(framePercent * (example5Gif.numFrames() - 1));
+                        example5Gif.setFrame(frame);
+                        document.getElementById('scrubInfo5').textContent = 
+                            `Frame: ${frame + 1} / ${example5Gif.numFrames()} - Touch and drag horizontally`;
+                    }
+                }
+                
+                p.touchStarted = function() {
+                    p.mousePressed();
+                    return false;
+                };
+                
+                p.touchMoved = function() {
+                    p.mouseDragged();
+                    return false;
+                };
+                
+                p.touchEnded = function() {
+                    p.mouseReleased();
+                    return false;
+                };
+            }, 'example5');
+            sketches.push(example5Sketch);
+            
+            // Example 6: Hover/Touch Position Control
+            example6Sketch = new p5(function(p) {
+                p.setup = function() {
+                    p.createCanvas(300, 200);
+                    if (uploadedGif) {
+                        example6Gif = p.loadImage(uploadedGif, () => {
+                            example6Gif.pause();
+                        });
+                    } else {
+                        example6Gif = p.loadImage('images/default.gif', () => {
+                            example6Gif.pause();
+                        });
+                    }
+                };
+                
+                p.draw = function() {
+                    p.background(0);
+                    if (example6Gif) {
+                        p.imageMode(p.CENTER);
+                        p.image(example6Gif, p.width/2, p.height/2,
+                               Math.min(p.width * 0.8, example6Gif.width),
+                               Math.min(p.height * 0.8, example6Gif.height));
+                        
+                        // Position control (works for both mouse and touch)
+                        if ((p.mouseX > 0 && p.mouseX < p.width && 
+                             p.mouseY > 0 && p.mouseY < p.height) || p.touches.length > 0) {
+                            let x = p.touches.length > 0 ? p.touches[0].x : p.mouseX;
+                            let frame = Math.floor((x / p.width) * example6Gif.numFrames());
+                            frame = p.constrain(frame, 0, example6Gif.numFrames() - 1);
+                            example6Gif.setFrame(frame);
+                            document.getElementById('mouseInfo').textContent = 
+                                `Frame: ${frame + 1} / ${example6Gif.numFrames()} - Position: ${Math.round(x)}`;
+                        }
+                    }
+                };
+                
+                p.touchMoved = function() {
+                    return false; // Prevent default scrolling
+                };
+            }, 'example6');
+            sketches.push(example6Sketch);
+            
+            END OF COMMENTED OUT EXAMPLES */
+        }
+        
+        function updateFrameInfo() {
+            if (example2Gif) {
+                document.getElementById('frameInfo').textContent = 
+                    `Frame: ${example2Gif.getCurrentFrame() + 1} / ${example2Gif.numFrames()} - Swipe left/right`;
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing examples...');
+            initAllExamples();
+        });
+        
