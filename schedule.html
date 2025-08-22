@@ -105,13 +105,34 @@
             color: #666666;
         }
         
+        .week-level-break {
+            background: repeating-linear-gradient(
+                45deg,
+                #f0f0f0,
+                #f0f0f0 10px,
+                #e0e0e0 10px,
+                #e0e0e0 20px
+            ) !important;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+            border-top: 3px solid #ddd;
+            border-bottom: 3px solid #ddd;
+        }
+        
+        .week-level-break td {
+            padding: 20px !important;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        
         .due-date-row {
-            background-color: #000000 !important;
-            color: #ffffff !important;
+            background-color: #cccccc !important;
+            color: #333333 !important;
         }
         
         .due-date-row td {
-            color: #ffffff !important;
+            color: #333333 !important;
         }
         
         .current-row {
@@ -216,20 +237,179 @@
         .week-header {
             cursor: pointer;
             position: relative;
+            background-color: #f5f5f5 !important;
+            font-weight: 500;
         }
         
-        .week-header::after {
-            content: '−';
+        .week-header:hover {
+            background-color: #e5e5e5 !important;
+        }
+        
+        .week-header-content {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 16px;
+        }
+        
+        .expand-icon {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+            transition: transform 0.3s ease;
+            user-select: none;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .week-title-section {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 20px;
+            flex-grow: 1;
+        }
+        
+        .week-title {
+            font-weight: 600;
+            font-size: 16px;
+            min-width: 60px;
+        }
+        
+        .week-date-range {
+            font-size: 14px;
+            color: #666;
+            min-width: 200px;
+        }
+        
+        .week-description {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+            flex-grow: 1;
+        }
+        
+        .week-description:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .week-description .empty-description {
+            color: #ccc;
+        }
+        
+        .week-description .edit-mode {
+            font-family: inherit;
+            font-size: inherit;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 4px;
+            background: white;
+        }
+        
+        /* Animated collapsible rows */
+        .week-classes {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .week-classes.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        /* Individual class row animations */
+        .class-description {
+            overflow: hidden;
+            transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        
+        .class-description.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        .week-toggle-icon {
             position: absolute;
             right: 16px;
             top: 50%;
             transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: monospace;
-            font-size: 1.2rem;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+            transition: transform 0.2s ease;
         }
         
-        .week-group.collapsed .week-header::after {
+        .week-group.collapsed .week-toggle-icon {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .week-content {
+            transition: all 0.2s ease;
+        }
+        
+        /* Individual class row expand icons */
+        .class-row {
+            position: relative;
+        }
+        
+        .class-toggle-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666666;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .class-row:hover .class-toggle-icon {
+            opacity: 1;
+        }
+        
+        .class-row.expanded .class-toggle-icon {
+            opacity: 1;
+            color: #000000;
+        }
+        
+        .class-row.expanded .class-toggle-icon::before {
+            content: '−';
+        }
+        
+        .class-row.collapsed .class-toggle-icon::before {
             content: '+';
+        }
+        
+        /* Adjust cell padding for icons */
+        .week-cell {
+            padding-left: 32px;
+            position: relative;
+        }
+        
+        .schedule-table td:first-child {
+            position: relative;
         }
         
         /* Mobile responsive */
@@ -570,23 +750,114 @@
             }
             tbody.innerHTML = '';
             
+            // Group items by week - properly handle empty week values and break positioning
+            const weekGroups = {};
+            let currentWeek = null;
+            let breakPosition = null; // Track where break should appear
+            
             scheduleData.forEach((item, index) => {
-                console.log('Processing item:', index, item);
-                const row = document.createElement('tr');
-                
-                // Special handling for break row
+                // Handle BREAK specially - note its position but don't group it yet
                 if (item.week === 'BREAK') {
-                    row.className = 'break-row';
-                    row.innerHTML = `
-                        <td colspan="4">FALL BREAK</td>
-                    `;
-                } else {
+                    breakPosition = currentWeek; // Break comes after this week
+                    return; // Skip adding break to any week group for now
+                }
+                
+                // If this item has a week number, it's the start of a new week
+                if (item.week && item.week !== '') {
+                    currentWeek = item.week;
+                }
+                
+                // Group under the current week
+                if (currentWeek) {
+                    if (!weekGroups[currentWeek]) {
+                        weekGroups[currentWeek] = [];
+                    }
+                    weekGroups[currentWeek].push({...item, originalIndex: index});
+                }
+            });
+            
+            // Helper function to get week date range
+            function getWeekDateRange(weekItems) {
+                const dates = weekItems
+                    .filter(item => item.date && item.date.trim())
+                    .map(item => item.date);
+                
+                if (dates.length === 0) return '';
+                if (dates.length === 1) return dates[0];
+                
+                const firstDate = dates[0];
+                const lastDate = dates[dates.length - 1];
+                
+                // Extract just the date part (after " - ")
+                const firstDatePart = firstDate.split(' - ')[1] || firstDate;
+                const lastDatePart = lastDate.split(' - ')[1] || lastDate;
+                
+                return `${firstDatePart} - ${lastDatePart}`;
+            }
+            
+            // Helper function to create break divider
+            function createBreakDivider() {
+                const breakRow = document.createElement('tr');
+                breakRow.className = 'break-row week-level-break';
+                breakRow.innerHTML = `
+                    <td colspan="4" style="text-align: center; font-weight: bold; padding: 20px;">
+                        FALL BREAK<br>
+                        <span style="font-size: 14px; font-weight: normal; color: #666;">October 13 - 17</span>
+                    </td>
+                `;
+                return breakRow;
+            }
+            
+            // Process each week group in order
+            const weekKeys = Object.keys(weekGroups).sort((a, b) => parseInt(a) - parseInt(b));
+            
+            weekKeys.forEach(weekKey => {
+                const weekItems = weekGroups[weekKey];
+                
+                // Create week header row
+                const weekHeaderRow = document.createElement('tr');
+                weekHeaderRow.className = 'week-header';
+                
+                const dateRange = getWeekDateRange(weekItems);
+                const weekDescription = ''; // Default empty, can be edited later
+                
+                weekHeaderRow.innerHTML = `
+                    <td colspan="4">
+                        <div class="week-header-content" onclick="toggleWeekGroup('${weekKey}')">
+                            <span class="expand-icon" id="week-icon-${weekKey}">▼</span>
+                            <div class="week-title-section">
+                                <div class="week-title">Week ${weekKey}</div>
+                                <div class="week-date-range">${dateRange}</div>
+                                <div class="week-description editable-week-description" onclick="event.stopPropagation(); editWeekDescription('${weekKey}')" data-week="${weekKey}">
+                                    ${weekDescription || '<span class="empty-description">Click to add week description...</span>'}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(weekHeaderRow);
+                
+                // Create container div for week classes with proper animation setup
+                const weekClassesContainer = document.createElement('tr');
+                weekClassesContainer.innerHTML = `
+                    <td colspan="4" style="padding: 0; border: none;">
+                        <div class="week-classes" id="week-classes-${weekKey}"></div>
+                    </td>
+                `;
+                tbody.appendChild(weekClassesContainer);
+                
+                const weekClassesDiv = weekClassesContainer.querySelector('.week-classes');
+                
+                // Create individual class rows for this week
+                weekItems.forEach(item => {
+                    const row = document.createElement('tr');
+                    
                     // Parse date and determine status
                     const scheduleDate = parseScheduleDate(item.date);
                     const dateStatus = getDateStatus(scheduleDate);
                     
-                    // Add time-based classes
-                    let rowClasses = [];
+                    // Add time-based classes and week grouping class
+                    let rowClasses = [`week-${weekKey}-class`];
                     if (item.isDueDate) {
                         rowClasses.push('due-date-row');
                     } else if (dateStatus === 'current') {
@@ -597,21 +868,32 @@
                         rowClasses.push('upcoming-deadline');
                     }
                     
-                    if (rowClasses.length > 0) {
-                        row.className = rowClasses.join(' ');
-                    }
+                    row.className = rowClasses.join(' ');
                     
+                    // Don't show week number in individual rows since it's in the header
                     row.innerHTML = `
-                        <td class="week-cell">${item.week}</td>
+                        <td class="week-cell">
+                            <span class="class-expand-icon" onclick="toggleClassRow(this)">▶</span>
+                        </td>
                         <td class="date-cell">${item.date}</td>
                         <td class="class-type" onclick="scrollToDefinition('${item.classType}')">${item.classType}</td>
-                        <td class="editable-description" onclick="editDescription(${index})">
-                            ${item.description || '<span class="empty-description">Click to add description...</span>'}
+                        <td class="editable-description">
+                            <div class="class-description" onclick="editDescription(${item.originalIndex})">
+                                ${item.description || '<span class="empty-description">Click to add description...</span>'}
+                            </div>
                         </td>
                     `;
-                }
+                    
+                    weekClassesDiv.appendChild(row);
+                });
                 
-                tbody.appendChild(row);
+                // Set initial height for animation
+                weekClassesDiv.style.maxHeight = weekClassesDiv.scrollHeight + 'px';
+                
+                // Add fall break after Week 6
+                if (weekKey === '6' && breakPosition === '6') {
+                    tbody.appendChild(createBreakDivider());
+                }
             });
         }
         
@@ -724,6 +1006,107 @@
                 schedule: scheduleData,
                 definitions: classTypeDefinitions
             };
+        }
+        
+        // Week and class expand/collapse functions
+        function toggleWeekGroup(weekKey) {
+            const icon = document.getElementById(`week-icon-${weekKey}`);
+            const weekClassesDiv = document.getElementById(`week-classes-${weekKey}`);
+            
+            if (icon && weekClassesDiv) {
+                const isExpanded = !icon.classList.contains('collapsed');
+                
+                if (isExpanded) {
+                    // Collapse
+                    icon.classList.add('collapsed');
+                    weekClassesDiv.style.maxHeight = '0px';
+                    weekClassesDiv.classList.add('collapsed');
+                } else {
+                    // Expand
+                    icon.classList.remove('collapsed');
+                    weekClassesDiv.classList.remove('collapsed');
+                    weekClassesDiv.style.maxHeight = weekClassesDiv.scrollHeight + 'px';
+                    
+                    // Reset max-height after animation completes
+                    setTimeout(() => {
+                        if (!weekClassesDiv.classList.contains('collapsed')) {
+                            weekClassesDiv.style.maxHeight = 'none';
+                        }
+                    }, 300);
+                }
+            }
+        }
+        
+        function toggleClassRow(iconElement) {
+            const row = iconElement.closest('tr');
+            const descriptionDiv = row.querySelector('.class-description');
+            const isExpanded = iconElement.textContent === '▼';
+            
+            // Toggle icon
+            iconElement.textContent = isExpanded ? '▶' : '▼';
+            
+            // Toggle description visibility with animation
+            if (descriptionDiv) {
+                if (isExpanded) {
+                    // Collapse
+                    descriptionDiv.style.maxHeight = '0px';
+                    descriptionDiv.classList.add('collapsed');
+                } else {
+                    // Expand
+                    descriptionDiv.classList.remove('collapsed');
+                    descriptionDiv.style.maxHeight = descriptionDiv.scrollHeight + 'px';
+                    
+                    // Reset max-height after animation completes
+                    setTimeout(() => {
+                        if (!descriptionDiv.classList.contains('collapsed')) {
+                            descriptionDiv.style.maxHeight = 'none';
+                        }
+                    }, 200);
+                }
+            }
+        }
+        
+        // Function to edit week descriptions
+        function editWeekDescription(weekKey) {
+            const weekDescElement = document.querySelector(`[data-week="${weekKey}"]`);
+            if (!weekDescElement) return;
+            
+            const currentText = weekDescElement.textContent.trim();
+            const isEmptyDescription = weekDescElement.querySelector('.empty-description') !== null;
+            
+            // Create input field
+            const input = document.createElement('textarea');
+            input.value = isEmptyDescription ? '' : currentText;
+            input.className = 'edit-mode';
+            input.style.width = '100%';
+            input.style.resize = 'vertical';
+            input.style.minHeight = '60px';
+            input.placeholder = 'Add week description...';
+            
+            // Replace element content with input
+            weekDescElement.innerHTML = '';
+            weekDescElement.appendChild(input);
+            input.focus();
+            
+            // Handle saving
+            function saveWeekDescription() {
+                const newValue = input.value.trim();
+                weekDescElement.innerHTML = newValue || '<span class="empty-description">Click to add week description...</span>';
+                
+                // Store week description (you could extend your data structure to include this)
+                console.log(`Saved description for Week ${weekKey}:`, newValue);
+            }
+            
+            // Save on blur or Enter (with Ctrl/Cmd)
+            input.addEventListener('blur', saveWeekDescription);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    saveWeekDescription();
+                }
+                if (e.key === 'Escape') {
+                    weekDescElement.innerHTML = currentText || '<span class="empty-description">Click to add week description...</span>';
+                }
+            });
         }
         
         // Filter and expand/collapse functionality

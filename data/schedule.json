@@ -36,14 +36,14 @@
         "description": ""
     },
     {
-        "week": "",
+        "week": "4",
         "date": "T - September 23",
         "classType": "Documentation Due",
         "description": "",
         "isDueDate": true
     },
     {
-        "week": "4",
+        "week": "",
         "date": "W - September 24",
         "classType": "Introduction & Dev Day",
         "description": ""
@@ -85,14 +85,14 @@
         "description": ""
     },
     {
-        "week": "6",
+        "week": "7",
         "date": "M - October 21",
         "classType": "Documentation Due",
         "description": "",
         "isDueDate": true
     },
     {
-        "week": "7",
+        "week": "",
         "date": "W - October 22",
         "classType": "Introduction & Dev Day",
         "description": ""
