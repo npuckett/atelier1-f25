@@ -7,6 +7,7 @@
 
 ## Code Style and Standards
 <!-- Define coding conventions, formatting rules, naming conventions, and style guidelines -->
+Do not ever use emojis. ever
 
 ## Architecture and Design Patterns
 <!-- Describe the overall architecture, design patterns, folder structure, and how components interact -->

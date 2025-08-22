@@ -158,11 +158,30 @@ The semester is essentially split in half. In the first 6 weeks there will be tw
 
 ---
 
-# Assignments
+# Projects
 
 ## Workshop 1 – Real Things, Fake Project
 
 **Format**: Groups of 3 (randomly assigned)
+
+## Class Schedule : September 3 - September 19
+## Documentation Due : September 23
+
+## Assignments
+### Dev Days
+
+- September 5 https://canvascloud.ocadu.ca/courses/12214/assignments/103711
+- September 10 https://canvascloud.ocadu.ca/courses/12214/assignments/103712
+- September 12 https://canvascloud.ocadu.ca/courses/12214/assignments/103714
+
+### Playtesting
+
+- September 19 https://canvascloud.ocadu.ca/courses/12214/assignments/103759
+
+### Documentation
+- September 23 https://canvascloud.ocadu.ca/courses/12214/assignments/103757
+
+
 
 ### Description
 Workshop 1 asks you to imagine and design a new interactive experience for the entry lobby of 205 Richmond that changes the way people currently use the space. The design must incorporate a screen or many screens and some form of interactivity. The goal is to design the space using products available today, but with no limitation on the budget. You do not need to actually program the media or interaction, but you do need to produce drawings, images, videos that explain how it COULD work.

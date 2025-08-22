@@ -1,0 +1,58 @@
+[
+    {
+        "id": "workshop-1",
+        "title": "Workshop 1 – Real Things, Fake Project",
+        "format": "Groups of 3 (randomly assigned)",
+        "duration": "3 weeks",
+        "startWeek": 1,
+        "endWeek": 3,
+        "dueDateWeeks": [4],
+        "color": "#4f46e5",
+        "highlightColor": "#eef2ff",
+        "relatedClassTypes": ["Introduction", "Dev Day", "Playtesting", "Documentation Due", "Flexible Work Session", "Introduction & Dev Day"],
+        "relatedClasses": [
+            "W - September 3",
+            "F - September 5", 
+            "W - September 10",
+            "F - September 12",
+            "W - September 17",
+            "F - September 19",
+            "T - September 23"
+        ],
+        "description": "Workshop 1 asks you to imagine and design a new interactive experience for the entry lobby of 205 Richmond that changes the way people currently use the space. The design must incorporate a screen or many screens and some form of interactivity. The goal is to design the space using products available today, but with no limitation on the budget. You do not need to actually program the media or interaction, but you do need to produce drawings, images, videos that explain how it COULD work.",
+        "constraints": [
+            "The design can engage any surface or space within the entry lobby. Walls, floor, doors, windows, stairs",
+            "The boundary is set by: the front doors, the elevator doors, the doors to xfab, and the doors to the 1st floor",
+            "While your proposal in no way needs to be practical, you should consider how it would overlay with the existing functions of the space"
+        ],
+        "tools": [
+            "Photoshop",
+            "3d modelling software (Blender/Maya)"
+        ],
+        "deliverables": {
+            "interactive": "None",
+            "documentation": {
+                "description": "100 – 200 words that describe the concept of the project and how it works",
+                "visualizations": "2-3 images that show how the experience would look in the space",
+                "diagrams": "1-2 drawings or diagrams that explain how the system works"
+            },
+            "optional": "Mock-up video showing the interaction and effects",
+            "budget": {
+                "title": "Component Budget Breakdown",
+                "description": "There is no maximum budget for what you propose, but you must produce an estimate of the total cost in Canadian Dollars. In addition to the total cost, the budget should be broken down by item and include:",
+                "requirements": [
+                    "1 sentence description of its purpose",
+                    "Price per unit",
+                    "Quantity",
+                    "Link to supplier"
+                ],
+                "note": "You do not have to consider product lead time or availability, but it does need to be components that currently exist."
+            }
+        },
+        "submissionFormat": "The Description, Visualizations, and Budget should be submitted as a single PDF file. Optional videos should be submitted as links to Vimeo/Youtube within the PDF.",
+        "dates": {
+            "startDate": "Week 1, Class 1 September",
+            "endDate": "Week 3"
+        }
+    }
+]
