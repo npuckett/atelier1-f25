@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier 1 - Schedule</title>
+    <style>
+        /* Clean, minimal black/white/grey design */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.5;
+        }
+        
+        h1 {
+            color: #000000;
+            font-weight: 400;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .current-time {
+            color: #666666;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+        }
+        
+        h2 {
+            color: #000000;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+        
+        .schedule-container {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 60px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .schedule-table th {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px 16px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .schedule-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e5e5;
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+        
+        .schedule-table tr:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .week-cell {
+            font-weight: 500;
+            background-color: #f5f5f5;
+            width: 80px;
+            color: #000000;
+        }
+        
+        .date-cell {
+            width: 150px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+        
+        .class-type {
+            cursor: pointer;
+            color: #000000;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .class-type:hover {
+            color: #666666;
+        }
+        
+        .break-row {
+            background-color: #f5f5f5 !important;
+            font-weight: 500;
+            text-align: center;
+            color: #666666;
+        }
+        
+        .due-date-row {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .due-date-row td {
+            color: #ffffff !important;
+        }
+        
+        .current-row {
+            background-color: #f8f8f8 !important;
+            border-left: 4px solid #000000;
+        }
+        
+        .past-row {
+            opacity: 0.6;
+        }
+        
+        .upcoming-deadline {
+            background-color: #f5f5f5 !important;
+            border-left: 2px solid #666666;
+        }
+        
+        /* Filter Controls */
+        .filter-controls {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .filter-btn {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            color: #000000;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .filter-btn:hover {
+            background: #f8f8f8;
+        }
+        
+        .filter-btn.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        
+        .filter-btn.expand-all {
+            background: #f5f5f5;
+            font-weight: 500;
+        }
+        
+        .filter-btn.expand-all:hover {
+            background: #e5e5e5;
+        }
+        
+        .filter-btn.expand-all.active {
+            background: #000000;
+            color: #ffffff;
+        }
+        
+        /* Row visibility states */
+        .schedule-table tr.hidden {
+            display: none;
+        }
+        
+        .schedule-table tr.filtered-out {
+            opacity: 0.3;
+        }
+        
+        /* Week grouping */
+        .week-group {
+            border-top: 2px solid #000000;
+        }
+        
+        .week-group.collapsed .week-content {
+            display: none;
+        }
+        
+        .week-header {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .week-header::after {
+            content: '−';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+        
+        .week-group.collapsed .week-header::after {
+            content: '+';
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .filter-controls {
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .filter-buttons {
+                gap: 6px;
+            }
+            
+            .filter-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: 0;
+                text-align: center;
+            }
+            
+            .filter-section {
+                margin-bottom: 16px;
+            }
+        }
+        
+        .empty-description {
+            color: #999999;
+            font-style: italic;
+        }
+        
+        .editable-description {
+            cursor: pointer;
+            min-height: 20px;
+            padding: 4px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .editable-description:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .class-type-definitions {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            padding: 40px;
+        }
+        
+        .definition-item {
+            margin-bottom: 32px;
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .definition-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .definition-title {
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .definition-text {
+            color: #666666;
+            line-height: 1.6;
+        }
+        
+        .edit-mode {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            outline: none;
+            min-height: 40px;
+            font-family: inherit;
+            font-size: inherit;
+            padding: 8px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            
+            .schedule-table {
+                font-size: 14px;
+            }
+            
+            .schedule-table th,
+            .schedule-table td {
+                padding: 12px 8px;
+            }
+            
+            .class-type-definitions {
+                padding: 24px;
+            }
+            
+            .definition-item {
+                padding: 16px 0;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Atelier 1 – Fall 25 Schedule</h1>
+    <div class="current-time" id="currentTime">
+        <!-- Current time will be inserted here -->
+    </div>
+    
+    <div class="filter-controls">
+        <div class="filter-section">
+            <label class="filter-label">Filter by Class Type</label>
+            <div class="filter-buttons" id="classTypeFilters">
+                <!-- Class type filter buttons will be generated here -->
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <label class="filter-label">Filter by Week</label>
+            <div class="filter-buttons" id="weekFilters">
+                <!-- Week filter buttons will be generated here -->
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <label class="filter-label">View Options</label>
+            <div class="filter-buttons">
+                <button class="filter-btn expand-all active" onclick="toggleExpandAll()">Expand All</button>
+                <button class="filter-btn" onclick="showPastEvents()">Show Past</button>
+                <button class="filter-btn" onclick="showUpcoming()">Show Upcoming</button>
+                <button class="filter-btn" onclick="showCurrentWeek()">Current Week</button>
+                <button class="filter-btn" onclick="clearAllFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="schedule-container">
+        <table class="schedule-table" id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Date</th>
+                    <th>Class Type</th>
+                    <th>Class Description</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody">
+                <!-- Schedule data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="class-type-definitions">
+        <h2>Class Type Definitions</h2>
+        <div id="classDefinitions">
+            <!-- Class type definitions will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Global variables for data
+        let scheduleData = [];
+        let classTypeDefinitions = {};
+        let activeFilters = {
+            classTypes: new Set(),
+            weeks: new Set(),
+            viewMode: 'all'
+        };
+        let isExpandedAll = true;
+        
+        // Function to update current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const timeString = now.toLocaleDateString('en-US', options);
+            document.getElementById('currentTime').textContent = `Current: ${timeString}`;
+        }
+        
+        // Function to parse date from schedule entry
+        function parseScheduleDate(dateString, year = 2025) {
+            if (!dateString) return null;
+            
+            // Extract month and day from format like "W - September 3"
+            const match = dateString.match(/([A-Z]) - (\w+) (\d+)/);
+            if (!match) return null;
+            
+            const [, , monthName, day] = match;
+            const monthMap = {
+                'September': 8, 'October': 9, 'November': 10, 'December': 11
+            };
+            
+            const month = monthMap[monthName];
+            if (month === undefined) return null;
+            
+            return new Date(year, month, parseInt(day));
+        }
+        
+        // Function to determine if a date is current, past, or future
+        function getDateStatus(scheduleDate) {
+            if (!scheduleDate) return 'unknown';
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const itemDate = new Date(scheduleDate.getFullYear(), scheduleDate.getMonth(), scheduleDate.getDate());
+            
+            const diffTime = itemDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'current';
+            if (diffDays < 0) return 'past';
+            if (diffDays <= 7 && scheduleDate) return 'upcoming';
+            return 'future';
+        }
+        
+        // Function to load JSON data
+        async function loadData() {
+            // For file:// protocol, fetch might not work, so try but fallback gracefully
+            try {
+                console.log('Attempting to load data files...');
+                
+                // Check if we're running on file:// protocol
+                if (window.location.protocol === 'file:') {
+                    console.log('Running on file:// protocol, using fallback data');
+                    loadFallbackData();
+                    return;
+                }
+                
+                // Load schedule data
+                const scheduleResponse = await fetch('data/schedule.json');
+                if (!scheduleResponse.ok) {
+                    throw new Error(`Schedule fetch failed: ${scheduleResponse.status}`);
+                }
+                scheduleData = await scheduleResponse.json();
+                console.log('Schedule data loaded:', scheduleData.length, 'items');
+                
+                // Load class type definitions
+                const definitionsResponse = await fetch('data/class-types.json');
+                if (!definitionsResponse.ok) {
+                    throw new Error(`Definitions fetch failed: ${definitionsResponse.status}`);
+                }
+                classTypeDefinitions = await definitionsResponse.json();
+                console.log('Class definitions loaded:', Object.keys(classTypeDefinitions).length, 'types');
+                
+                // Initialize the page once data is loaded
+                updateCurrentTime();
+                populateSchedule();
+                populateDefinitions();
+                generateFilterButtons();
+                
+                // Update time every minute
+                setInterval(updateCurrentTime, 60000);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                console.log('Falling back to inline data...');
+                // Fallback to inline data if files can't be loaded
+                loadFallbackData();
+            }
+        }
+        
+        // Fallback data in case JSON files can't be loaded
+        function loadFallbackData() {
+            scheduleData = [
+                {week: "1", date: "W - September 3", classType: "Introduction", description: ""},
+                {week: "", date: "F - September 5", classType: "Dev Day", description: ""},
+                {week: "2", date: "W - September 10", classType: "Dev Day", description: ""},
+                {week: "", date: "F - September 12", classType: "Dev Day", description: ""},
+                {week: "3", date: "W - September 17", classType: "Playtesting", description: ""},
+                {week: "", date: "F - September 19", classType: "Flexible Work Session", description: ""},
+                {week: "", date: "T - September 23", classType: "Documentation Due", description: "", isDueDate: true},
+                {week: "4", date: "W - September 24", classType: "Introduction & Dev Day", description: ""},
+                {week: "", date: "F - September 26", classType: "Dev Day", description: ""},
+                {week: "5", date: "W - October 1", classType: "Dev Day", description: ""},
+                {week: "", date: "F - October 3", classType: "Flexible Work Session", description: ""},
+                {week: "6", date: "W - October 8", classType: "Playtesting", description: ""},
+                {week: "", date: "F - October 10", classType: "Flexible Work Session", description: ""},
+                {week: "BREAK", date: "", classType: "", description: ""},
+                {week: "6", date: "M - October 21", classType: "Documentation Due", description: "", isDueDate: true},
+                {week: "7", date: "W - October 22", classType: "Introduction & Dev Day", description: ""},
+                {week: "", date: "F - October 24", classType: "Dev Day", description: ""},
+                {week: "8", date: "W - October 29", classType: "Dev Day", description: ""},
+                {week: "", date: "F - October 31", classType: "Flexible Work Session", description: ""},
+                {week: "9", date: "W - November 5", classType: "Playtesting", description: ""},
+                {week: "", date: "F - November 7", classType: "Flexible Work Session", description: ""},
+                {week: "10", date: "W - November 12", classType: "Dev Day", description: ""},
+                {week: "", date: "F - November 14", classType: "Flexible Work Session", description: ""},
+                {week: "11", date: "W - November 19", classType: "Dev Day", description: ""},
+                {week: "", date: "F - November 21", classType: "Flexible Work Session", description: ""},
+                {week: "12", date: "W - November 26", classType: "Playtesting", description: ""},
+                {week: "", date: "F - November 28", classType: "Dev Day", description: ""},
+                {week: "13", date: "T - December 10", classType: "Documentation Due", description: "", isDueDate: true}
+            ];
+            
+            classTypeDefinitions = {
+                "Introduction": "Course introduction sessions covering key concepts, tools, and project overviews.",
+                "Introduction & Dev Day": "Combined session with introduction to new concepts followed by development time.",
+                "Dev Day": "Hands-on development sessions where students work on their projects with instructor support.",
+                "Flexible Work Session": "Open studio time for project development, individual consultations, and peer collaboration.",
+                "Playtesting": "Structured feedback sessions where students test each other's work and provide constructive criticism.",
+                "Documentation Due": "Project documentation submission deadline with presentation of completed work."
+            };
+            
+            console.log('Using fallback data with', scheduleData.length, 'schedule items');
+            
+            // Initialize the page
+            updateCurrentTime();
+            populateSchedule();
+            populateDefinitions();
+            generateFilterButtons();
+            
+            // Update time every minute
+            setInterval(updateCurrentTime, 60000);
+        }
+        
+        // Function to populate the schedule table
+        function populateSchedule() {
+            console.log('populateSchedule called with', scheduleData.length, 'items');
+            const tbody = document.getElementById('scheduleBody');
+            if (!tbody) {
+                console.error('scheduleBody element not found!');
+                return;
+            }
+            tbody.innerHTML = '';
+            
+            scheduleData.forEach((item, index) => {
+                console.log('Processing item:', index, item);
+                const row = document.createElement('tr');
+                
+                // Special handling for break row
+                if (item.week === 'BREAK') {
+                    row.className = 'break-row';
+                    row.innerHTML = `
+                        <td colspan="4">FALL BREAK</td>
+                    `;
+                } else {
+                    // Parse date and determine status
+                    const scheduleDate = parseScheduleDate(item.date);
+                    const dateStatus = getDateStatus(scheduleDate);
+                    
+                    // Add time-based classes
+                    let rowClasses = [];
+                    if (item.isDueDate) {
+                        rowClasses.push('due-date-row');
+                    } else if (dateStatus === 'current') {
+                        rowClasses.push('current-row');
+                    } else if (dateStatus === 'past') {
+                        rowClasses.push('past-row');
+                    } else if (dateStatus === 'upcoming' && item.isDueDate) {
+                        rowClasses.push('upcoming-deadline');
+                    }
+                    
+                    if (rowClasses.length > 0) {
+                        row.className = rowClasses.join(' ');
+                    }
+                    
+                    row.innerHTML = `
+                        <td class="week-cell">${item.week}</td>
+                        <td class="date-cell">${item.date}</td>
+                        <td class="class-type" onclick="scrollToDefinition('${item.classType}')">${item.classType}</td>
+                        <td class="editable-description" onclick="editDescription(${index})">
+                            ${item.description || '<span class="empty-description">Click to add description...</span>'}
+                        </td>
+                    `;
+                }
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Function to populate class type definitions
+        function populateDefinitions() {
+            const container = document.getElementById('classDefinitions');
+            container.innerHTML = '';
+            
+            Object.entries(classTypeDefinitions).forEach(([type, definition]) => {
+                const item = document.createElement('div');
+                item.className = 'definition-item';
+                item.id = `def-${type.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                item.innerHTML = `
+                    <div class="definition-title">${type}</div>
+                    <div class="definition-text">${definition}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        // Function to handle description editing
+        function editDescription(index) {
+            const row = document.querySelectorAll('#scheduleBody tr')[index];
+            const cell = row.querySelector('.editable-description');
+            const currentText = scheduleData[index].description;
+            
+            // Create input field
+            const input = document.createElement('textarea');
+            input.value = currentText;
+            input.className = 'edit-mode';
+            input.style.width = '100%';
+            input.style.resize = 'vertical';
+            
+            // Replace cell content with input
+            cell.innerHTML = '';
+            cell.appendChild(input);
+            input.focus();
+            
+            // Handle saving
+            function saveDescription() {
+                const newValue = input.value;
+                scheduleData[index].description = newValue;
+                cell.innerHTML = newValue || '<span class="empty-description">Click to add description...</span>';
+                
+                // Save changes to external file (would require backend)
+                saveScheduleData();
+                console.log('Saved description for:', scheduleData[index]);
+            }
+            
+            // Save on blur or Enter (with Ctrl/Cmd)
+            input.addEventListener('blur', saveDescription);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    saveDescription();
+                }
+                if (e.key === 'Escape') {
+                    cell.innerHTML = currentText || '<span class="empty-description">Click to add description...</span>';
+                }
+            });
+        }
+        
+        // Function to save schedule data (for future backend integration)
+        async function saveScheduleData() {
+            try {
+                // This would send data to a backend endpoint
+                // For now, just log the data that would be saved
+                console.log('Schedule data to save:', JSON.stringify(scheduleData, null, 2));
+                
+                // Example backend call:
+                // await fetch('api/save-schedule', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(scheduleData)
+                // });
+                
+            } catch (error) {
+                console.error('Error saving schedule data:', error);
+            }
+        }
+        
+        // Function to scroll to class type definition
+        function scrollToDefinition(classType) {
+            const elementId = `def-${classType.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.backgroundColor = '#f8f8f8';
+                setTimeout(() => {
+                    element.style.backgroundColor = '#ffffff';
+                }, 2000);
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, starting initialization...');
+            loadData();
+        });
+        
+        // Function to generate individual class pages (for future development)
+        function generateClassPage(classData) {
+            // This function will eventually create individual HTML pages for each class
+            // Following a consistent template structure
+            console.log('Generating page for:', classData);
+        }
+        
+        // Function to export schedule data (for saving changes)
+        function exportScheduleData() {
+            return {
+                schedule: scheduleData,
+                definitions: classTypeDefinitions
+            };
+        }
+        
+        // Filter and expand/collapse functionality
+        
+        // Generate filter buttons based on data
+        function generateFilterButtons() {
+            generateClassTypeFilters();
+            generateWeekFilters();
+        }
+        
+        function generateClassTypeFilters() {
+            const container = document.getElementById('classTypeFilters');
+            const classTypes = [...new Set(scheduleData
+                .filter(item => item.classType && item.classType !== '')
+                .map(item => item.classType))];
+            
+            container.innerHTML = '';
+            classTypes.forEach(classType => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = classType;
+                button.onclick = () => toggleClassTypeFilter(classType, button);
+                container.appendChild(button);
+            });
+        }
+        
+        function generateWeekFilters() {
+            const container = document.getElementById('weekFilters');
+            const weeks = [...new Set(scheduleData
+                .filter(item => item.week && item.week !== '' && item.week !== 'BREAK')
+                .map(item => item.week))];
+            
+            container.innerHTML = '';
+            weeks.forEach(week => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = `Week ${week}`;
+                button.onclick = () => toggleWeekFilter(week, button);
+                container.appendChild(button);
+            });
+        }
+        
+        // Filter toggle functions
+        function toggleClassTypeFilter(classType, button) {
+            if (activeFilters.classTypes.has(classType)) {
+                activeFilters.classTypes.delete(classType);
+                button.classList.remove('active');
+            } else {
+                activeFilters.classTypes.add(classType);
+                button.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function toggleWeekFilter(week, button) {
+            if (activeFilters.weeks.has(week)) {
+                activeFilters.weeks.delete(week);
+                button.classList.remove('active');
+            } else {
+                activeFilters.weeks.add(week);
+                button.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        // View mode functions
+        function showPastEvents() {
+            activeFilters.viewMode = 'past';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function showUpcoming() {
+            activeFilters.viewMode = 'upcoming';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function showCurrentWeek() {
+            activeFilters.viewMode = 'current';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function clearAllFilters() {
+            activeFilters.classTypes.clear();
+            activeFilters.weeks.clear();
+            activeFilters.viewMode = 'all';
+            updateAllFilterButtons();
+            applyFilters();
+        }
+        
+        function toggleExpandAll() {
+            isExpandedAll = !isExpandedAll;
+            const button = document.querySelector('.expand-all');
+            if (isExpandedAll) {
+                button.textContent = 'Collapse All';
+                button.classList.add('active');
+                expandAllRows();
+            } else {
+                button.textContent = 'Expand All';
+                button.classList.remove('active');
+                collapseAllRows();
+            }
+        }
+        
+        function updateViewModeButtons() {
+            document.querySelectorAll('.filter-controls .filter-btn').forEach(btn => {
+                if (btn.textContent.includes('Past') || 
+                    btn.textContent.includes('Upcoming') || 
+                    btn.textContent.includes('Current Week')) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            const activeBtn = document.querySelector(`[onclick*="${activeFilters.viewMode}"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+        
+        function updateAllFilterButtons() {
+            document.querySelectorAll('#classTypeFilters .filter-btn, #weekFilters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.filter-controls .filter-btn').forEach(btn => {
+                if (!btn.classList.contains('expand-all')) {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Apply all active filters
+        function applyFilters() {
+            const rows = document.querySelectorAll('#scheduleBody tr');
+            
+            rows.forEach((row, index) => {
+                const item = scheduleData[index];
+                if (!item) return;
+                
+                let shouldShow = true;
+                
+                // Apply class type filter
+                if (activeFilters.classTypes.size > 0) {
+                    shouldShow = shouldShow && activeFilters.classTypes.has(item.classType);
+                }
+                
+                // Apply week filter
+                if (activeFilters.weeks.size > 0) {
+                    shouldShow = shouldShow && activeFilters.weeks.has(item.week);
+                }
+                
+                // Apply view mode filter
+                if (activeFilters.viewMode !== 'all') {
+                    const scheduleDate = parseScheduleDate(item.date);
+                    const dateStatus = getDateStatus(scheduleDate);
+                    
+                    switch (activeFilters.viewMode) {
+                        case 'past':
+                            shouldShow = shouldShow && dateStatus === 'past';
+                            break;
+                        case 'upcoming':
+                            shouldShow = shouldShow && (dateStatus === 'upcoming' || dateStatus === 'future');
+                            break;
+                        case 'current':
+                            shouldShow = shouldShow && dateStatus === 'current';
+                            break;
+                    }
+                }
+                
+                // Special handling for break row
+                if (item.week === 'BREAK') {
+                    shouldShow = true; // Always show break
+                }
+                
+                // Apply visibility
+                if (shouldShow) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+        
+        function expandAllRows() {
+            const rows = document.querySelectorAll('#scheduleBody tr');
+            rows.forEach(row => row.classList.remove('hidden'));
+        }
+        
+        function collapseAllRows() {
+            // Collapse based on current filters
+            applyFilters();
+        }
+    </script>
+</body>
+</html>

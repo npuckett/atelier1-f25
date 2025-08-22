@@ -1,0 +1,173 @@
+[
+    {
+        "week": "1",
+        "date": "W - September 3",
+        "classType": "Introduction",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - September 5",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "2",
+        "date": "W - September 10",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - September 12",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "3",
+        "date": "W - September 17",
+        "classType": "Playtesting",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - September 19",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "T - September 23",
+        "classType": "Documentation Due",
+        "description": "",
+        "isDueDate": true
+    },
+    {
+        "week": "4",
+        "date": "W - September 24",
+        "classType": "Introduction & Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - September 26",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "5",
+        "date": "W - October 1",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - October 3",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "6",
+        "date": "W - October 8",
+        "classType": "Playtesting",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - October 10",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "BREAK",
+        "date": "",
+        "classType": "",
+        "description": ""
+    },
+    {
+        "week": "6",
+        "date": "M - October 21",
+        "classType": "Documentation Due",
+        "description": "",
+        "isDueDate": true
+    },
+    {
+        "week": "7",
+        "date": "W - October 22",
+        "classType": "Introduction & Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - October 24",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "8",
+        "date": "W - October 29",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - October 31",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "9",
+        "date": "W - November 5",
+        "classType": "Playtesting",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - November 7",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "10",
+        "date": "W - November 12",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - November 14",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "11",
+        "date": "W - November 19",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - November 21",
+        "classType": "Flexible Work Session",
+        "description": ""
+    },
+    {
+        "week": "12",
+        "date": "W - November 26",
+        "classType": "Playtesting",
+        "description": ""
+    },
+    {
+        "week": "",
+        "date": "F - November 28",
+        "classType": "Dev Day",
+        "description": ""
+    },
+    {
+        "week": "13",
+        "date": "T - December 10",
+        "classType": "Documentation Due",
+        "description": "",
+        "isDueDate": true
+    }
+]

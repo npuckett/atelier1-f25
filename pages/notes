@@ -1,0 +1,14 @@
+prompts
+
+Set up custom instructions
+"Generate a blank copilot-instructions.md file in the standard GitHub Copilot repository custom instructions format for VS Code"
+
+
+https://p5js.org/reference/p5.Image/play/
+https://p5js.org/reference/p5.Image/pause/
+https://p5js.org/reference/p5.Image/numFrames/
+https://p5js.org/reference/p5.Image/getCurrentFrame/
+https://p5js.org/reference/p5.Image/numFrames/
+https://p5js.org/reference/p5.Image/delay/
+https://p5js.org/reference/p5.Image/reset/
+https://p5js.org/reference/p5.Image/setFrame/

@@ -2,6 +2,8 @@
 
 ## Project Overview
 <!-- Describe what this project is about, its purpose, and main goals -->
+-This website is used to organize content for a university studio course teaching both technical and creative approaches to coding and interaction.
+-The goal is to create a system that can be easily updated so that changes can be simply propagated across pages
 
 ## Code Style and Standards
 <!-- Define coding conventions, formatting rules, naming conventions, and style guidelines -->
