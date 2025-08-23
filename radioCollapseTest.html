@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Button Collapse Control - HTML Only</title>
+</head>
+<body style="margin: 0; padding: 20px; font-family: system-ui, sans-serif;">
+    
+    <h1 style="font-size: 18pt; margin-bottom: 20px;">HTML-Only Expand/Collapse Controls</h1>
+    
+    <!-- Method 1: Radio buttons to show only one section at a time -->
+    <h2 style="font-size: 14pt; margin: 20px 0 10px 0;">Method 1: Radio Buttons (Show One Section)</h2>
+    
+    <!-- Radio button controls -->
+    <div style="margin-bottom: 20px; padding: 15px; background: #f0f0f0; border: 1px solid #ccc;">
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="radio" name="section" value="none" checked style="margin-right: 8px;">
+            Close All
+        </label>
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="radio" name="section" value="workshop1" style="margin-right: 8px;">
+            Workshop 1
+        </label>
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="radio" name="section" value="workshop2" style="margin-right: 8px;">
+            Workshop 2
+        </label>
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="radio" name="section" value="workshop3" style="margin-right: 8px;">
+            Workshop 3
+        </label>
+    </div>
+    
+    <!-- Hidden CSS using :checked selector -->
+    <style>
+        .radio-content {
+            display: none;
+            padding: 16px;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        
+        input[value="workshop1"]:checked ~ .workshop1-content,
+        input[value="workshop2"]:checked ~ .workshop2-content,
+        input[value="workshop3"]:checked ~ .workshop3-content {
+            display: block;
+        }
+    </style>
+    
+    <!-- Content sections -->
+    <div class="radio-content workshop1-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop 1 - Real Things, Fake Project</h3>
+        <p style="margin: 0; font-size: 12pt;">This is the content for Workshop 1. Only one section can be open at a time with radio buttons.</p>
+    </div>
+    
+    <div class="radio-content workshop2-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop 2 - Uncommon Everyday</h3>
+        <p style="margin: 0; font-size: 12pt;">This is the content for Workshop 2. Radio buttons ensure mutual exclusivity.</p>
+    </div>
+    
+    <div class="radio-content workshop3-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop 3 - Future Project</h3>
+        <p style="margin: 0; font-size: 12pt;">This is the content for Workshop 3. Clean, simple interface.</p>
+    </div>
+    
+    <hr style="margin: 40px 0; border: 1px solid #ccc;">
+    
+    <!-- Method 2: Checkboxes for independent toggle (multiple can be open) -->
+    <h2 style="font-size: 14pt; margin: 20px 0 10px 0;">Method 2: Checkboxes (Multiple Sections)</h2>
+    
+    <div style="margin-bottom: 20px; padding: 15px; background: #f0f0f0; border: 1px solid #ccc;">
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="checkbox" id="check1" style="margin-right: 8px;">
+            Toggle Workshop A
+        </label>
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="checkbox" id="check2" style="margin-right: 8px;">
+            Toggle Workshop B
+        </label>
+        <label style="margin-right: 20px; cursor: pointer;">
+            <input type="checkbox" id="check3" style="margin-right: 8px;">
+            Toggle Workshop C
+        </label>
+    </div>
+    
+    <style>
+        .check-content {
+            display: none;
+            padding: 16px;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        
+        #check1:checked ~ .check1-content,
+        #check2:checked ~ .check2-content,
+        #check3:checked ~ .check3-content {
+            display: block;
+        }
+    </style>
+    
+    <div class="check-content check1-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop A - Checkbox Control</h3>
+        <p style="margin: 0; font-size: 12pt;">This section can be toggled independently. Multiple checkboxes can be checked simultaneously.</p>
+    </div>
+    
+    <div class="check-content check2-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop B - Independent Toggle</h3>
+        <p style="margin: 0; font-size: 12pt;">Each checkbox controls its own section. More flexible than radio buttons.</p>
+    </div>
+    
+    <div class="check-content check3-content">
+        <h3 style="margin: 0 0 10px 0; font-size: 12pt;">Workshop C - Multiple Open</h3>
+        <p style="margin: 0; font-size: 12pt;">All sections can be open at the same time with checkboxes.</p>
+    </div>
+    
+    <hr style="margin: 40px 0; border: 1px solid #ccc;">
+    
+    <!-- Method 3: Original details/summary (most flexible for nested content) -->
+    <h2 style="font-size: 14pt; margin: 20px 0 10px 0;">Method 3: Details/Summary (Best for Nested)</h2>
+    <p style="font-size: 12pt; margin-bottom: 15px; color: #666;">This is still the best option for complex nested structures like your course schedule.</p>
+    
+    <details style="margin-bottom: 10px; border: 1px solid #ccc; padding: 0; background: #ffffff;">
+        <summary style="padding: 12px 16px; background: #ffffff; color: black; cursor: pointer; list-style: none; font-size: 12pt;">
+            Workshop Example - Original Method
+        </summary>
+        <div style="padding: 16px; background: #f8f8f8;">
+            <p style="margin: 0; font-size: 12pt;">Details/summary remains the most flexible for nested hierarchical content like your course structure.</p>
+        </div>
+    </details>
+    
+</body>
+</html>
