@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js GIF Animation Controls</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        /* Theme Inversion: White background, black text */
+        :root {
+            --bg-primary: #fff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #eee;
+            --bg-quaternary: #ddd;
+            --bg-accent: #ccc;
+            --text-primary: #000;
+            --text-secondary: #333;
+            --text-tertiary: #666;
+            --border-primary: #000;
+            --border-secondary: #333;
+            --border-tertiary: #666;
+            --accent-color: #4a8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #fff;
+            color: #000;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: normal;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        
+        .subtitle {
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        .upload-section {
+            background: #f8f8f8;
+            padding: 30px;
+            border: 1px solid #ddd;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #f0f0f0;
+            color: #000;
+            padding: 12px 30px;
+            border: 2px solid #000;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+        
+        .upload-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        #fileName {
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        .gif-info-tile {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .gif-info-tile h3 {
+            margin-bottom: 15px;
+            font-weight: normal;
+            font-size: 1.2em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .gif-details {
+            display: grid;
+            gap: 8px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .detail-row .label {
+            min-width: 120px;
+            color: #000;
+        }
+
+        .detail-row .command {
+            color: #4a8;
+            font-style: italic;
+            margin-left: auto;
+            font-size: 0.8em;
+            text-decoration: none;
+            border-bottom: 1px dotted #4a8;
+            transition: color 0.2s ease;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .detail-row .command:hover {
+            color: #6ca;
+            border-bottom-color: #6ca;
+        }
+
+        .canvas-container {
+            background: #f5f5f5;
+            border: 2px solid #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .frame-strip {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            /* Touch scrolling optimization */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .frame-strip h4 {
+            margin-bottom: 10px;
+            font-weight: normal;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .frame-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            min-height: 120px;
+            /* Prevent text selection during touch */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .frame-item {
+            flex-shrink: 0;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            background: #f0f0f0;
+            border: 1px solid #000;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        .frame-item:hover {
+            opacity: 0.8;
+        }
+
+        .frame-item.active {
+            background: #e0e0e0;
+            border: 2px solid #000;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        .frame-canvas {
+            background: #f0f0f0;
+            border: 1px solid #000;
+            margin-bottom: 5px;
+        }
+
+        .frame-number {
+            font-size: 0.8em;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .frame-controls {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .play-button {
+            background: #fff;
+            color: #000;
+            border: 1px solid #fff;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+
+        .play-button:hover {
+            background: #ccc;
+        }
+
+        .play-button:disabled {
+            background: #e0e0e0;
+            color: #999;
+            border-color: #999;
+            cursor: not-allowed;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+        }
+
+        .slider-label {
+            color: #000;
+            min-width: 80px;
+            font-weight: bold;
+        }
+
+        .slider {
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
+            height: 4px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            /* Enhanced touch interaction */
+            padding: 15px 0;
+            touch-action: none;
+            border: 1px solid #000;
+            border-radius: 2px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #000;
+            /* Touch feedback */
+            transform: scale(1);
+            transition: transform 0.1s ease;
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+            background: #ccc;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            cursor: pointer;
+            border: 2px solid #000;
+            border-radius: 50%;
+            /* Touch feedback */
+            transform: scale(1);
+            transition: transform 0.1s ease;
+        }
+
+        .slider::-moz-range-thumb:active {
+            transform: scale(1.2);
+            background: #ccc;
+        }
+
+        .slider-value {
+            color: #000;
+            min-width: 40px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #000;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            border-radius: 50%;
+        }
+
+        .radio-group input[type="radio"]:checked {
+            background: #fff;
+        }
+
+        .radio-group input[type="radio"]:checked::before {
+            content: '●';
+            position: absolute;
+            top: -4px;
+            left: 3px;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .radio-group:hover {
+            color: #333;
+        }
+
+        /* Tab System */
+        .tabs {
+            display: flex;
+            background: #f8f8f8;
+            border-bottom: 2px solid #ddd;
+            margin: 20px 0;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background: #eee;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            border-right: 1px solid #ddd;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .tab:hover {
+            background: #ddd;
+            color: #000;
+        }
+
+        .tab.active {
+            background: #fff;
+            color: #000;
+            border-bottom: 2px solid #4a8;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Code Examples Styling */
+        .command-list {
+            display: grid;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .command-item {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .command-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .command-name {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #4a8;
+            font-weight: bold;
+        }
+
+        .command-link {
+            color: #4a8;
+            text-decoration: none;
+            font-size: 0.8em;
+            border: 1px solid #4a8;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .command-link:hover {
+            background: #4a8;
+            color: #000;
+        }
+
+        .command-description {
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+
+        .code-snippet {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #000;
+            overflow-x: auto;
+            border-radius: 2px;
+        }
+
+        .code-comment {
+            color: #888;
+        }
+
+        .code-keyword {
+            color: #d63384;
+        }
+
+        .code-function {
+            color: #0d6efd;
+        }
+
+        .code-string {
+            color: #198754;
+        }
+
+        /* Interaction Examples Styling */
+        .interaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .interaction-item {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .interaction-item h4 {
+            margin-bottom: 10px;
+            color: #000;
+            font-size: 1.1em;
+        }
+
+        .interaction-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .interaction-canvas {
+            width: 100%;
+            height: 200px;
+            background: #fff;
+            border: 2px solid #333;
+            margin: 10px 0;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Enhanced touch handling */
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            /* Prevent any unwanted overlays or focus states */
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-focus-ring-color: transparent;
+            outline-color: transparent;
+            /* Smooth transition for visual feedback */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Visual feedback for interactive state */
+        .interaction-canvas:hover {
+            border-color: #4a8;
+            box-shadow: 0 0 8px rgba(68, 170, 136, 0.3);
+        }
+
+        .interaction-canvas.active-interaction {
+            border-color: #4a8 !important;
+            box-shadow: 0 0 12px rgba(68, 170, 136, 0.5) !important;
+            background: #f8fff8 !important;
+        }
+
+        .interaction-canvas.interaction-feedback {
+            border-color: #6ca !important;
+            animation: interaction-pulse 0.3s ease-out;
+        }
+
+        @keyframes interaction-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 204, 170, 0.7); }
+            50% { box-shadow: 0 0 0 8px rgba(102, 204, 170, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 204, 170, 0); }
+        }
+
+        /* Style the actual p5.js canvas elements */
+        .interaction-canvas canvas {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            max-width: 100%;
+            max-height: 100%;
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            /* Prevent any default styling or focus states */
+            accent-color: transparent !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+        }
+
+        .interaction-canvas:hover {
+            border-color: #4a8;
+            background: #f8f8f8;
+        }
+
+        /* Add visual feedback for touch on mobile */
+        .interaction-canvas:active {
+            border-color: #4a8;
+            background: #f0f8f0;
+            transform: scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        .interaction-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.8em;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .method-used {
+            color: #4a8;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .view-code-btn {
+            background: #4a8;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.75em;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .view-code-btn:hover {
+            background: #6ca;
+            text-decoration: none;
+        }
+
+        /* Mobile responsive for interaction grid */
+        @media (max-width: 768px) {
+            .interaction-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .interaction-canvas {
+                height: 180px;
+                /* Larger touch target on mobile */
+                min-height: 180px;
+                /* Better visual feedback */
+                border-width: 3px;
+            }
+            
+            .interaction-canvas:active {
+                border-color: #4a8;
+                background: #e8f5e8;
+                transform: scale(0.97);
+            }
+            
+            /* Increase text size for mobile */
+            .interaction-description {
+                font-size: 1em;
+            }
+            
+            /* Make buttons more touch-friendly */
+            .view-code-btn {
+                padding: 8px 12px;
+                font-size: 0.8em;
+                min-height: 36px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .note {
+            background: #1a1a1a;
+            border-left: 3px solid #fff;
+            padding: 15px;
+            margin: 30px 0;
+            font-size: 0.9em;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .canvas-container {
+                min-height: 250px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .control-row {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .slider-group {
+                min-width: 200px;
+            }
+            
+            .play-button {
+                min-height: 44px; /* iOS recommended touch target */
+                font-size: 16px;
+            }
+            
+            .radio-group {
+                min-height: 44px;
+                padding: 8px;
+            }
+            
+            .radio-group input[type="radio"] {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .frame-item {
+                min-height: 44px;
+                min-width: 44px;
+                font-size: 11px;
+            }
+            
+            .slider {
+                min-height: 44px;
+            }
+            
+            .upload-btn {
+                min-height: 44px;
+                font-size: 16px;
+            }
+            
+            /* Prevent zoom on input focus */
+            input, select, textarea {
+                font-size: 16px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .frame-item:hover {
+                /* Disable hover effects on touch devices */
+                background: #333 !important;
+                border-color: #555 !important;
+            }
+            
+            .frame-item:active {
+                background: #666 !important;
+                border-color: #fff !important;
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>p5.js Animated GIF Control Methods</h1>
+        <p class="subtitle">Interactive examples demonstrating p5.js GIF animation capabilities</p>
+        
+        <!-- Mobile usage hint -->
+        <div id="mobileHint" style="background: #e8f5e8; padding: 15px; margin: 10px 0; border: 1px solid #4a8; font-size: 14px; display: none; color: #000;">
+            📱 <strong>Mobile Tips:</strong> Tap frame numbers to jump between frames. Scroll horizontally in the frame strip to see all frames. All controls are optimized for touch.
+        </div>
+
+        <div class="upload-section">
+            <label for="fileInput" class="upload-btn">Choose GIF File</label>
+            <input type="file" id="fileInput" accept="image/gif">
+            <div id="fileName">No file selected</div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('gif-info')">GIF Info</button>
+            <button class="tab" onclick="showTab('code-examples')">Code & Examples</button>
+            <button class="tab" onclick="showTab('interaction-examples')">Interaction Examples</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="gif-info" class="tab-content active">
+        
+        <!-- GIF Information Tile -->
+        <div class="gif-info-tile">
+            <h3>Current GIF Information</h3>
+            <div class="gif-details">
+                <div class="detail-row">
+                    <span class="label">Source:</span>
+                    <span id="gifSource">Loading...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Resolution:</span>
+                    <span id="gifResolution">Loading...</span>
+                    <span class="command">// img.width × img.height</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Count:</span>
+                    <span id="gifFrameCount">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/numFrames/" target="_blank" class="command">// img.numFrames()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Current Frame:</span>
+                    <span id="gifCurrentFrame">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/getCurrentFrame/" target="_blank" class="command">// img.getCurrentFrame()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Frame Delay:</span>
+                    <span id="gifFrameDelay">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/delay/" target="_blank" class="command">// img.delay()</a>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Playing:</span>
+                    <span id="gifPlaying">Loading...</span>
+                    <a href="https://p5js.org/reference/p5.Image/play/" target="_blank" class="command">// img.play()</a> / <a href="https://p5js.org/reference/p5.Image/pause/" target="_blank" class="command">img.pause()</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Canvas Container -->
+        <div class="canvas-container" id="mainCanvas">
+            <!-- p5.js canvas will be inserted here -->
+        </div>
+
+        <!-- Frame Strip -->
+        <div class="frame-strip" id="frameStrip" style="display: none;">
+            <h4>Individual Frames</h4>
+            <div class="frame-container" id="frameContainer">
+                <!-- Frame thumbnails will be inserted here -->
+            </div>
+            
+            <!-- Frame Controls -->
+            <div class="frame-controls">
+                <div class="control-row">
+                    <button class="play-button" id="playButton" onclick="togglePlayback()">Play</button>
+                    <div class="radio-group">
+                        <input type="radio" id="forwardRadio" name="playMode" value="forward" checked>
+                        <label for="forwardRadio">FORWARD</label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" id="reverseRadio" name="playMode" value="reverse">
+                        <label for="reverseRadio">REVERSE</label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" id="oscillateRadio" name="playMode" value="oscillate">
+                        <label for="oscillateRadio">OSCILLATE</label>
+                    </div>
+                    <div class="slider-group">
+                        <span class="slider-label">Speed:</span>
+                        <input type="range" class="slider" id="speedSlider" min="10" max="500" value="100" 
+                               oninput="updateSpeed(this.value)">
+                        <span class="slider-value" id="speedValue">100ms</span>
+                    </div>
+                </div>
+                
+                <div class="control-row">
+                    <div class="slider-group">
+                        <span class="slider-label">Start Frame:</span>
+                        <input type="range" class="slider" id="startFrameSlider" min="1" max="1" value="1"
+                               oninput="updateFrameRange()">
+                        <span class="slider-value" id="startFrameValue">1</span>
+                    </div>
+                    <div class="slider-group">
+                        <span class="slider-label">End Frame:</span>
+                        <input type="range" class="slider" id="endFrameSlider" min="1" max="1" value="1"
+                               oninput="updateFrameRange()">
+                        <span class="slider-value" id="endFrameValue">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of GIF Info Tab -->
+
+    <!-- Code & Examples Tab -->
+    <div id="code-examples" class="tab-content">
+        <h3>p5.js GIF Animation Methods</h3>
+        <p class="subtitle">Complete reference with code examples for controlling animated GIFs</p>
+        
+        <div class="command-list">
+            
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">numFrames()</span>
+                    <a href="https://p5js.org/reference/p5.Image/numFrames/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Returns the total number of frames in the animated GIF. Useful for setting up loops and frame ranges.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">let</span> gif;<br>
+<br>
+<span class="code-keyword">function</span> <span class="code-function">preload</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;gif = <span class="code-function">loadImage</span>(<span class="code-string">'images/default.gif'</span>);<br>
+<span class="code-keyword">}</span><br>
+<br>
+<span class="code-keyword">function</span> <span class="code-function">setup</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-comment">// Get total number of frames</span><br>
+&nbsp;&nbsp;<span class="code-keyword">let</span> totalFrames = gif.<span class="code-function">numFrames</span>();<br>
+&nbsp;&nbsp;<span class="code-function">console.log</span>(<span class="code-string">'This GIF has '</span> + totalFrames + <span class="code-string">' frames'</span>);<br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">getCurrentFrame()</span>
+                    <a href="https://p5js.org/reference/p5.Image/getCurrentFrame/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Returns the index of the currently displayed frame (0-based). Essential for tracking animation progress.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">draw</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-function">image</span>(gif, 0, 0);<br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;<span class="code-comment">// Check which frame is currently showing</span><br>
+&nbsp;&nbsp;<span class="code-keyword">let</span> currentFrame = gif.<span class="code-function">getCurrentFrame</span>();<br>
+&nbsp;&nbsp;<span class="code-function">text</span>(<span class="code-string">'Frame: '</span> + (currentFrame + 1), 10, 20);<br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">setFrame()</span>
+                    <a href="https://p5js.org/reference/p5.Image/setFrame/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Jump to a specific frame by index (0-based). Perfect for creating frame scrubbing or navigation controls.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">keyPressed</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-keyword">if</span> (key === <span class="code-string">'ArrowRight'</span>)<br>
+&nbsp;&nbsp;<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Go to next frame</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">let</span> current = gif.<span class="code-function">getCurrentFrame</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">let</span> next = (current + 1) % gif.<span class="code-function">numFrames</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;gif.<span class="code-function">setFrame</span>(next);<br>
+&nbsp;&nbsp;<span class="code-keyword">}</span><br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">play()</span>
+                    <a href="https://p5js.org/reference/p5.Image/play/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Starts or resumes GIF animation playback. The animation will continue from the current frame.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">mousePressed</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-comment">// Start playing the GIF animation</span><br>
+&nbsp;&nbsp;gif.<span class="code-function">play</span>();<br>
+&nbsp;&nbsp;<span class="code-function">console.log</span>(<span class="code-string">'Animation started'</span>);<br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">pause()</span>
+                    <a href="https://p5js.org/reference/p5.Image/pause/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Pauses GIF animation playback. The current frame remains displayed until play() is called again.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">keyPressed</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-keyword">if</span> (key === <span class="code-string">' '</span>) <span class="code-comment">// Spacebar</span><br>
+&nbsp;&nbsp;<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Pause the animation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;gif.<span class="code-function">pause</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">console.log</span>(<span class="code-string">'Animation paused'</span>);<br>
+&nbsp;&nbsp;<span class="code-keyword">}</span><br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">delay()</span>
+                    <a href="https://p5js.org/reference/p5.Image/delay/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Sets the delay between frames in milliseconds. Lower values = faster playback, higher values = slower.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">setup</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-comment">// Set animation speed to 200ms per frame</span><br>
+&nbsp;&nbsp;gif.<span class="code-function">delay</span>(200);<br>
+&nbsp;&nbsp;<br>
+&nbsp;&nbsp;<span class="code-comment">// Make it play very fast (50ms per frame)</span><br>
+&nbsp;&nbsp;<span class="code-comment">// gif.delay(50);</span><br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+            <div class="command-item">
+                <div class="command-header">
+                    <span class="command-name">reset()</span>
+                    <a href="https://p5js.org/reference/p5.Image/reset/" target="_blank" class="command-link">Documentation</a>
+                </div>
+                <div class="command-description">
+                    Resets the GIF to the first frame and stops playback. Useful for restarting animations from the beginning.
+                </div>
+                <div class="code-snippet">
+<span class="code-keyword">function</span> <span class="code-function">doubleClicked</span>()<br>
+<span class="code-keyword">{</span><br>
+&nbsp;&nbsp;<span class="code-comment">// Reset to first frame and stop</span><br>
+&nbsp;&nbsp;gif.<span class="code-function">reset</span>();<br>
+&nbsp;&nbsp;<span class="code-function">console.log</span>(<span class="code-string">'GIF reset to first frame'</span>);<br>
+<span class="code-keyword">}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End of Code & Examples Tab -->
+
+    <!-- Interaction Examples Tab -->
+    <div id="interaction-examples" class="tab-content">
+        <h3>Interactive GIF Examples</h3>
+        <p class="subtitle">Click and touch interactions demonstrating p5.js GIF control methods</p>
+        
+        <div class="interaction-grid">
+            
+            <!-- Example 1: Click to Play/Pause -->
+            <div class="interaction-item">
+                <h4>Play / Pause Control</h4>
+                <p class="interaction-description">Click the canvas to toggle between play and pause</p>
+                <div class="interaction-canvas" id="canvas1"></div>
+                <div class="interaction-info">
+                    <span>Status: <span id="status1">Playing</span></span>
+                    <span class="method-used">Uses: gif.play() / gif.pause()</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('playPause')">View Code</a>
+                </div>
+            </div>
+
+            <!-- Example 2: Click to go to next frame -->
+            <div class="interaction-item">
+                <h4>Frame Navigation</h4>
+                <p class="interaction-description">Click to advance to the next frame</p>
+                <div class="interaction-canvas" id="canvas2"></div>
+                <div class="interaction-info">
+                    <span>Frame: <span id="frame2">1</span></span>
+                    <span class="method-used">Uses: gif.setFrame() / gif.getCurrentFrame()</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('frameNavigation')">View Code</a>
+                </div>
+            </div>
+            <!-- Example 3: Click to change speed -->
+            <div class="interaction-item">
+                <h4>Speed Control</h4>
+                <p class="interaction-description">Click to cycle through different speeds</p>
+                <div class="interaction-canvas" id="canvas3"></div>
+                <div class="interaction-info">
+                    <span>Speed: <span id="speed3">Normal</span></span>
+                    <span class="method-used">Uses: gif.delay()</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('speedControl')">View Code</a>
+                </div>
+            </div>
+
+            <!-- Example 4: Click regions for frame jumping -->
+            <div class="interaction-item">
+                <h4>Frame Scrubbing</h4>
+                <p class="interaction-description">Click left/right halves to jump backward/forward</p>
+                <div class="interaction-canvas" id="canvas4"></div>
+                <div class="interaction-info">
+                    <span>Frame: <span id="frame4">1</span> / <span id="total4">1</span></span>
+                    <span class="method-used">Uses: gif.setFrame() / gif.numFrames()</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('frameScrubbing')">View Code</a>
+                </div>
+            </div>
+
+            <!-- Example 5: Double click to reset -->
+            <div class="interaction-item">
+                <h4>Reset Animation</h4>
+                <p class="interaction-description">Double-click to reset to first frame</p>
+                <div class="interaction-canvas" id="canvas5"></div>
+                <div class="interaction-info">
+                    <span>Frame: <span id="frame5">1</span></span>
+                    <span class="method-used">Uses: gif.reset()</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('resetAnimation')">View Code</a>
+                </div>
+            </div>
+
+            <!-- Example 6: Touch zones for different actions -->
+            <div class="interaction-item">
+                <h4>Multi-Zone Control</h4>
+                <p class="interaction-description">Top: play/pause, Middle: speed, Bottom: reset</p>
+                <div class="interaction-canvas" id="canvas6"></div>
+                <div class="interaction-info">
+                    <span>Action: <span id="action6">Ready</span></span>
+                    <span class="method-used">Uses: Multiple methods</span>
+                    <a href="#" class="view-code-btn" onclick="showCodeExample('multiZone')">View Code</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End of Interaction Examples Tab -->
+    
+    <script>
+        // Update debug status on page
+        function updateDebugStatus(message) {
+            const debugElement = document.getElementById('debugStatus');
+            if (debugElement) {
+                debugElement.textContent = message;
+            }
+        }
+        
+        function updateP5Status(message) {
+            const p5Element = document.getElementById('p5Status');
+            if (p5Element) {
+                p5Element.textContent = message;
+            }
+        }
+        
+        function updateCanvasStatus(message) {
+            const canvasElement = document.getElementById('canvasStatus');
+            if (canvasElement) {
+                canvasElement.textContent = message;
+            }
+        }
+        
+        function updateGifStatus(message) {
+            const gifElement = document.getElementById('gifStatus');
+            if (gifElement) {
+                gifElement.textContent = message;
+            }
+        }
+        
+        console.log('=== SCRIPT STARTING ===');
+        updateDebugStatus('Script loaded');
+        
+        console.log('p5 available:', typeof p5);
+        updateP5Status(typeof p5 !== 'undefined' ? 'Loaded' : 'NOT LOADED');
+        
+        // Global variables
+        let currentGif = null;
+        let p5Instance = null;
+        let uploadedGifData = null;
+        let currentFrameIndex = 0;
+        let isPlaying = true;
+        let customSpeed = 100;
+        let startFrame = 0;
+        let endFrame = 0;
+        let totalFrames = 0;
+        let lastFrameTime = 0;
+        let playMode = 'forward'; // 'forward', 'reverse', 'oscillate'
+        let oscillateDirection = 1; // 1 for forward, -1 for reverse in oscillate mode
+
+        /* 
+        ================================================================================
+        COMPREHENSIVE MULTIPLE CANVAS MANAGEMENT STRATEGY - ROBUST ARCHITECTURE
+        ================================================================================
+        
+        This educational tool demonstrates best practices for managing multiple p5.js
+        canvases with truly independent GIF instances. Each canvas operates completely
+        independently with zero interference between examples.
+        
+        KEY PRINCIPLES:
+        
+        1. TRUE INSTANCE ISOLATION
+           - Each canvas gets its own p5.js instance stored in interactiveP5Instances{}
+           - Each example loads its own independent GIF instance using p5.preload()
+           - Zero shared state between examples - complete isolation
+           - Each instance has its own setup(), draw(), and event handlers
+        
+        2. INDEPENDENT RESOURCE MANAGEMENT
+           - Each example loads the same GIF data but as separate instances
+           - Uses Blob URLs for uploaded files to enable multiple independent loads
+           - Falls back to direct file paths for default GIF
+           - Each GIF instance can be controlled independently (play/pause/frame control)
+        
+        3. ROBUST DATA HANDLING
+           - Uploaded GIF data stored as ArrayBuffer in uploadedGifData
+           - Each example creates its own Blob URL from the same data
+           - Automatic cleanup of Blob URLs prevents memory leaks
+           - Graceful fallback to default GIF if upload data unavailable
+        
+        4. CONSISTENT INTERACTION PATTERNS
+           - All examples use the same debouncing mechanism (300ms delay)
+           - Standardized touch/mouse event handling for cross-platform compatibility
+           - Separate event handlers for desktop (mousePressed) and mobile (touchStarted)
+           - Visual feedback system with green pulse animations
+        
+        5. CANVAS STYLING STANDARDIZATION
+           - Each canvas gets identical styling to prevent browser default interference
+           - Explicit removal of borders, outlines, shadows, and backgrounds
+           - Touch-action prevention for mobile optimization
+           - Hover effects and interaction feedback
+        
+        6. MEMORY AND PERFORMANCE OPTIMIZATION
+           - Proper cleanup of p5 instances when switching tabs or reloading
+           - Independent GIF instances cleanup in cleanupInteractiveExamples()
+           - Efficient loading using p5.preload() for proper initialization order
+           - Minimal redraw operations - only when necessary
+        
+        7. ERROR HANDLING AND RESILIENCE
+           - Check for existing instances before creating new ones
+           - Graceful degradation if GIF methods aren't available
+           - Proper event return values to prevent conflicts
+           - Console logging for debugging and monitoring
+        
+        8. SCALABLE ARCHITECTURE
+           - Easy to add new examples by following the established pattern
+           - Modular function design allows for easy maintenance
+           - Clear naming conventions (example1, canvas1, sketch1, etc.)
+           - No interference between examples regardless of number added
+        
+        IMPLEMENTATION PATTERN FOR NEW CANVASES:
+        
+        function createInteractiveExampleN() {
+            if (interactiveP5Instances['exampleN']) return;
+            
+            const sketchN = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let localGif = null;
+                // ... other local variables
+                
+                p.preload = () => {
+                    // Load independent GIF instance
+                    if (uploadedGifData) {
+                        const blob = new Blob([uploadedGifData], { type: 'image/gif' });
+                        const url = URL.createObjectURL(blob);
+                        localGif = p.loadImage(url);
+                    } else {
+                        localGif = p.loadImage('images/default.gif');
+                    }
+                };
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvasN');
+                    
+                    // Standard canvas styling
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Configure local GIF for this example's needs
+                    if (localGif) {
+                        // Example-specific initialization
+                    }
+                };
+                
+                p.draw = () => {
+                    // Render using localGif only
+                };
+                
+                function handleInteraction() {
+                    let currentTime = p.millis();
+                    if (currentTime - lastInteractionTime < interactionDelay) return;
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvasN');
+                    // Interaction logic using localGif
+                }
+                
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && 
+                        p.mouseY >= 0 && p.mouseY <= p.height) {
+                        handleInteraction();
+                        return false;
+                    }
+                };
+                
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && 
+                        p.touchY >= 0 && p.touchY <= p.height) {
+                        handleInteraction();
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['exampleN'] = new p5(sketchN);
+        }
+        
+        BENEFITS OF THIS ARCHITECTURE:
+        - Zero interference between examples
+        - Unlimited scalability for additional examples
+        - Robust handling of both uploaded and default GIFs
+        - Professional-grade memory management
+        - Cross-platform compatibility
+        - Educational clarity with independent, isolated examples
+        
+        ================================================================================
+        */
+        
+        // Interactive examples management
+        let interactiveP5Instances = {};
+        let independentGifInstances = {}; // Store separate GIF instances for each example
+        
+        // Create independent GIF instance for an example
+        function createIndependentGifInstance(exampleId, callback) {
+            console.log('Creating independent GIF instance for:', exampleId);
+            
+            // Create a new p5 instance just for loading the GIF
+            const loaderSketch = (p) => {
+                let gifInstance = null;
+                
+                p.preload = () => {
+                    if (uploadedGifData) {
+                        // Create a blob URL from the uploaded data
+                        const blob = new Blob([uploadedGifData], { type: 'image/gif' });
+                        const url = URL.createObjectURL(blob);
+                        gifInstance = p.loadImage(url);
+                    } else {
+                        // Load default GIF
+                        gifInstance = p.loadImage('images/default.gif');
+                    }
+                };
+                
+                p.setup = () => {
+                    // Don't create a canvas, we just want the GIF
+                    p.noCanvas();
+                    
+                    if (gifInstance) {
+                        // Store this instance
+                        independentGifInstances[exampleId] = gifInstance;
+                        console.log('Independent GIF instance created for:', exampleId);
+                        
+                        // Clean up the loader
+                        setTimeout(() => {
+                            p.remove();
+                        }, 100);
+                        
+                        // Call the callback with the new instance
+                        if (callback) callback(gifInstance);
+                    }
+                };
+            };
+            
+            // Create temporary p5 instance for loading
+            new p5(loaderSketch);
+        }
+        
+        // Alternative approach: Clone GIF data for independent instances
+        function cloneGifForExample(exampleId) {
+            if (!currentGif) return null;
+            
+            console.log('Attempting to clone GIF for:', exampleId);
+            
+            // Try to get the source data
+            let gifSource = null;
+            
+            if (uploadedGifData) {
+                gifSource = uploadedGifData;
+            } else {
+                gifSource = 'images/default.gif';
+            }
+            
+            return gifSource;
+        }
+        
+        // Create frame strip thumbnails
+        function createFrameStrip(gif) {
+            console.log('Creating frame strip...');
+            
+            const frameContainer = document.getElementById('frameContainer');
+            frameContainer.innerHTML = '';
+            
+            if (!gif || typeof gif.numFrames !== 'function') {
+                console.log('GIF has no frames or is not animated');
+                document.getElementById('frameStrip').style.display = 'none';
+                return;
+            }
+            
+            const numFrames = gif.numFrames();
+            console.log('Creating', numFrames, 'frame indicators');
+            
+            if (numFrames <= 1) {
+                document.getElementById('frameStrip').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('frameStrip').style.display = 'block';
+            
+            // Set up slider ranges
+            totalFrames = numFrames;
+            startFrame = 0;
+            endFrame = numFrames - 1;
+            
+            document.getElementById('startFrameSlider').max = numFrames;
+            document.getElementById('endFrameSlider').max = numFrames;
+            document.getElementById('startFrameSlider').value = 1;
+            document.getElementById('endFrameSlider').value = numFrames;
+            document.getElementById('startFrameValue').textContent = '1';
+            document.getElementById('endFrameValue').textContent = numFrames;
+            
+            // Create frame indicator for each frame
+            for (let i = 0; i < numFrames; i++) {
+                createFrameIndicator(i, frameContainer);
+            }
+        }
+        
+        // Create individual frame indicator (simplified)
+        function createFrameIndicator(frameIndex, container) {
+            const frameItem = document.createElement('div');
+            frameItem.className = 'frame-item';
+            frameItem.id = `frame-item-${frameIndex}`;
+            frameItem.style.cssText = `
+                width: 80px;
+                height: 60px;
+                background: #333;
+                border: 2px solid #555;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 5px;
+                cursor: pointer;
+                transition: all 0.3s;
+            `;
+            
+            // Frame number display
+            const frameNumber = document.createElement('div');
+            frameNumber.className = 'frame-number';
+            frameNumber.textContent = `${frameIndex + 1}`;
+            frameNumber.style.cssText = `
+                color: #fff;
+                font-size: 14px;
+                font-weight: bold;
+            `;
+            frameItem.appendChild(frameNumber);
+            
+            // Click handler to jump to frame
+            frameItem.addEventListener('click', function() {
+                if (currentGif && typeof currentGif.setFrame === 'function') {
+                    currentGif.setFrame(frameIndex);
+                    currentGif.pause(); // Pause on the selected frame
+                    isPlaying = false;
+                    updatePlayButton();
+                    currentFrameIndex = frameIndex;
+                    updateFrameHighlight();
+                    updateGifInfo(currentGif, document.getElementById('gifSource').textContent);
+                }
+            });
+            
+            // Touch events for mobile devices
+            frameItem.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Prevent mouse events from firing
+                this.style.borderColor = '#fff';
+                this.style.background = '#666';
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            frameItem.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                // Reset visual state
+                if (!this.classList.contains('active')) {
+                    this.style.borderColor = '#555';
+                    this.style.background = '#333';
+                }
+                this.style.transform = 'scale(1)';
+                
+                // Trigger frame change
+                if (currentGif && typeof currentGif.setFrame === 'function') {
+                    currentGif.setFrame(frameIndex);
+                    currentGif.pause(); // Pause on the selected frame
+                    isPlaying = false;
+                    updatePlayButton();
+                    currentFrameIndex = frameIndex;
+                    updateFrameHighlight();
+                    updateGifInfo(currentGif, document.getElementById('gifSource').textContent);
+                }
+            });
+            
+            frameItem.addEventListener('touchcancel', function(e) {
+                e.preventDefault();
+                // Reset visual state
+                if (!this.classList.contains('active')) {
+                    this.style.borderColor = '#555';
+                    this.style.background = '#333';
+                }
+                this.style.transform = 'scale(1)';
+            });
+            
+            // Mouse hover effects (desktop only)
+            frameItem.addEventListener('mouseenter', function() {
+                if (!('ontouchstart' in window)) { // Only on non-touch devices
+                    this.style.borderColor = '#fff';
+                    this.style.background = '#444';
+                }
+            });
+            
+            frameItem.addEventListener('mouseleave', function() {
+                if (!('ontouchstart' in window)) { // Only on non-touch devices
+                    if (!this.classList.contains('active')) {
+                        this.style.borderColor = '#555';
+                        this.style.background = '#333';
+                    }
+                }
+            });
+            
+            container.appendChild(frameItem);
+        }
+        
+        // Update which frame is highlighted
+        function updateFrameHighlight() {
+            // Remove active class from all frames
+            document.querySelectorAll('.frame-item').forEach(item => {
+                item.classList.remove('active');
+                item.style.borderColor = '#555';
+                item.style.background = '#333';
+            });
+            
+            // Add active class to current frame
+            const activeFrame = document.getElementById(`frame-item-${currentFrameIndex}`);
+            if (activeFrame) {
+                activeFrame.classList.add('active');
+                activeFrame.style.borderColor = '#fff';
+                activeFrame.style.background = '#666';
+            }
+        }
+        function updateGifInfo(gif, source) {
+            console.log('Updating GIF info:', { gif, source });
+            
+            if (gif) {
+                document.getElementById('gifSource').textContent = source || 'Unknown';
+                document.getElementById('gifResolution').textContent = `${gif.width} × ${gif.height}`;
+                
+                if (typeof gif.numFrames === 'function') {
+                    document.getElementById('gifFrameCount').textContent = gif.numFrames();
+                } else {
+                    document.getElementById('gifFrameCount').textContent = '1 (static image)';
+                }
+                
+                if (typeof gif.getCurrentFrame === 'function') {
+                    currentFrameIndex = gif.getCurrentFrame();
+                    document.getElementById('gifCurrentFrame').textContent = currentFrameIndex + 1;
+                    updateFrameHighlight();
+                } else {
+                    document.getElementById('gifCurrentFrame').textContent = '1';
+                }
+                
+                document.getElementById('gifFrameDelay').textContent = 'Auto';
+                document.getElementById('gifPlaying').textContent = 'Yes';
+            } else {
+                document.getElementById('gifSource').textContent = 'Failed to load';
+                document.getElementById('gifResolution').textContent = 'N/A';
+                document.getElementById('gifFrameCount').textContent = 'N/A';
+                document.getElementById('gifCurrentFrame').textContent = 'N/A';
+                document.getElementById('gifFrameDelay').textContent = 'N/A';
+                document.getElementById('gifPlaying').textContent = 'N/A';
+            }
+        }
+        
+        // File upload handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            console.log('File input changed');
+            const file = e.target.files[0];
+            
+            if (file && file.type === 'image/gif') {
+                console.log('Valid GIF selected:', file.name);
+                document.getElementById('fileName').textContent = `Selected: ${file.name}`;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    console.log('File read complete, loading new GIF...');
+                    uploadedGifData = event.target.result;
+                    loadNewGif(uploadedGifData, `Uploaded: ${file.name}`);
+                };
+                reader.onerror = function(error) {
+                    console.error('File read error:', error);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                console.log('Invalid file or no file selected');
+                if (file) {
+                    alert('Please select a valid GIF file');
+                }
+            }
+        });
+        
+        // Load a new GIF (either default or uploaded)
+        function loadNewGif(gifPath, source) {
+            console.log('Loading GIF:', gifPath, source);
+            updateGifStatus(`Loading: ${source}`);
+            
+            if (!p5Instance) {
+                console.error('ERROR: p5Instance not available');
+                updateGifStatus('ERROR: No p5 instance');
+                return;
+            }
+            
+            console.log('p5Instance available, loading image...');
+            currentGif = p5Instance.loadImage(gifPath, 
+                function() {
+                    console.log('SUCCESS: GIF loaded successfully');
+                    console.log('GIF dimensions:', currentGif.width, 'x', currentGif.height);
+                    updateGifStatus(`Loaded: ${source}`);
+                    updateGifInfo(currentGif, source);
+                    createFrameStrip(currentGif);
+                },
+                function(err) {
+                    console.error('ERROR: Failed to load GIF:', err);
+                    updateGifStatus(`FAILED: ${source}`);
+                    updateGifInfo(null, 'Failed to load');
+                }
+            );
+        }
+        
+        // Initialize p5.js
+        function initializeP5() {
+            console.log('Initializing p5.js...');
+            updateDebugStatus('Initializing p5...');
+            
+            if (typeof p5 === 'undefined') {
+                updateP5Status('ERROR: p5.js not loaded');
+                updateDebugStatus('ERROR: p5.js not available');
+                return;
+            }
+            
+            p5Instance = new p5(function(p) {
+                p.setup = function() {
+                    console.log('p5 setup called');
+                    updateCanvasStatus('Creating canvas...');
+                    
+                    let canvas = p.createCanvas(600, 400);
+                    canvas.parent('mainCanvas');
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    updateCanvasStatus('Canvas created');
+                    
+                    // Load default GIF with a small delay to ensure setup is complete
+                    console.log('Scheduling default GIF load...');
+                    updateGifStatus('Preparing to load default.gif...');
+                    setTimeout(function() {
+                        console.log('Loading default GIF...');
+                        updateGifStatus('Loading default.gif...');
+                        loadNewGif('images/default.gif', 'Default (images/default.gif)');
+                    }, 100);
+                };
+                
+                p.draw = function() {
+                    p.background(20);
+                    
+                    if (currentGif && currentGif.width > 0) {
+                        // Calculate size to fit in canvas while maintaining aspect ratio
+                        let imgWidth = currentGif.width;
+                        let imgHeight = currentGif.height;
+                        let maxWidth = p.width * 0.9;
+                        let maxHeight = p.height * 0.9;
+                        
+                        let scale = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
+                        let displayWidth = imgWidth * scale;
+                        let displayHeight = imgHeight * scale;
+                        
+                        p.imageMode(p.CENTER);
+                        p.image(currentGif, p.width/2, p.height/2, displayWidth, displayHeight);
+                        
+                        updateGifStatus('GIF displaying');
+                        
+                        // Check for frame changes and handle custom timing
+                        if (typeof currentGif.getCurrentFrame === 'function') {
+                            let currentTime = p.millis();
+                            
+                            // Custom frame advancement with speed control
+                            if (isPlaying && currentTime - lastFrameTime >= customSpeed) {
+                                let nextFrame = currentFrameIndex;
+                                
+                                if (playMode === 'forward') {
+                                    nextFrame = currentFrameIndex + 1;
+                                    if (nextFrame > endFrame) {
+                                        nextFrame = startFrame; // Loop back to start
+                                    }
+                                } else if (playMode === 'reverse') {
+                                    nextFrame = currentFrameIndex - 1;
+                                    if (nextFrame < startFrame) {
+                                        nextFrame = endFrame; // Loop back to end
+                                    }
+                                } else if (playMode === 'oscillate') {
+                                    nextFrame = currentFrameIndex + oscillateDirection;
+                                    
+                                    // Check if we hit a boundary
+                                    if (nextFrame > endFrame) {
+                                        oscillateDirection = -1; // Switch to reverse
+                                        nextFrame = endFrame - 1;
+                                    } else if (nextFrame < startFrame) {
+                                        oscillateDirection = 1; // Switch to forward
+                                        nextFrame = startFrame + 1;
+                                    }
+                                }
+                                
+                                currentGif.setFrame(nextFrame);
+                                currentFrameIndex = nextFrame;
+                                lastFrameTime = currentTime;
+                            }
+                            
+                            // Update display
+                            let displayFrameIndex = currentGif.getCurrentFrame();
+                            if (displayFrameIndex !== currentFrameIndex) {
+                                currentFrameIndex = displayFrameIndex;
+                            }
+                            
+                            document.getElementById('gifCurrentFrame').textContent = currentFrameIndex + 1;
+                            updateFrameHighlight();
+                        }
+                    } else {
+                        // Loading state
+                        p.fill(255);
+                        p.textAlign(p.CENTER, p.CENTER);
+                        p.textSize(16);
+                        p.text('Loading GIF...', p.width/2, p.height/2);
+                    }
+                };
+            });
+            
+            updateDebugStatus('p5 instance created');
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            updateDebugStatus('DOM loaded');
+            
+            // Detect mobile device and show hint
+            const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (isMobile) {
+                document.getElementById('mobileHint').style.display = 'block';
+                console.log('Mobile device detected');
+            }
+            
+            // Small delay to ensure everything is ready
+            setTimeout(function() {
+                initializeP5();
+            }, 100);
+        });
+        
+        // Playback control functions
+        function togglePlayback() {
+            if (!currentGif) return;
+            
+            if (isPlaying) {
+                currentGif.pause();
+                isPlaying = false;
+            } else {
+                currentGif.play();
+                isPlaying = true;
+            }
+            updatePlayButton();
+            updateInteractiveStatus();
+        }
+        
+        function updatePlayButton() {
+            const button = document.getElementById('playButton');
+            if (button) {
+                button.textContent = isPlaying ? 'Pause' : 'Play';
+            }
+        }
+        
+        function updateSpeed(value) {
+            customSpeed = parseInt(value);
+            document.getElementById('speedValue').textContent = customSpeed + 'ms';
+            
+            if (currentGif && typeof currentGif.delay === 'function') {
+                currentGif.delay(customSpeed);
+            }
+        }
+        
+        function updateFrameRange() {
+            const startSlider = document.getElementById('startFrameSlider');
+            const endSlider = document.getElementById('endFrameSlider');
+            
+            let newStart = parseInt(startSlider.value) - 1; // Convert to 0-based
+            let newEnd = parseInt(endSlider.value) - 1;     // Convert to 0-based
+            
+            // Ensure start is not greater than end
+            if (newStart > newEnd) {
+                if (startSlider === document.activeElement) {
+                    // Start slider was moved, adjust end
+                    newEnd = newStart;
+                    endSlider.value = newStart + 1;
+                } else {
+                    // End slider was moved, adjust start  
+                    newStart = newEnd;
+                    startSlider.value = newEnd + 1;
+                }
+            }
+            
+            startFrame = newStart;
+            endFrame = newEnd;
+            
+            document.getElementById('startFrameValue').textContent = (startFrame + 1);
+            document.getElementById('endFrameValue').textContent = (endFrame + 1);
+            
+            // Update frame strip visual indicators
+            updateFrameRangeVisual();
+        }
+        
+        function updateFrameRangeVisual() {
+            // Update visual indicators in frame strip
+            document.querySelectorAll('.frame-item').forEach((item, index) => {
+                if (index < startFrame || index > endFrame) {
+                    item.style.opacity = '0.3';
+                } else {
+                    item.style.opacity = '1';
+                }
+            });
+        }
+
+        // Radio button event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Play mode radio buttons
+            document.querySelectorAll('input[name="playMode"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        playMode = this.value;
+                        console.log('Play mode changed to:', playMode);
+                        
+                        // Reset oscillate direction when switching modes
+                        if (playMode === 'oscillate') {
+                            oscillateDirection = 1; // Start going forward
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Code examples for p5 web editor
+        function showCodeExample(exampleType) {
+            const codeFiles = {
+                playPause: 'playPause.js',
+                frameNavigation: 'frameNavigation.js',
+                speedControl: 'speedControl.js',
+                frameScrubbing: 'frameScrubbing.js',
+                resetAnimation: 'resetAnimation.js',
+                multiZone: 'multiZone.js'
+            };
+            
+            const fileName = codeFiles[exampleType];
+            if (fileName) {
+                // Open the file in a new tab/window
+                window.open(fileName, '_blank');
+            }
+        }
+        
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Initialize interactive examples if switching to that tab
+            if (tabName === 'interaction-examples' && currentGif) {
+                setTimeout(() => {
+                    initializeInteractiveExamples();
+                }, 100);
+            }
+            
+            console.log('Switched to tab:', tabName);
+        }
+
+        // Interactive Examples functionality
+        let interactiveGifs = {};
+
+        function cleanupInteractiveExamples() {
+            // Remove existing p5 instances
+            Object.keys(interactiveP5Instances).forEach(key => {
+                if (interactiveP5Instances[key]) {
+                    console.log('Removing p5 instance:', key);
+                    interactiveP5Instances[key].remove();
+                    delete interactiveP5Instances[key];
+                }
+            });
+            
+            // Clean up independent GIF instances
+            Object.keys(independentGifInstances).forEach(key => {
+                console.log('Cleaning up independent GIF instance:', key);
+                delete independentGifInstances[key];
+            });
+            
+            // Clear the containers
+            const canvas1 = document.getElementById('canvas1');
+            if (canvas1) canvas1.innerHTML = '';
+            const canvas2 = document.getElementById('canvas2');
+            if (canvas2) canvas2.innerHTML = '';
+            const canvas3 = document.getElementById('canvas3');
+            if (canvas3) canvas3.innerHTML = '';
+            const canvas4 = document.getElementById('canvas4');
+            if (canvas4) canvas4.innerHTML = '';
+            const canvas5 = document.getElementById('canvas5');
+            if (canvas5) canvas5.innerHTML = '';
+            const canvas6 = document.getElementById('canvas6');
+            if (canvas6) canvas6.innerHTML = '';
+        }
+
+        // Visual feedback functions for interactive canvases
+        function showInteractionFeedback(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                // Remove any existing feedback classes first
+                canvas.classList.remove('interaction-feedback');
+                canvas.classList.remove('active-interaction');
+                
+                // Add feedback class
+                canvas.classList.add('interaction-feedback');
+                
+                // Remove feedback class after animation
+                setTimeout(() => {
+                    canvas.classList.remove('interaction-feedback');
+                }, 300);
+            }
+        }
+
+        function setActiveInteraction(canvasId) {
+            // Remove active state from all canvases
+            document.querySelectorAll('.interaction-canvas').forEach(canvas => {
+                canvas.classList.remove('active-interaction');
+            });
+            
+            // Add active state to specified canvas
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                canvas.classList.add('active-interaction');
+            }
+        }
+
+        function clearActiveInteraction() {
+            document.querySelectorAll('.interaction-canvas').forEach(canvas => {
+                canvas.classList.remove('active-interaction');
+            });
+        }
+
+        function initializeInteractiveExamples() {
+            if (!currentGif) return;
+            
+            // Clean up any existing instances first
+            cleanupInteractiveExamples();
+            
+            // Example 1: Play/Pause Control
+            createInteractiveExample1();
+            
+            // Example 2: Frame Navigation
+            createInteractiveExample2();
+            
+            // Example 3: Speed Control
+            createInteractiveExample3();
+            
+            // Example 4: Frame Scrubbing
+            createInteractiveExample4();
+            
+            // Example 5: Reset Animation - COMMENTED OUT FOR NOW
+            // createInteractiveExample5();
+            
+            // Example 6: Multi-Zone Control - COMMENTED OUT FOR NOW
+            // createInteractiveExample6();
+            
+            // Update the status display to match current state
+            updateInteractiveStatus();
+        }
+
+        // Update interactive example status displays
+        function updateInteractiveStatus() {
+            const status1Element = document.getElementById('status1');
+            if (status1Element) {
+                status1Element.textContent = isPlaying ? 'Playing' : 'Paused';
+            }
+        }
+
+        // Example 1: Click to Play/Pause - SIMPLIFIED APPROACH
+        function createInteractiveExample1() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example1']) {
+                return;
+            }
+            
+            const sketch1 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let localIsPlaying = true;
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas1');
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Set initial state based on main GIF
+                    if (currentGif) {
+                        localIsPlaying = isPlaying;
+                    }
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    if (currentGif && currentGif.width > 0) {
+                        let scale = Math.min(p.width / currentGif.width, p.height / currentGif.height) * 0.8;
+                        let w = currentGif.width * scale;
+                        let h = currentGif.height * scale;
+                        p.image(currentGif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                    }
+                    
+                    // Instructions
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(12);
+                    p.text('Click to Play/Pause', p.width / 2, p.height - 10);
+                };
+                
+                function togglePlayPause() {
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas1');
+                    
+                    if (currentGif) {
+                        if (localIsPlaying) {
+                            currentGif.pause();
+                            document.getElementById('status1').textContent = 'Paused';
+                            localIsPlaying = false;
+                            isPlaying = false; // Update global state
+                        } else {
+                            currentGif.play();
+                            document.getElementById('status1').textContent = 'Playing';
+                            localIsPlaying = true;
+                            isPlaying = true; // Update global state
+                        }
+                        
+                        // Update the main interface play button as well
+                        updatePlayButton();
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        togglePlayPause();
+                        return false;
+                    }
+                };
+                
+                // Handle touch events (mobile)
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        togglePlayPause();
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['example1'] = new p5(sketch1);
+        }
+
+        // Example 2: Frame Navigation - SIMPLIFIED APPROACH
+        function createInteractiveExample2() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example2']) {
+                return;
+            }
+            
+            const sketch2 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let currentFrame = 0;
+                let totalFrames = 0;
+                let gifCopy = null;
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas2');
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Initialize frame tracking
+                    if (currentGif && typeof currentGif.numFrames === 'function') {
+                        totalFrames = currentGif.numFrames();
+                        // Create a copy using p5's get() method which preserves the image data
+                        gifCopy = currentGif.get();
+                        currentFrame = 0;
+                    }
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    // Use the original currentGif but control which frame to display
+                    if (currentGif && currentGif.width > 0) {
+                        // Temporarily set the frame we want to show
+                        if (typeof currentGif.setFrame === 'function' && totalFrames > 0) {
+                            // Store the current frame of the main GIF
+                            let originalFrame = currentGif.getCurrentFrame ? currentGif.getCurrentFrame() : 0;
+                            
+                            // Set our desired frame briefly
+                            currentGif.setFrame(currentFrame);
+                            
+                            // Draw the image
+                            let scale = Math.min(p.width / currentGif.width, p.height / currentGif.height) * 0.8;
+                            let w = currentGif.width * scale;
+                            let h = currentGif.height * scale;
+                            p.image(currentGif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                            
+                            // Restore the original frame immediately after drawing
+                            // Only do this if the main GIF is playing to avoid interference
+                            if (!isPlaying) {
+                                // If main GIF is paused, we can leave our frame
+                            } else {
+                                // If main GIF is playing, restore its natural progression
+                                currentGif.setFrame(originalFrame);
+                            }
+                        } else {
+                            // Fallback: just show the current GIF as-is
+                            let scale = Math.min(p.width / currentGif.width, p.height / currentGif.height) * 0.8;
+                            let w = currentGif.width * scale;
+                            let h = currentGif.height * scale;
+                            p.image(currentGif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                        }
+                        
+                        // Update frame display
+                        const frameDisplay = document.getElementById('frame2');
+                        if (frameDisplay) {
+                            frameDisplay.textContent = (currentFrame + 1);
+                        }
+                    }
+                    
+                    // Instructions
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(12);
+                    p.text('Click to Next Frame', p.width / 2, p.height - 10);
+                };
+                
+                function advanceFrame() {
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas2');
+                    
+                    if (totalFrames > 0) {
+                        currentFrame = (currentFrame + 1) % totalFrames;
+                        console.log('Advanced to frame', currentFrame, 'of', totalFrames);
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        advanceFrame();
+                        return false;
+                    }
+                };
+                
+                // Handle touch events (mobile)
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        advanceFrame();
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['example2'] = new p5(sketch2);
+        }
+
+        // Example 3: Speed Control
+        function createInteractiveExample3() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example3']) {
+                return;
+            }
+            
+            const sketch3 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let speedIndex = 1; // Start with Normal speed
+                const speeds = [50, 100, 200, 500]; // Delay values in milliseconds
+                const speedNames = ['Fast', 'Normal', 'Slow', 'Very Slow'];
+                let gif; // Independent GIF instance
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas3');
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Load our own independent GIF instance
+                    gif = p.loadImage('images/default.gif');
+                    
+                    // Wait for GIF to load and initialize
+                    const checkGifLoaded = () => {
+                        if (gif.width > 0) {
+                            gif.play();
+                            gif.delay(speeds[speedIndex]); // Set initial speed
+                            
+                            // Set initial speed display
+                            const speedDisplay = document.getElementById('speed3');
+                            if (speedDisplay) {
+                                speedDisplay.textContent = speedNames[speedIndex];
+                            }
+                        } else {
+                            setTimeout(checkGifLoaded, 100);
+                        }
+                    };
+                    checkGifLoaded();
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    if (gif && gif.width > 0) {
+                        let scale = Math.min(p.width / gif.width, p.height / gif.height) * 0.8;
+                        let w = gif.width * scale;
+                        let h = gif.height * scale;
+                        p.image(gif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                    }
+                    
+                    // Instructions
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(12);
+                    p.text('Click to Change Speed', p.width / 2, p.height - 10);
+                };
+                
+                function changeSpeed() {
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas3');
+                    
+                    if (gif && typeof gif.delay === 'function') {
+                        // Cycle to next speed
+                        speedIndex = (speedIndex + 1) % speeds.length;
+                        
+                        // Apply the new speed to our independent GIF
+                        gif.delay(speeds[speedIndex]);
+                        
+                        // Update display (only Example 3 display, not global)
+                        const speedDisplay = document.getElementById('speed3');
+                        if (speedDisplay) {
+                            speedDisplay.textContent = speedNames[speedIndex];
+                        }
+                        
+                        console.log('Example 3 speed changed to:', speedNames[speedIndex], '(' + speeds[speedIndex] + 'ms)');
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        changeSpeed();
+                        return false;
+                    }
+                };
+                
+                // Handle touch events (mobile)
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        changeSpeed();
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['example3'] = new p5(sketch3);
+        }
+
+        // Example 4: Frame Scrubbing (based on Example 3 template)
+        function createInteractiveExample4() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example4']) {
+                return;
+            }
+            
+            const sketch4 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 50; // Faster response for scrubbing
+                let currentFrame = 0;
+                let totalFrames = 0;
+                let gif; // Independent GIF instance
+                let isPressed = false; // Track if mouse/touch is pressed
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas4');
+                    
+                    // Fix the canvas warning for better performance
+                    canvas.canvas.getContext('2d').willReadFrequently = true;
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    canvas.canvas.style.userSelect = 'none';
+                    
+                    console.log('Example 4 setup - Canvas created with dimensions:', canvas.width, 'x', canvas.height);
+                    
+                    // Load our own independent GIF instance (same as Example 3)
+                    gif = p.loadImage('images/default.gif');
+                    console.log('Example 4 - Loading GIF from images/default.gif');
+                    
+                    // Get frame count from the shared currentGif (like Example 2)
+                    if (currentGif && typeof currentGif.numFrames === 'function') {
+                        totalFrames = currentGif.numFrames();
+                        console.log('Example 4 - Got totalFrames from currentGif:', totalFrames);
+                    } else {
+                        console.log('Example 4 - currentGif not available or no numFrames function');
+                        totalFrames = 10; // Default fallback
+                    }
+                    
+                    // Wait for our own GIF to load
+                    const checkGifLoaded = () => {
+                        console.log('Example 4 - Checking if GIF loaded, width:', gif.width);
+                        
+                        if (gif.width > 0) {
+                            console.log('Example 4 - GIF loaded successfully');
+                            
+                            // Pause immediately and keep paused
+                            gif.pause();
+                            console.log('Example 4 - GIF paused');
+                            
+                            currentFrame = 0;
+                            
+                            // Set to first frame explicitly
+                            if (typeof gif.setFrame === 'function') {
+                                gif.setFrame(0);
+                                console.log('Example 4 - Set to frame 0');
+                            } else {
+                                console.log('Example 4 - setFrame function not available');
+                            }
+                            
+                            // Update display
+                            const frameDisplay = document.getElementById('frame4');
+                            const totalDisplay = document.getElementById('total4');
+                            if (frameDisplay) frameDisplay.textContent = (currentFrame + 1);
+                            if (totalDisplay) totalDisplay.textContent = totalFrames;
+                            
+                            console.log('Example 4 loaded:', totalFrames, 'frames, starting at frame 1');
+                        } else {
+                            console.log('Example 4 - GIF not loaded yet, retrying...');
+                            setTimeout(checkGifLoaded, 100);
+                        }
+                    };
+                    checkGifLoaded();
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    // Ensure GIF stays paused for manual control
+                    if (gif && gif.width > 0) {
+                        // Always pause to prevent auto-play
+                        gif.pause();
+                        
+                        // Set to current frame for display
+                        if (typeof gif.setFrame === 'function' && totalFrames > 0) {
+                            gif.setFrame(currentFrame);
+                        }
+                        
+                        let scale = Math.min(p.width / gif.width, p.height / gif.height) * 0.8;
+                        let w = gif.width * scale;
+                        let h = gif.height * scale;
+                        p.image(gif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                    }
+                    
+                    // Draw scrub bar at bottom
+                    p.stroke(0, 100);
+                    p.strokeWeight(2);
+                    p.line(20, p.height - 30, p.width - 20, p.height - 30);
+                    
+                    // Draw progress indicator
+                    if (totalFrames > 0) {
+                        let progress = currentFrame / (totalFrames - 1);
+                        let indicatorX = 20 + progress * (p.width - 40);
+                        p.fill(0, 200);
+                        p.noStroke();
+                        p.circle(indicatorX, p.height - 30, 8);
+                    }
+                    
+                    // Instructions
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(12);
+                    p.text('Drag to Scrub Frames', p.width / 2, p.height - 10);
+                };
+                
+                function scrubToPosition(x) {
+                    console.log('scrubToPosition called with x:', x, 'canvas width:', p.width);
+                    
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        console.log('Interaction blocked by delay');
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas4');
+                    
+                    if (totalFrames > 0) {
+                        // Map x position to frame number
+                        let progress = p.constrain((x - 20) / (p.width - 40), 0, 1);
+                        let newFrame = Math.floor(progress * totalFrames);
+                        newFrame = p.constrain(newFrame, 0, totalFrames - 1);
+                        
+                        console.log('Progress:', progress, 'New frame:', newFrame, 'Total frames:', totalFrames);
+                        
+                        if (newFrame !== currentFrame) {
+                            currentFrame = newFrame;
+                            
+                            // Update display
+                            const frameDisplay = document.getElementById('frame4');
+                            if (frameDisplay) {
+                                frameDisplay.textContent = (currentFrame + 1);
+                            }
+                            
+                            console.log('Example 4 scrubbed to frame', currentFrame + 1, 'of', totalFrames);
+                        } else {
+                            console.log('Frame unchanged:', currentFrame + 1);
+                        }
+                    } else {
+                        console.log('No totalFrames available:', totalFrames);
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    console.log('mousePressed - x:', p.mouseX, 'y:', p.mouseY, 'canvas bounds:', p.width, 'x', p.height);
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        console.log('Mouse press detected inside canvas');
+                        isPressed = true;
+                        scrubToPosition(p.mouseX);
+                        return false; // Prevent default
+                    } else {
+                        console.log('Mouse press outside canvas bounds');
+                    }
+                };
+                
+                p.mouseDragged = () => {
+                    console.log('mouseDragged - x:', p.mouseX, 'y:', p.mouseY, 'isPressed:', isPressed);
+                    if (isPressed && p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        console.log('Mouse drag detected inside canvas');
+                        scrubToPosition(p.mouseX);
+                        return false; // Prevent default
+                    }
+                };
+                
+                p.mouseReleased = () => {
+                    console.log('mouseReleased');
+                    isPressed = false;
+                };
+                
+                // Handle touch events (mobile)
+                p.touchStarted = () => {
+                    console.log('touchStarted - x:', p.touchX, 'y:', p.touchY, 'canvas bounds:', p.width, 'x', p.height);
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        console.log('Touch start detected inside canvas');
+                        isPressed = true;
+                        scrubToPosition(p.touchX);
+                        return false; // Prevent default
+                    } else {
+                        console.log('Touch start outside canvas bounds');
+                    }
+                };
+                
+                p.touchMoved = () => {
+                    console.log('touchMoved - x:', p.touchX, 'y:', p.touchY, 'isPressed:', isPressed);
+                    if (isPressed && p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        console.log('Touch move detected inside canvas');
+                        scrubToPosition(p.touchX);
+                        return false; // Prevent default
+                    }
+                };
+                
+                p.touchEnded = () => {
+                    console.log('touchEnded');
+                    isPressed = false;
+                };
+            };
+            
+            interactiveP5Instances['example4'] = new p5(sketch4);
+        }
+
+        // Example 5: Double click to reset
+        function createInteractiveExample5() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example5']) {
+                return;
+            }
+            
+            const sketch5 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let lastClickTime = 0;
+                let gif;
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas5');
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Load our own GIF instance
+                    if (defaultGifPath) {
+                        gif = p.loadImage(defaultGifPath);
+                        
+                        // Wait for GIF to load
+                        const checkGifLoaded = () => {
+                            if (gif.width > 0) {
+                                gif.play();
+                                
+                                // Update display
+                                const frameDisplay = document.getElementById('frame5');
+                                if (frameDisplay && typeof gif.getCurrentFrame === 'function') {
+                                    frameDisplay.textContent = gif.getCurrentFrame() + 1;
+                                }
+                            } else {
+                                setTimeout(checkGifLoaded, 100);
+                            }
+                        };
+                        checkGifLoaded();
+                    }
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    if (gif && gif.width > 0) {
+                        let scale = Math.min(p.width / gif.width, p.height / gif.height) * 0.8;
+                        let w = gif.width * scale;
+                        let h = gif.height * scale;
+                        p.image(gif, (p.width - w) / 2, (p.height - h) / 2, w, h);
+                        
+                        // Update frame display
+                        const frameDisplay = document.getElementById('frame5');
+                        if (frameDisplay && typeof gif.getCurrentFrame === 'function') {
+                            frameDisplay.textContent = gif.getCurrentFrame() + 1;
+                        }
+                    }
+                    
+                    // Instructions
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(12);
+                    p.text('Double-click to Reset', p.width / 2, p.height - 10);
+                };
+                
+                function resetGif() {
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas5');
+                    
+                    if (gif && typeof gif.reset === 'function') {
+                        gif.reset();
+                        gif.play();
+                        
+                        // Update display
+                        const frameDisplay = document.getElementById('frame5');
+                        if (frameDisplay) {
+                            frameDisplay.textContent = '1';
+                        }
+                        
+                        console.log('GIF reset to first frame');
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        let currentTime = p.millis();
+                        if (currentTime - lastClickTime < 400) {
+                            // Double click detected
+                            resetGif();
+                        }
+                        lastClickTime = currentTime;
+                        return false;
+                    }
+                };
+                
+                // Handle touch events (mobile) - double tap
+                let lastTouchTime = 0;
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        let currentTime = p.millis();
+                        if (currentTime - lastTouchTime < 400) {
+                            // Double tap detected
+                            resetGif();
+                        }
+                        lastTouchTime = currentTime;
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['example5'] = new p5(sketch5);
+        }
+
+        // Example 6: Multi-zone control
+        function createInteractiveExample6() {
+            // Don't create if it already exists
+            if (interactiveP5Instances['example6']) {
+                return;
+            }
+            
+            let isPlaying = true;
+            let currentSpeed = 100;
+            let speeds = [50, 100, 200];
+            let speedNames = ['Fast', 'Normal', 'Slow'];
+            let speedIndex = 1; // Start with Normal
+            
+            const sketch6 = (p) => {
+                let lastInteractionTime = 0;
+                let interactionDelay = 300;
+                let gif;
+                
+                p.setup = () => {
+                    const canvas = p.createCanvas(260, 180);
+                    canvas.parent('canvas6');
+                    
+                    // Remove any unwanted styling from canvas element
+                    canvas.elt.style.border = 'none';
+                    canvas.elt.style.outline = 'none';
+                    canvas.elt.style.boxShadow = 'none';
+                    canvas.elt.style.background = 'transparent';
+                    
+                    // Prevent default touch behaviors on the canvas
+                    canvas.canvas.style.touchAction = 'none';
+                    
+                    // Load our own GIF instance
+                    if (defaultGifPath) {
+                        gif = p.loadImage(defaultGifPath);
+                        
+                        // Wait for GIF to load
+                        const checkGifLoaded = () => {
+                            if (gif.width > 0) {
+                                gif.play();
+                                
+                                // Update initial display
+                                const actionDisplay = document.getElementById('action6');
+                                if (actionDisplay) {
+                                    actionDisplay.textContent = 'Playing - Normal Speed';
+                                }
+                            } else {
+                                setTimeout(checkGifLoaded, 100);
+                            }
+                        };
+                        checkGifLoaded();
+                    }
+                };
+                
+                p.draw = () => {
+                    p.background(240);
+                    
+                    if (gif && gif.width > 0) {
+                        let scale = Math.min(p.width / gif.width, p.height / gif.height) * 0.6;
+                        let w = gif.width * scale;
+                        let h = gif.height * scale;
+                        p.image(gif, (p.width - w) / 2, (p.height - h) / 2 + 10, w, h);
+                    }
+                    
+                    // Draw zone lines
+                    p.stroke(0, 100);
+                    p.strokeWeight(1);
+                    p.line(0, p.height / 3, p.width, p.height / 3);
+                    p.line(0, 2 * p.height / 3, p.width, 2 * p.height / 3);
+                    
+                    // Zone labels
+                    p.fill(0, 150);
+                    p.textAlign(p.CENTER);
+                    p.textSize(10);
+                    p.text('PLAY/PAUSE', p.width / 2, 20);
+                    p.text('SPEED', p.width / 2, p.height / 2 + 5);
+                    p.text('RESET', p.width / 2, p.height - 10);
+                };
+                
+                function handleZoneInteraction(zone) {
+                    let currentTime = p.millis();
+                    
+                    if (currentTime - lastInteractionTime < interactionDelay) {
+                        return;
+                    }
+                    
+                    lastInteractionTime = currentTime;
+                    showInteractionFeedback('canvas6');
+                    
+                    if (!gif) return;
+                    
+                    const actionDisplay = document.getElementById('action6');
+                    
+                    if (zone === 0) {
+                        // Top zone - play/pause
+                        if (isPlaying) {
+                            gif.pause();
+                            if (actionDisplay) actionDisplay.textContent = 'Paused';
+                        } else {
+                            gif.play();
+                            if (actionDisplay) actionDisplay.textContent = 'Playing - ' + speedNames[speedIndex] + ' Speed';
+                        }
+                        isPlaying = !isPlaying;
+                        console.log('Zone 1: Play/Pause -', isPlaying ? 'Playing' : 'Paused');
+                    } else if (zone === 1) {
+                        // Middle zone - speed cycling
+                        speedIndex = (speedIndex + 1) % speeds.length;
+                        currentSpeed = speeds[speedIndex];
+                        if (typeof gif.delay === 'function') {
+                            gif.delay(currentSpeed);
+                        }
+                        if (actionDisplay) {
+                            actionDisplay.textContent = (isPlaying ? 'Playing - ' : 'Paused - ') + speedNames[speedIndex] + ' Speed';
+                        }
+                        console.log('Zone 2: Speed changed to', speedNames[speedIndex], '(' + currentSpeed + 'ms)');
+                    } else {
+                        // Bottom zone - reset
+                        if (typeof gif.reset === 'function') {
+                            gif.reset();
+                            gif.play();
+                            isPlaying = true;
+                            if (actionDisplay) actionDisplay.textContent = 'Reset - Playing';
+                        }
+                        console.log('Zone 3: Reset animation');
+                    }
+                }
+                
+                // Handle mouse events (desktop)
+                p.mousePressed = () => {
+                    if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                        let zone = Math.floor(p.mouseY / (p.height / 3));
+                        handleZoneInteraction(zone);
+                        return false;
+                    }
+                };
+                
+                // Handle touch events (mobile)
+                p.touchStarted = () => {
+                    if (p.touchX >= 0 && p.touchX <= p.width && p.touchY >= 0 && p.touchY <= p.height) {
+                        let zone = Math.floor(p.touchY / (p.height / 3));
+                        handleZoneInteraction(zone);
+                        return false;
+                    }
+                };
+            };
+            
+            interactiveP5Instances['example6'] = new p5(sketch6);
+        }
+    </script>
+</body>
+</html>
