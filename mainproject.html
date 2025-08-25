@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body style="margin: 0; padding: 20px; font-family: system-ui, sans-serif;">
+
+    <!-- Main Project Title -->
+    <h1 style="margin: 0 0 20px 0; color: black; font-size: 18pt; font-weight: bold;">Main Project - Building Character(s)</h1>
+    
+    <!-- Main table with invisible borders -->
+    <table style="width: 100%; border-collapse: collapse; border: none;">
+        <tr>
+            <td style="width: 60%; vertical-align: top; padding-right: 20px; border: none;">
+                <!-- Left Column: Project Info -->
+                
+                <!-- Image placeholder cell -->
+                <div style="margin-bottom: 20px;">
+                    <img id="4061096" src="https://canvascloud.ocadu.ca/courses/12214/files/4061096/preview" alt="mainProject.jpg" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12214/files/4061096" data-api-returntype="File" width="100%" style="margin: 0;" />
+                </div>
+                
+                <!-- Project Description -->
+                <div style="margin-bottom: 20px;">
+                    <p style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; line-height: 1.4;"><strong>Duration:</strong> 6 weeks</p>
+                    <p style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; line-height: 1.4;"><strong>Format:</strong> Individual</p>
+                </div>
+                
+                <!-- Description -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Description</h4>
+                    <p style="margin: 0; color: #6c757d; font-size: 10pt; line-height: 1.4;">For the main project, you will work to take an existing physical object and convert it into an interactive digital character that operates on your phone. You must design its personality, movement, and appearance in response to inputs. In addition to the methods explored in Workshop 2, we will expand to examine more complex methods of input such as hand/body tracking via the camera.</p>
+                </div>
+                
+                <!-- Constraints -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Constraints</h4>
+                    <ul style="margin: 0; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li>The design must exist as a public url that can be shared with your classmates</li>
+                        <li>The character must be based on an existing object</li>
+                        <li>The character must be interactive and it should be designed for specific inputs</li>
+                        <li>The experience must be designed for phones. No laptops</li>
+                        <li>Don't do anything that could damage yours or others phones</li>
+                    </ul>
+                </div>
+                
+                <!-- Tools -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Tools</h4>
+                    <ul style="margin: 0; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li>p5.js</li>
+                        <li>ML5</li>
+                        <li>VSCode + Github Copilot</li>
+                        <li>Github</li>
+                    </ul>
+                </div>
+                
+                <!-- Project Steps / Phases -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Project Steps / Phases</h4>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.4; font-style: italic;">Project development is never fully linear. You may well have to backtrack during the process, but this is the general structure of how you will develop the work over 6 weeks.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">1. Choose an Object</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Your character must be based on an existing, inanimate, physical object, so first you need to choose one. It can be anything of any size. You will be creating a personality and interactions for this object, so consider how its physical traits can provide hints as to how it will behave.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">2. Digitize It</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Once you have chosen your object, the next step is to decide how you want to bring it into digital space. There are many different techniques (or combinations) you can use including photography, drawing, painting, 3d scanning, videos, or other methods. It is important to consider how this phase can change the object into a character.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">3. Develop Its Personality and Story</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Now that your object is digital you have the freedom to create its backstory and personality. What is this Creature? What does it like? What does it dislike? What does it want? How does it move? Create this through writings, drawings, renders whatever technique works for you.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">4. Code the First Interactions</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Now that you have a clear plan and visualizations of what you want your character to do, we'll work on converting that to code using p5.js. Start with a few of the core interactions, don't try to implement them all at once.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">5. Playtest the First Interactions</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">At this stage you will formally playtest your first interactions with your classmates. It is important to use the materials you created to design the personality of your character to quickly describe your concept.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">6. Develop Version 2</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Building on the Playtest Feedback and overall goals, add and refine your character's interactions. This is the chance to build more detail and move from reactive to interactive systems.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">7. Playtest Version 2</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Like the first round, you will playtest the second version of your character. You will still have time to implement updates, so this is an important round of inputs.</p>
+                    
+                    <h5 style="margin: 12px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">8. Project Documentation</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Following the second playtest you will have an additional 2 weeks to implement any changes and finishes to your site. In this time you will also create comprehensive documentation which will be posted to the course website.</p>
+                </div>
+                
+                <!-- Files & Links -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Files & Links</h4>
+                    <ul style="margin: 0; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li>Placeholder link 1</li>
+                        <li>Placeholder link 2</li>
+                    </ul>
+                </div>
+                
+                <!-- Project Assignments -->
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: #495057; font-size: 11pt; font-weight: bold;">Project Assignments</h4>
+                    
+                    <h5 style="margin: 8px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">Progress</h5>
+                    <ul style="margin: 0 0 12px 0; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103718" target="_blank" style="color: #0066cc; text-decoration: none;">October 22 - Dev Day Work</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103719" target="_blank" style="color: #0066cc; text-decoration: none;">October 24 - Dev Day Work</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103720" target="_blank" style="color: #0066cc; text-decoration: none;">October 29 - Dev Day Work</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103761" target="_blank" style="color: #0066cc; text-decoration: none;">November 5 - Playtesting</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103721" target="_blank" style="color: #0066cc; text-decoration: none;">November 12 - Dev Day Work</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103722" target="_blank" style="color: #0066cc; text-decoration: none;">November 19 - Dev Day Work</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103762" target="_blank" style="color: #0066cc; text-decoration: none;">November 26 - Playtesting</a></li>
+                        <li><a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103723" target="_blank" style="color: #0066cc; text-decoration: none;">November 28 - Dev Day Work</a></li>
+                    </ul>
+                    
+                    <h5 style="margin: 8px 0 4px 0; color: #495057; font-size: 10pt; font-weight: bold;">Deliverables</h5>
+                    <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103763" target="_blank" style="color: #0066cc; text-decoration: none;">December 12 - Final Documentation Submission</a>
+                    </p>
+                    <h6 style="margin: 8px 0 4px 16px; color: #495057; font-size: 9pt; font-weight: bold;">Interactive Character</h6>
+                    <ul style="margin: 0 0 8px 16px; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li>A web application hosted on a public url featuring your interactive digital character</li>
+                    </ul>
+                    <h6 style="margin: 8px 0 4px 16px; color: #495057; font-size: 9pt; font-weight: bold;">Documentation</h6>
+                    <ul style="margin: 0 0 0 16px; padding-left: 16px; color: #6c757d; font-size: 10pt; line-height: 1.4;">
+                        <li><strong>Description:</strong> Project concept and character development process</li>
+                        <li><strong>URL:</strong> URL of the website hosting your character</li>
+                        <li><strong>Video:</strong> Demonstration video showing the character interactions</li>
+                        <li><strong>Development Process:</strong> Documentation of your character creation process</li>
+                        <li><strong>Format:</strong> Single PDF file with links</li>
+                    </ul>
+                </div>
+                
+            </td>
+            <td style="width: 40%; vertical-align: top; border: none;">
+                <!-- Right Column: Schedule -->
+                <div style="border-left: 4px solid #dee2e6; padding-left: 16px;">
+                    <h3 style="margin: 0 0 16px 0; color: #495057; font-size: 12pt; font-weight: bold;">Schedule <span style="font-size: 9pt; font-weight: normal; color: #6c757d;">click the Class to expand</span></h3>
+    
+        <!-- Week 7 Group: October 22-24 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 7: October 22-24</h3>
+            
+            <!-- Class - October 22 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - October 22</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Project Introduction and P5 Media</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103718" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Methods for Digitizing</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-13-w-october-22" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- Class - October 24 -->
+            <details style="margin-bottom: 0px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>F - October 24</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Intro to ML5</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103719" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Backstory Workshop, working with ML5 input</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-14-f-october-24" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Week 8 Group: October 29-31 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 8: October 29-31</h3>
+            
+            <!-- Class - October 29 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - October 29</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">First Interactions</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103720" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Creating a simple working version of your character</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-15-w-october-29" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- October 31 - Independent Work Day -->
+            <details style="margin-bottom: 0px; border: 1px solid #adb5bd; border-radius: 0px; padding: 0; background: #f1f3f4;">
+                <summary style="padding: 4px 8px; background: #f1f3f4; color: #495057; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='#f1f3f4'">
+                    <div style="margin: 0; color: #495057; font-size: 12pt; font-weight: normal;">
+                        <div>F - October 31</div>
+                        <div style="font-size: 11pt; color: #6c757d; margin-top: 2px;">No formal class. Work Wherever you like</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: #f8f9fa;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Assignments Due:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">NONE</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">No attendance required. Work wherever is best for you.</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">N/A</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-16-f-october-31" target="_blank" style="color: #495057; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Week 9 Group: November 5-7 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 9: November 5-7</h3>
+            
+            <!-- Class - November 5 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - November 5</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Playtest Session</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103761" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Playtesting</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Playtesting your character</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Your working prototype, A QR code of the link, A way to capture feedback</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-17-w-november-5" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- November 7 - Independent Work Day -->
+            <details style="margin-bottom: 0px; border: 1px solid #adb5bd; border-radius: 0px; padding: 0; background: #f1f3f4;">
+                <summary style="padding: 4px 8px; background: #f1f3f4; color: #495057; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='#f1f3f4'">
+                    <div style="margin: 0; color: #495057; font-size: 12pt; font-weight: normal;">
+                        <div>F - November 7</div>
+                        <div style="font-size: 11pt; color: #6c757d; margin-top: 2px;">No formal class. Work Wherever you like</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: #f8f9fa;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Assignments Due:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">NONE</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">No attendance required. Work wherever is best for you.</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">N/A</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-18-f-november-7" target="_blank" style="color: #495057; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Week 10 Group: November 12-14 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 10: November 12-14</h3>
+            
+            <!-- Class - November 12 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - November 12</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Responding to Feedback</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103721" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Implement at least 1 feedback point</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-19-w-november-12" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- November 14 - Independent Work Day -->
+            <details style="margin-bottom: 0px; border: 1px solid #adb5bd; border-radius: 0px; padding: 0; background: #f1f3f4;">
+                <summary style="padding: 4px 8px; background: #f1f3f4; color: #495057; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='#f1f3f4'">
+                    <div style="margin: 0; color: #495057; font-size: 12pt; font-weight: normal;">
+                        <div>F - November 14</div>
+                        <div style="font-size: 11pt; color: #6c757d; margin-top: 2px;">No formal class. Work Wherever you like</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: #f8f9fa;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Assignments Due:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">NONE</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">No attendance required. Work wherever is best for you.</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">N/A</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-20-f-november-14" target="_blank" style="color: #495057; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Week 11 Group: November 19-21 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 11: November 19-21</h3>
+            
+            <!-- Class - November 19 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - November 19</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Refining the Interaction</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103722" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Making your feature list</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-21-w-november-19" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- November 21 - Independent Work Day -->
+            <details style="margin-bottom: 0px; border: 1px solid #adb5bd; border-radius: 0px; padding: 0; background: #f1f3f4;">
+                <summary style="padding: 4px 8px; background: #f1f3f4; color: #495057; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='#f1f3f4'">
+                    <div style="margin: 0; color: #495057; font-size: 12pt; font-weight: normal;">
+                        <div>F - November 21</div>
+                        <div style="font-size: 11pt; color: #6c757d; margin-top: 2px;">No formal class. Work Wherever you like</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: #f8f9fa;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Assignments Due:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">NONE</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">No attendance required. Work wherever is best for you.</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #495057; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #6c757d; font-size: 10pt;">N/A</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-22-f-november-21" target="_blank" style="color: #495057; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Week 12 Group: November 26-28 -->
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
+            <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 11pt; font-weight: bold;">Week 12: November 26-28</h3>
+            
+            <!-- Class - November 26 -->
+            <details style="margin-bottom: 8px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>W - November 26</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Playtest Session</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103762" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Playtesting</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Playtesting your character</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Your working prototype, A QR code of the link, A way to capture feedback</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-23-w-november-26" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- Class - November 28 -->
+            <details style="margin-bottom: 0px; border: 1px solid #eeeeee; border-radius: 0px; padding: 0; background: #f8f8f8;">
+                <summary style="padding: 4px 8px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none; display: flex; justify-content: space-between; align-items: flex-start;" title="Click to view class details" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#f8f8f8'">
+                    <div style="margin: 0; color: black; font-size: 12pt; font-weight: normal;">
+                        <div>F - November 28</div>
+                        <div style="font-size: 11pt; color: #666; margin-top: 2px;">Responding to Feedback</div>
+                    </div>
+                    <span style="color: #999; font-size: 10pt; margin-top: 2px;">+</span>
+                </summary>
+                <div style="padding: 16px; background: white;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Assignments Due:</strong>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103723" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Dev Day Work - Due by 11:59pm</a>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">Activities:</strong>
+                        <span style="color: #666; font-size: 10pt;">Final To do list</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #333; font-size: 10pt;">What to bring:</strong>
+                        <span style="color: #666; font-size: 10pt;">Laptop, Phone</span>
+                    </div>
+                    <div>
+                        <a href="https://canvascloud.ocadu.ca/courses/12214/pages/class-24-f-november-28" target="_blank" style="color: #0066cc; text-decoration: none; font-size: 10pt;">Detailed Class Plan</a>
+                    </div>
+                </div>
+            </details>
+        </div>
+        
+        <!-- Due Date - December 12 - Direct Link -->
+        <div style="margin-bottom: 8px; padding: 12px; background: #fff3cd; border: 1px solid #fd7e14; border-radius: 4px;">
+            <a href="https://canvascloud.ocadu.ca/courses/12214/assignments/103763" target="_blank" style="text-decoration: none;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="color: #d63384; font-size: 12pt; font-weight: bold;">Main Project Documentation Due December 12</span>
+                    <span style="color: #d63384; font-size: 11pt;">→ Submit Assignment</span>
+                </div>
+            </a>
+        </div>
+        
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
