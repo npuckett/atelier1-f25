@@ -1,0 +1,2859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier 1 - Schedule</title>
+    <style>
+        /* Clean, minimal black/white/grey design with sidebar layout */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.5;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Main layout container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* Sidebar/Schedule Panel */
+        .schedule-sidebar {
+            width: 400px;
+            min-width: 300px;
+            max-width: 50%;
+            background: #ffffff;
+            border-right: 2px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Mobile sidebar overlay */
+        @media (max-width: 768px) {
+            .schedule-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 85%;
+                max-width: 350px;
+                height: 100vh;
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+            
+            .schedule-sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease;
+            }
+            
+            .sidebar-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        /* Sidebar header */
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #f8f8f8;
+            position: relative;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .current-time {
+            color: #666666;
+            font-size: 0.9rem;
+            font-weight: 400;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-toggle {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+        }
+        
+        /* Sidebar content */
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+        
+        /* Content panel */
+        .content-panel {
+            flex: 1;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Content header */
+        .content-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Mobile menu button for content area */
+        .content-menu-btn {
+            display: none;
+            background: #000;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-menu-btn {
+                display: block;
+            }
+        }
+        
+        .content-title {
+            flex: 1;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        /* Content body */
+        .content-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #ffffff;
+        }
+        
+        /* Welcome state */
+        .welcome-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: #666;
+        }
+        
+        .welcome-state h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        /* Resize handle */
+        .resize-handle {
+            width: 4px;
+            background: #ddd;
+            cursor: col-resize;
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
+        
+        .resize-handle:hover {
+            background: #bbb;
+        }
+        
+        @media (max-width: 768px) {
+            .resize-handle {
+                display: none;
+            }
+        }
+        
+        h2 {
+            color: #000000;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+        
+        .schedule-container {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 60px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .schedule-table th {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 20px 16px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .schedule-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e5e5;
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+        
+        .schedule-table tr:hover {
+            background-color: #f8f8f8;
+        }
+        
+        /* Schedule list styling (replaces table) */
+        .schedule-list {
+            padding: 0;
+        }
+        
+        .week-group {
+            margin-bottom: 12px;
+        }
+        
+        .week-header-card {
+            background: #f8f8f8;
+            padding: 10px 15px;
+            border-left: 4px solid #000;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .week-header-card:hover {
+            background: #f0f0f0;
+        }
+        
+        .week-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .week-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .week-dates {
+            font-size: 14px;
+            color: #666;
+            flex: 1;
+        }
+        
+        .week-expand-icon {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            transition: transform 0.3s ease;
+            user-select: none;
+        }
+        
+        .week-expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .week-description-line {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .week-description-line:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .week-description-line .empty-description {
+            color: #ccc;
+        }
+        
+        .week-classes-container {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .week-classes-container.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        .class-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            margin: 0 10px 6px 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+        
+        .class-card:hover {
+            background: #f8f8f8;
+            border-color: #ccc;
+        }
+        
+        .class-main-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .class-expand-icon {
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            user-select: none;
+            width: 16px;
+        }
+        
+        .class-day-date {
+            font-size: 13px;
+            font-weight: 500;
+            color: #000;
+            min-width: 80px;
+        }
+        
+        .class-type-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #000;
+            flex: 1;
+        }
+        
+        .class-description-line {
+            font-size: 12px;
+            color: #666;
+            padding-left: 24px;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        
+        .class-description-line.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        .class-description-line .empty-description {
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        /* Break styling */
+        .break-card {
+            background: repeating-linear-gradient(
+                45deg,
+                #f0f0f0,
+                #f0f0f0 10px,
+                #e0e0e0 10px,
+                #e0e0e0 20px
+            );
+            margin: 20px 10px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .break-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .break-dates {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Status indicators */
+        .class-card.due-date {
+            background-color: #f5f5f5;
+            border-left: 4px solid #cccccc;
+        }
+        
+        .class-card.current {
+            background-color: #f8f8f8;
+            border-left: 4px solid #000000;
+        }
+        
+        .class-card.past {
+            opacity: 0.7;
+        }
+        
+        .class-card.upcoming-deadline {
+            background-color: #fff5f5;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .class-card.break-week {
+            background-color: #f8f9fa;
+            border-left: 4px solid #6c757d;
+            opacity: 0.8;
+        }
+        
+        .class-card.break-week .class-type-name {
+            font-style: italic;
+            color: #6c757d;
+        }
+        
+        .week-cell {
+            font-weight: 500;
+            background-color: #f5f5f5;
+            width: 80px;
+            color: #000000;
+        }
+        
+        .date-cell {
+            width: 150px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            color: #666666;
+            font-size: 0.9rem;
+        }
+        
+        .class-type {
+            cursor: pointer;
+            color: #000000;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .class-type:hover {
+            color: #666666;
+        }
+        
+        .break-row {
+            background-color: #f5f5f5 !important;
+            font-weight: 500;
+            text-align: center;
+            color: #666666;
+        }
+        
+        .week-level-break {
+            background: repeating-linear-gradient(
+                45deg,
+                #f0f0f0,
+                #f0f0f0 10px,
+                #e0e0e0 10px,
+                #e0e0e0 20px
+            ) !important;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+            border-top: 3px solid #ddd;
+            border-bottom: 3px solid #ddd;
+        }
+        
+        .week-level-break td {
+            padding: 20px !important;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        
+        .due-date-row {
+            background-color: #cccccc !important;
+            color: #333333 !important;
+        }
+        
+        .due-date-row td {
+            color: #333333 !important;
+        }
+        
+        .current-row {
+            background-color: #f8f8f8 !important;
+            border-left: 4px solid #000000;
+        }
+        
+        .past-row {
+            opacity: 0.6;
+        }
+        
+        .upcoming-deadline {
+            background-color: #f5f5f5 !important;
+            border-left: 2px solid #666666;
+        }
+        
+        /* Filter Controls */
+        .filter-controls {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        /* Projects list styling */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .project-card:hover {
+            background: #f8f8f8;
+            border-color: #d0d0d0;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+        
+        .project-meta {
+            font-size: 0.8rem;
+            color: #666666;
+            margin-bottom: 8px;
+        }
+        
+        .project-description {
+            font-size: 0.8rem;
+            color: #333333;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Project highlighting styles */
+        .project-card.selected {
+            border-color: #4f46e5;
+            background: #eef2ff;
+        }
+        
+        .week-group.dimmed {
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        
+        .week-group.highlighted {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .class-card.dimmed {
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        
+        .class-card.highlighted {
+            opacity: 1;
+            border-left-color: #666;
+            background-color: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+        
+        .class-card.project-due-date {
+            border-left: 4px solid #ff6b35;
+            background-color: #fff3cd;
+            position: relative;
+        }
+        
+        .class-card.project-due-date::before {
+            content: "DUE";
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--project-border-color, #ff6b35);
+        }
+        
+        .class-card.project-due-date .class-main-info {
+            padding-left: 25px;
+        }
+        
+        .project-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        .filter-btn {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            color: #000000;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .filter-btn:hover {
+            background: #f8f8f8;
+        }
+        
+        .filter-btn.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        
+        .filter-btn.expand-all {
+            background: #f5f5f5;
+            font-weight: 500;
+        }
+        
+        .filter-btn.expand-all:hover {
+            background: #e5e5e5;
+        }
+        
+        .filter-btn.expand-all.active {
+            background: #000000;
+            color: #ffffff;
+        }
+        
+        /* Row visibility states */
+        .schedule-table tr.hidden {
+            display: none;
+        }
+        
+        .schedule-table tr.filtered-out {
+            opacity: 0.3;
+        }
+        
+        /* Week grouping */
+        .week-group {
+            border-top: 2px solid #000000;
+        }
+        
+        .week-group.collapsed .week-content {
+            display: none;
+        }
+        
+        .week-header {
+            cursor: pointer;
+            position: relative;
+            background-color: #f5f5f5 !important;
+            font-weight: 500;
+        }
+        
+        .week-header:hover {
+            background-color: #e5e5e5 !important;
+        }
+        
+        .week-header-content {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 16px;
+        }
+        
+        .expand-icon {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+            transition: transform 0.3s ease;
+            user-select: none;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .expand-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .week-title-section {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 20px;
+            flex-grow: 1;
+        }
+        
+        .week-title {
+            font-weight: 600;
+            font-size: 16px;
+            min-width: 60px;
+        }
+        
+        .week-date-range {
+            font-size: 14px;
+            color: #666;
+            min-width: 200px;
+        }
+        
+        .week-description {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+            flex-grow: 1;
+        }
+        
+        .week-description:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .week-description .empty-description {
+            color: #ccc;
+        }
+        
+        .week-description .edit-mode {
+            font-family: inherit;
+            font-size: inherit;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 4px;
+            background: white;
+        }
+        
+        /* Animated collapsible rows */
+        .week-classes {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .week-classes.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        /* Individual class row animations */
+        .class-description {
+            overflow: hidden;
+            transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        
+        .class-description.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+        
+        .week-toggle-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000000;
+            transition: transform 0.2s ease;
+        }
+        
+        .week-group.collapsed .week-toggle-icon {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .week-content {
+            transition: all 0.2s ease;
+        }
+        
+        /* Individual class row expand icons */
+        .class-row {
+            position: relative;
+        }
+        
+        .class-toggle-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666666;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .class-row:hover .class-toggle-icon {
+            opacity: 1;
+        }
+        
+        .class-row.expanded .class-toggle-icon {
+            opacity: 1;
+            color: #000000;
+        }
+        
+        .class-row.expanded .class-toggle-icon::before {
+            content: '−';
+        }
+        
+        .class-row.collapsed .class-toggle-icon::before {
+            content: '+';
+        }
+        
+        /* Adjust cell padding for icons */
+        .week-cell {
+            padding-left: 32px;
+            position: relative;
+        }
+        
+        .schedule-table td:first-child {
+            position: relative;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .filter-controls {
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .filter-buttons {
+                gap: 6px;
+            }
+            
+            .filter-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: 0;
+                text-align: center;
+            }
+            
+            .filter-section {
+                margin-bottom: 16px;
+            }
+        }
+        
+        .empty-description {
+            color: #999999;
+            font-style: italic;
+        }
+        
+        .editable-description {
+            cursor: pointer;
+            min-height: 20px;
+            padding: 4px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .editable-description:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .class-type-definitions {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            padding: 40px;
+        }
+        
+        .definition-item {
+            margin-bottom: 32px;
+            padding: 24px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .definition-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .definition-title {
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .definition-text {
+            color: #666666;
+            line-height: 1.6;
+        }
+        
+        .edit-mode {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            outline: none;
+            min-height: 40px;
+            font-family: inherit;
+            font-size: inherit;
+            padding: 8px;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+            
+            .schedule-table {
+                font-size: 14px;
+            }
+            
+            .schedule-table th,
+            .schedule-table td {
+                padding: 12px 8px;
+            }
+            
+            .class-type-definitions {
+                padding: 24px;
+            }
+            
+            .definition-item {
+                padding: 16px 0;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-container">
+        <!-- Schedule Sidebar -->
+        <div class="schedule-sidebar" id="scheduleSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Atelier 1 – Fall 25</div>
+                <div class="current-time" id="currentTime">
+                    <!-- Current time will be inserted here -->
+                </div>
+                <button class="mobile-toggle" onclick="closeSidebar()">✕</button>
+            </div>
+            
+            <div class="filter-controls">
+                <!-- Projects Section -->
+                <div class="filter-section">
+                    <label class="filter-label">Projects</label>
+                    <div class="projects-list" id="projectsList">
+                        <!-- Project cards will be generated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="schedule-list" id="scheduleBody">
+                    <!-- Schedule data will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resize Handle -->
+        <div class="resize-handle" id="resizeHandle"></div>
+        
+        <!-- Content Panel -->
+        <div class="content-panel">
+            <div class="content-header">
+                <button class="content-menu-btn" onclick="openSidebar()">☰ Schedule</button>
+                <div class="content-title" id="contentTitle">Course Schedule</div>
+            </div>
+            
+            <div class="content-body" id="contentBody">
+                <div class="welcome-state">
+                    <h2>Welcome to Atelier 1</h2>
+                    <p>Select a class from the schedule to view details, assignments, and resources.</p>
+                    <p>Each class session will have its own dedicated page with specific information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for data
+        let scheduleData = [];
+        let classTypeDefinitions = {};
+        let projectsData = [];
+        let selectedProject = null;
+        let activeFilters = {
+            classTypes: new Set(),
+            weeks: new Set(),
+            viewMode: 'all'
+        };
+        
+        // Assignment data structure
+        const assignmentData = {
+            "F - September 5": {
+                title: "Project Concept & Initial Research",
+                description: "Submit initial research findings and project concept outline. Include reference images and preliminary ideas for your lobby installation design.",
+                submissionType: "PDF Document",
+                dueDate: "2025-09-08", // Due Monday after class
+                canvasLink: "https://canvas.vcu.edu/courses/123456/assignments/789001",
+                project: "workshop-1"
+            },
+            "W - September 10": {
+                title: "Team Formation & Initial Design Ideas",
+                description: "Form your group of 3 and submit initial design concepts with sketches and brainstorming materials.",
+                submissionType: "PDF + Team Roster",
+                dueDate: "2025-09-12", // Due Friday same week
+                canvasLink: "https://canvas.vcu.edu/courses/123456/assignments/789002",
+                project: "workshop-1"
+            },
+            "W - September 17": {
+                title: "Design Mockups & Diagrams",
+                description: "Present visual mockups showing how your design would look in the space, plus technical diagrams explaining the system architecture.",
+                submissionType: "PDF with Images",
+                dueDate: "2025-09-17", // Due same day (before playtesting)
+                canvasLink: "https://canvas.vcu.edu/courses/123456/assignments/789003",
+                project: "workshop-1"
+            },
+            "F - September 19": {
+                title: "Refined Visualizations & Budget",
+                description: "Submit refined visualizations based on playtesting feedback and a detailed component budget breakdown with Canadian pricing.",
+                submissionType: "PDF + Budget Spreadsheet",
+                dueDate: "2025-09-22", // Due Monday after Friday class
+                canvasLink: "https://canvas.vcu.edu/courses/123456/assignments/789004",
+                project: "workshop-1"
+            },
+            "T - September 23": {
+                title: "Final Documentation Package",
+                description: "Complete project documentation including final concept description, visualizations, diagrams, budget, and optional demonstration video.",
+                submissionType: "PDF + Optional Video Links",
+                dueDate: "2025-09-23", // Due same day
+                canvasLink: "https://canvas.vcu.edu/courses/123456/assignments/789005",
+                project: "workshop-1"
+            }
+        };
+        let isExpandedAll = false; // Start with weeks collapsed
+        
+        // Function to update current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const timeString = now.toLocaleDateString('en-US', options);
+            document.getElementById('currentTime').textContent = `Current: ${timeString}`;
+            
+            // Update any countdown timers on the current page
+            updateCountdownTimers();
+        }
+        
+        // Function to calculate time until due date
+        function getTimeUntilDue(dueDateString) {
+            const now = new Date();
+            const dueDate = new Date(dueDateString + ' 23:59:59'); // 11:59 PM on due date
+            const timeDiff = dueDate - now;
+            
+            if (timeDiff <= 0) {
+                return { expired: true, text: 'Assignment overdue' };
+            }
+            
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (days > 0) {
+                return { expired: false, text: `${days} days, ${hours} hours, ${minutes} minutes` };
+            } else if (hours > 0) {
+                return { expired: false, text: `${hours} hours, ${minutes} minutes` };
+            } else {
+                return { expired: false, text: `${minutes} minutes` };
+            }
+        }
+        
+        // Function to update countdown timers
+        function updateCountdownTimers() {
+            document.querySelectorAll('.countdown-timer').forEach(timer => {
+                const dueDate = timer.dataset.dueDate;
+                if (dueDate) {
+                    const timeInfo = getTimeUntilDue(dueDate);
+                    timer.textContent = timeInfo.text;
+                    timer.className = `countdown-timer ${timeInfo.expired ? 'expired' : 'active'}`;
+                }
+            });
+        }
+        
+        // Function to parse date from schedule entry
+        function parseScheduleDate(dateString, year = 2025) {
+            if (!dateString) return null;
+            
+            // Extract month and day from format like "W - September 3"
+            const match = dateString.match(/([A-Z]) - (\w+) (\d+)/);
+            if (!match) return null;
+            
+            const [, , monthName, day] = match;
+            const monthMap = {
+                'September': 8, 'October': 9, 'November': 10, 'December': 11
+            };
+            
+            const month = monthMap[monthName];
+            if (month === undefined) return null;
+            
+            return new Date(year, month, parseInt(day));
+        }
+        
+        // Function to determine if a date is current, past, or future
+        function getDateStatus(scheduleDate) {
+            if (!scheduleDate) return 'unknown';
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const itemDate = new Date(scheduleDate.getFullYear(), scheduleDate.getMonth(), scheduleDate.getDate());
+            
+            const diffTime = itemDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'current';
+            if (diffDays < 0) return 'past';
+            if (diffDays <= 7 && scheduleDate) return 'upcoming';
+            return 'future';
+        }
+        
+        // Function to load JSON data
+        async function loadData() {
+            // For file:// protocol, fetch might not work, so try but fallback gracefully
+            try {
+                console.log('Attempting to load data files...');
+                
+                // Check if we're running on file:// protocol
+                if (window.location.protocol === 'file:') {
+                    console.log('Running on file:// protocol, using fallback data');
+                    loadFallbackData();
+                    return;
+                }
+                
+                // Load schedule data
+                const scheduleResponse = await fetch('data/schedule.json');
+                if (!scheduleResponse.ok) {
+                    throw new Error(`Schedule fetch failed: ${scheduleResponse.status}`);
+                }
+                scheduleData = await scheduleResponse.json();
+                
+                // Load class type definitions
+                const definitionsResponse = await fetch('data/class-types.json');
+                if (!definitionsResponse.ok) {
+                    throw new Error(`Definitions fetch failed: ${definitionsResponse.status}`);
+                }
+                classTypeDefinitions = await definitionsResponse.json();
+                
+                // Load projects data
+                const projectsResponse = await fetch('data/projects.json');
+                if (!projectsResponse.ok) {
+                    throw new Error(`Projects fetch failed: ${projectsResponse.status}`);
+                }
+                projectsData = await projectsResponse.json();
+                console.log('Projects data loaded:', projectsData.length, 'projects');
+                
+                // Initialize the page once data is loaded
+                updateCurrentTime();
+                populateSchedule();
+                // populateDefinitions(); // Commented out - element doesn't exist anymore
+                // generateFilterButtons(); // Commented out - using Projects instead
+                populateProjects();
+                
+                // Update time every minute
+                setInterval(updateCurrentTime, 60000);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                console.log('Falling back to inline data...');
+                // Fallback to inline data if files can't be loaded
+                loadFallbackData();
+            }
+        }
+        
+        // Fallback data in case JSON files can't be loaded
+        function loadFallbackData() {
+            scheduleData = [
+                {week: "1", date: "W - September 3", classType: "Introduction", description: ""},
+                {week: "", date: "F - September 5", classType: "Dev Day", description: ""},
+                {week: "2", date: "W - September 10", classType: "Dev Day", description: ""},
+                {week: "", date: "F - September 12", classType: "Dev Day", description: ""},
+                {week: "3", date: "W - September 17", classType: "Playtesting", description: ""},
+                {week: "", date: "F - September 19", classType: "Flexible Work Session", description: ""},
+                {week: "", date: "T - September 23", classType: "Documentation Due", description: "", isDueDate: true},
+                {week: "4", date: "W - September 24", classType: "Introduction & Dev Day", description: ""},
+                {week: "", date: "F - September 26", classType: "Dev Day", description: ""},
+                {week: "5", date: "W - October 1", classType: "Dev Day", description: ""},
+                {week: "", date: "F - October 3", classType: "Flexible Work Session", description: ""},
+                {week: "6", date: "W - October 8", classType: "Playtesting", description: ""},
+                {week: "", date: "F - October 10", classType: "Flexible Work Session", description: ""},
+                {week: "BREAK", date: "", classType: "", description: ""},
+                {week: "6", date: "M - October 21", classType: "Documentation Due", description: "", isDueDate: true},
+                {week: "7", date: "W - October 22", classType: "Introduction & Dev Day", description: ""},
+                {week: "", date: "F - October 24", classType: "Dev Day", description: ""},
+                {week: "8", date: "W - October 29", classType: "Dev Day", description: ""},
+                {week: "", date: "F - October 31", classType: "Flexible Work Session", description: ""},
+                {week: "9", date: "W - November 5", classType: "Playtesting", description: ""},
+                {week: "", date: "F - November 7", classType: "Flexible Work Session", description: ""},
+                {week: "10", date: "W - November 12", classType: "Dev Day", description: ""},
+                {week: "", date: "F - November 14", classType: "Flexible Work Session", description: ""},
+                {week: "11", date: "W - November 19", classType: "Dev Day", description: ""},
+                {week: "", date: "F - November 21", classType: "Flexible Work Session", description: ""},
+                {week: "12", date: "W - November 26", classType: "Playtesting", description: ""},
+                {week: "", date: "F - November 28", classType: "Dev Day", description: ""},
+                {week: "13", date: "T - December 10", classType: "Documentation Due", description: "", isDueDate: true}
+            ];
+            
+            classTypeDefinitions = {
+                "Introduction": "Course introduction sessions covering key concepts, tools, and project overviews.",
+                "Introduction & Dev Day": "Combined session with introduction to new concepts followed by development time.",
+                "Dev Day": "Hands-on development sessions where students work on their projects with instructor support.",
+                "Flexible Work Session": "Open studio time for project development, individual consultations, and peer collaboration.",
+                "Playtesting": "Structured feedback sessions where students test each other's work and provide constructive criticism.",
+                "Documentation Due": "Project documentation submission deadline with presentation of completed work."
+            };
+            
+            projectsData = [
+                {
+                    "id": "workshop-1",
+                    "title": "Workshop 1 – Real Things, Fake Project",
+                    "format": "Groups of 3 (randomly assigned)",
+                    "duration": "3 weeks",
+                    "startWeek": 1,
+                    "endWeek": 3,
+                    "color": "#4f46e5",
+                    "highlightColor": "#eef2ff",
+                    "relatedClassTypes": ["Introduction", "Dev Day", "Playtesting", "Documentation Due"],
+                    "description": "Workshop 1 asks you to imagine and design a new interactive experience for the entry lobby of 205 Richmond that changes the way people currently use the space. The design must incorporate a screen or many screens and some form of interactivity.",
+                    "constraints": [
+                        "The design can engage any surface or space within the entry lobby. Walls, floor, doors, windows, stairs",
+                        "The boundary is set by: the front doors, the elevator doors, the doors to xfab, and the doors to the 1st floor"
+                    ],
+                    "tools": ["Photoshop", "3d modelling software (Blender/Maya)"],
+                    "deliverables": {
+                        "interactive": "None",
+                        "documentation": {
+                            "description": "100 – 200 words that describe the concept of the project and how it works",
+                            "visualizations": "2-3 images that show how the experience would look in the space",
+                            "diagrams": "1-2 drawings or diagrams that explain how the system works"
+                        }
+                    },
+                    "submissionFormat": "The Description, Visualizations, and Budget should be submitted as a single PDF file.",
+                    "dates": {
+                        "startDate": "Week 1, Class 1 September",
+                        "endDate": "Week 3"
+                    }
+                }
+            ];
+            
+            console.log('Using fallback data with', scheduleData.length, 'schedule items');
+            
+            // Initialize the page
+            updateCurrentTime();
+            populateSchedule();
+            // populateDefinitions(); // Commented out - element doesn't exist anymore
+            // generateFilterButtons(); // Commented out - using Projects instead
+            populateProjects();
+            
+            // Update time every minute
+            setInterval(updateCurrentTime, 60000);
+        }
+        
+        // Function to populate the schedule list (new card-based layout)
+        function populateSchedule() {
+            console.log('populateSchedule called with', scheduleData.length, 'items');
+            const scheduleList = document.getElementById('scheduleBody');
+            if (!scheduleList) {
+                console.error('scheduleBody element not found!');
+                return;
+            }
+            scheduleList.innerHTML = '';
+            
+            // Group items by week - use calendar-based week calculation for 2025
+            const weekGroups = {};
+            let breakPosition = null;
+            
+            // Helper function to get week number based on calendar date (Sunday start, 2025)
+            function getCalendarWeek(dateString) {
+                if (!dateString || !dateString.includes(' - ')) {
+                    return null;
+                }
+                
+                const [dayPart, datePart] = dateString.split(' - ');
+                
+                // Parse the date for 2025
+                const year = 2025;
+                let month, day;
+                
+                // Extract month and day from date part (e.g. "September 3")
+                const monthNames = {
+                    'September': 8, 'October': 9, 'November': 10, 'December': 11
+                };
+                
+                const dateWords = datePart.split(' ');
+                
+                if (dateWords.length >= 2) {
+                    month = monthNames[dateWords[0]];
+                    day = parseInt(dateWords[1]);
+                    
+                    if (month !== undefined && !isNaN(day)) {
+                        const date = new Date(year, month, day);
+                        
+                        // Semester starts September 3, 2025 (Wednesday)
+                        // Week 1 starts on the Sunday before: August 31, 2025
+                        const firstSunday = new Date(2025, 7, 31); // August 31, 2025 (Sunday)
+                        
+                        // Find the Sunday of the current date's week
+                        const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+                        const startOfWeek = new Date(date);
+                        startOfWeek.setDate(date.getDate() - dayOfWeek);
+                        
+                        // Calculate week number based on first Sunday of semester
+                        const weeksDiff = Math.floor((startOfWeek - firstSunday) / (7 * 24 * 60 * 60 * 1000));
+                        const calculatedWeek = Math.max(1, weeksDiff + 1);
+                        return calculatedWeek;
+                    }
+                }
+                
+                return null;
+            }
+            
+            // Process each item and assign to weeks
+            scheduleData.forEach((item, index) => {
+                if (item.week === 'BREAK') {
+                    // Add Fall Break as Week 7
+                    if (!weekGroups[7]) {
+                        weekGroups[7] = [];
+                    }
+                    weekGroups[7].push({
+                        week: "7",
+                        date: "Fall Break",
+                        classType: "No Classes",
+                        description: "Fall Break - No Classes Scheduled",
+                        originalIndex: index,
+                        isBreak: true
+                    });
+                    return;
+                }
+                
+                // Determine the week number: use JSON week if specified, otherwise calculate from calendar
+                let weekNumber;
+                if (item.week && item.week.trim() !== '') {
+                    // Use the week specified in JSON
+                    weekNumber = parseInt(item.week);
+                } else {
+                    // Calculate week from calendar
+                    weekNumber = getCalendarWeek(item.date);
+                }
+                
+                if (weekNumber && weekNumber > 0) {
+                    if (!weekGroups[weekNumber]) {
+                        weekGroups[weekNumber] = [];
+                    }
+                    weekGroups[weekNumber].push({...item, originalIndex: index});
+                }
+            });
+            
+            // Debug: Log what weeks we have
+            
+            Object.keys(weekGroups).forEach(week => {
+                console.log(`Week ${week}: ${weekGroups[week].length} items`);
+                weekGroups[week].forEach(item => {
+                    if (item.date === "F - September 19" || item.date === "T - September 23") {
+                        console.log(`  - ${item.date}: ${item.classType}`);
+                    }
+                });
+            });
+            
+            // Helper function to get week date range
+            function getWeekDateRange(weekItems) {
+                const dates = weekItems
+                    .filter(item => item.date && item.date.trim())
+                    .map(item => item.date);
+                
+                if (dates.length === 0) return '';
+                if (dates.length === 1) return dates[0];
+                
+                const firstDate = dates[0];
+                const lastDate = dates[dates.length - 1];
+                
+                // Extract just the date part (after " - ")
+                const firstDatePart = firstDate.split(' - ')[1] || firstDate;
+                const lastDatePart = lastDate.split(' - ')[1] || lastDate;
+                
+                return `${firstDatePart} - ${lastDatePart}`;
+            }
+            
+            // Helper function to parse day of week and format nicely
+            function formatDayDate(dateString) {
+                if (!dateString || !dateString.includes(' - ')) return dateString;
+                
+                const [dayPart, datePart] = dateString.split(' - ');
+                const dayNames = {
+                    'M': 'Monday',
+                    'T': 'Tuesday', 
+                    'W': 'Wednesday',
+                    'F': 'Friday'
+                };
+                
+                const fullDay = dayNames[dayPart] || dayPart;
+                return `${fullDay}, ${datePart}`;
+            }
+            
+            // Helper function to create break divider
+            function createBreakDivider() {
+                const breakCard = document.createElement('div');
+                breakCard.className = 'break-card';
+                breakCard.innerHTML = `
+                    <div class="break-title">FALL BREAK</div>
+                    <div class="break-dates">October 13 - 17</div>
+                `;
+                return breakCard;
+            }
+            
+            // Process each week group in order
+            const weekKeys = Object.keys(weekGroups).sort((a, b) => parseInt(a) - parseInt(b));
+            
+            weekKeys.forEach(weekKey => {
+                const weekItems = weekGroups[weekKey];
+                const dateRange = getWeekDateRange(weekItems);
+                
+                // Create week group container
+                const weekGroup = document.createElement('div');
+                weekGroup.className = 'week-group';
+                weekGroup.id = `week-group-${weekKey}`;
+                
+                // Create week header card
+                const weekHeader = document.createElement('div');
+                weekHeader.className = 'week-header-card';
+                weekHeader.onclick = () => toggleWeekGroup(weekKey);
+                
+                weekHeader.innerHTML = `
+                    <div class="week-title-row">
+                        <span class="week-expand-icon collapsed" id="week-icon-${weekKey}">▶</span>
+                        <span class="week-number">Week ${weekKey}</span>
+                        <span class="week-dates">${dateRange}</span>
+                    </div>
+                    <div class="week-description-line editable-week-description" onclick="event.stopPropagation(); editWeekDescription('${weekKey}')" data-week="${weekKey}">
+                        <span class="empty-description">Click to add week description...</span>
+                    </div>
+                `;
+                
+                weekGroup.appendChild(weekHeader);
+                
+                // Create week classes container (start collapsed)
+                const weekClassesContainer = document.createElement('div');
+                weekClassesContainer.className = 'week-classes-container collapsed';
+                weekClassesContainer.id = `week-classes-${weekKey}`;
+                
+                // Create individual class cards for this week
+                weekItems.forEach(item => {
+                    const classCard = document.createElement('div');
+                    
+                    // Handle break week specially
+                    if (item.isBreak) {
+                        classCard.className = 'class-card break-week';
+                        classCard.innerHTML = `
+                            <div class="class-main-info">
+                                <span class="class-expand-icon">•</span>
+                                <span class="class-day-date">${item.date}</span>
+                                <span class="class-type-name">${item.classType}</span>
+                            </div>
+                            <div class="class-description-line">
+                                ${item.description}
+                            </div>
+                        `;
+                    } else {
+                        // Parse date and determine status for regular classes
+                        const scheduleDate = parseScheduleDate(item.date);
+                        const dateStatus = getDateStatus(scheduleDate);
+                        
+                        // Add status classes
+                        let cardClasses = ['class-card'];
+                        if (item.isDueDate) {
+                            cardClasses.push('due-date');
+                        } else if (dateStatus === 'current') {
+                            cardClasses.push('current');
+                        } else if (dateStatus === 'past') {
+                            cardClasses.push('past');
+                        } else if (dateStatus === 'upcoming' && item.isDueDate) {
+                            cardClasses.push('upcoming-deadline');
+                        }
+                        
+                        classCard.className = cardClasses.join(' ');
+                        
+                        // Create card content
+                        const formattedDate = formatDayDate(item.date);
+                        classCard.innerHTML = `
+                            <div class="class-main-info">
+                                <span class="class-expand-icon" onclick="event.stopPropagation(); toggleClassDescription(this)">▶</span>
+                                <span class="class-day-date">${formattedDate}</span>
+                                <span class="class-type-name">${item.classType}</span>
+                            </div>
+                            <div class="class-description-line collapsed">
+                                ${item.description || '<span class="empty-description">Click to add description...</span>'}
+                            </div>
+                        `;
+                    }
+                    
+                    // Add click handler for the entire card
+                    classCard.addEventListener('click', (e) => {
+                        if (!e.target.closest('.class-expand-icon') && !e.target.closest('.class-description-line')) {
+                            loadClassPage(item.classType, item.date);
+                        }
+                    });
+                    
+                    weekClassesContainer.appendChild(classCard);
+                });
+                
+                weekGroup.appendChild(weekClassesContainer);
+                scheduleList.appendChild(weekGroup);
+                
+                // Set initial height for animation
+                weekClassesContainer.style.maxHeight = weekClassesContainer.scrollHeight + 'px';
+                
+                // Add fall break after Week 6
+                if (weekKey === '6' && breakPosition === '6') {
+                    scheduleList.appendChild(createBreakDivider());
+                }
+            });
+        }
+        
+        // Function to populate class type definitions
+        function populateDefinitions() {
+            const container = document.getElementById('classDefinitions');
+            container.innerHTML = '';
+            
+            Object.entries(classTypeDefinitions).forEach(([type, definition]) => {
+                const item = document.createElement('div');
+                item.className = 'definition-item';
+                item.id = `def-${type.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                item.innerHTML = `
+                    <div class="definition-title">${type}</div>
+                    <div class="definition-text">${definition}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        // Function to populate projects
+        function populateProjects() {
+            console.log('populateProjects called with', projectsData.length, 'projects');
+            const container = document.getElementById('projectsList');
+            if (!container) {
+                console.error('projectsList element not found!');
+                return;
+            }
+            container.innerHTML = '';
+            
+            projectsData.forEach(project => {
+                console.log('Adding project:', project.title);
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.onclick = () => loadProjectPage(project);
+                
+                // Add project color indicator
+                const colorIndicator = project.color ? 
+                    `<span class="project-indicator" style="background-color: ${project.color}"></span>` : '';
+                
+                projectCard.innerHTML = `
+                    <div class="project-title">${colorIndicator}${project.title}</div>
+                    <div class="project-meta">${project.format} • ${project.duration}</div>
+                    <div class="project-description">${project.description}</div>
+                `;
+                
+                container.appendChild(projectCard);
+            });
+            console.log('Projects populated successfully');
+        }
+        
+        // Function to load project page
+        function loadProjectPage(project) {
+            const contentTitle = document.getElementById('contentTitle');
+            const contentBody = document.getElementById('contentBody');
+            
+            // Close mobile sidebar if open
+            closeSidebar();
+            
+            // Update content title
+            contentTitle.textContent = project.title;
+            
+            // Update URL hash for project
+            updateProjectURLHash(project);
+            
+            // Highlight project weeks/classes
+            highlightProjectWeeks(project);
+            
+            // Generate project page content
+            const projectContent = generateProjectPageContent(project);
+            contentBody.innerHTML = projectContent;
+        }
+        
+        // Function to highlight weeks/classes associated with a project
+        function highlightProjectWeeks(project) {
+            // Clear previous highlighting
+            clearProjectHighlighting();
+            
+            // Set selected project
+            selectedProject = project;
+            
+            // Highlight project card
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            const projectCard = document.querySelector(`[onclick*="${project.id}"]`);
+            if (projectCard) {
+                projectCard.classList.add('selected');
+            }
+            
+            // Get weeks for this project
+            const projectWeeks = [];
+            for (let week = project.startWeek; week <= project.endWeek; week++) {
+                projectWeeks.push(week);
+            }
+            // Add due date weeks if they exist
+            if (project.dueDateWeeks) {
+                project.dueDateWeeks.forEach(week => {
+                    if (!projectWeeks.includes(week)) {
+                        projectWeeks.push(week);
+                    }
+                });
+            }
+            
+            // Highlight relevant weeks and collapse others
+            document.querySelectorAll('.week-group').forEach(weekGroup => {
+                const weekNumber = parseInt(weekGroup.id.replace('week-group-', ''));
+                const weekClassesContainer = weekGroup.querySelector('.week-classes-container');
+                const weekIcon = weekGroup.querySelector('.week-expand-icon');
+                
+                const isProjectWeek = (week) => week >= project.startWeek && week <= project.endWeek;
+                const isDueDateWeek = (week) => project.dueDateWeeks && project.dueDateWeeks.includes(week);
+                
+                if (projectWeeks.includes(weekNumber)) {
+                    // Expand and highlight project weeks
+                    weekGroup.classList.remove('dimmed');
+                    weekGroup.classList.add('highlighted');
+                    
+                    // Expand the week
+                    if (weekClassesContainer) {
+                        weekClassesContainer.classList.remove('collapsed');
+                    }
+                    if (weekIcon) {
+                        weekIcon.classList.remove('collapsed');
+                        weekIcon.textContent = '▼';
+                    }
+                    
+                    // Highlight classes within this week that relate to the project
+                    weekGroup.querySelectorAll('.class-card').forEach(classCard => {
+                        const classType = classCard.querySelector('.class-type-name')?.textContent;
+                        const classDate = classCard.querySelector('.class-day-date')?.textContent;
+                        
+                        // Check if this class is in the project's related classes list
+                        const isRelatedByType = project.relatedClassTypes && project.relatedClassTypes.includes(classType);
+                        const isRelatedByDate = project.relatedClasses && project.relatedClasses.some(relatedDate => 
+                            classDate && classDate.includes(relatedDate.split(' - ')[1]) // Compare just the date part
+                        );
+                        
+                        // In due date weeks, only highlight specifically related classes
+                        const shouldHighlight = isDueDateWeek(weekNumber) ? 
+                            (isRelatedByDate || (isRelatedByType && classType && classType.includes('Due'))) :
+                            (isRelatedByType || isRelatedByDate);
+                        
+                        if (shouldHighlight) {
+                            classCard.classList.remove('dimmed');
+                            classCard.classList.add('highlighted');
+                            
+                            // Check if this is a due date for special styling
+                            const isDueDate = classCard.classList.contains('due-date') || 
+                                            classType && classType.includes('Due');
+                            
+                            if (isDueDate) {
+                                classCard.classList.add('project-due-date');
+                            }
+                            
+                            // Add project indicator (this will use the project color for the dot)
+                            addProjectIndicator(classCard, project);
+                        } else {
+                            classCard.classList.add('dimmed');
+                            classCard.classList.remove('highlighted');
+                        }
+                    });
+                } else {
+                    // Collapse and dim non-project weeks
+                    weekGroup.classList.add('dimmed');
+                    weekGroup.classList.remove('highlighted');
+                    
+                    // Collapse the week
+                    if (weekClassesContainer) {
+                        weekClassesContainer.classList.add('collapsed');
+                    }
+                    if (weekIcon) {
+                        weekIcon.classList.add('collapsed');
+                        weekIcon.textContent = '▶';
+                    }
+                }
+            });
+        }
+        
+        // Function to clear project highlighting
+        function clearProjectHighlighting() {
+            selectedProject = null;
+            
+            // Clear project card selection
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Clear week highlighting and collapse all weeks
+            document.querySelectorAll('.week-group').forEach(weekGroup => {
+                weekGroup.classList.remove('dimmed', 'highlighted');
+                
+                // Collapse all weeks
+                const weekClassesContainer = weekGroup.querySelector('.week-classes-container');
+                const weekIcon = weekGroup.querySelector('.week-expand-icon');
+                
+                if (weekClassesContainer) {
+                    weekClassesContainer.classList.add('collapsed');
+                }
+                if (weekIcon) {
+                    weekIcon.classList.add('collapsed');
+                    weekIcon.textContent = '▶';
+                }
+            });
+            
+            // Clear class highlighting
+            document.querySelectorAll('.class-card').forEach(classCard => {
+                classCard.classList.remove('dimmed', 'highlighted');
+                classCard.style.removeProperty('--project-color');
+                classCard.style.removeProperty('--project-highlight-color');
+                
+                // Remove project indicators
+                const indicator = classCard.querySelector('.project-indicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            });
+        }
+        
+        // Function to add project indicator to class card
+        function addProjectIndicator(classCard, project) {
+            // Remove existing indicator
+            const existingIndicator = classCard.querySelector('.project-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+            
+            // Add new indicator
+            const indicator = document.createElement('span');
+            indicator.className = 'project-indicator';
+            indicator.style.backgroundColor = project.color;
+            indicator.title = project.title;
+            
+            const mainInfo = classCard.querySelector('.class-main-info');
+            if (mainInfo) {
+                mainInfo.insertBefore(indicator, mainInfo.firstChild);
+            }
+        }
+        
+        // Update URL hash for project bookmarking/sharing
+        function updateProjectURLHash(project) {
+            const encodedProjectId = encodeURIComponent(project.id);
+            window.location.hash = `project=${encodedProjectId}`;
+        }
+        
+        // Generate project page content
+        function generateProjectPageContent(project) {
+            let deliverables = '';
+            if (project.deliverables.interactive && project.deliverables.interactive !== "None") {
+                deliverables += `<h3>Interactive Deliverables</h3><p>${project.deliverables.interactive}</p>`;
+            }
+            
+            if (project.deliverables.documentation) {
+                deliverables += `<h3>Documentation</h3>`;
+                Object.entries(project.deliverables.documentation).forEach(([key, value]) => {
+                    deliverables += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${value}</p>`;
+                });
+            }
+            
+            if (project.deliverables.optional) {
+                deliverables += `<h3>Optional</h3><p>${project.deliverables.optional}</p>`;
+            }
+            
+            if (project.deliverables.budget) {
+                deliverables += `<h3>${project.deliverables.budget.title}</h3>`;
+                deliverables += `<p>${project.deliverables.budget.description}</p>`;
+                deliverables += `<ul>`;
+                project.deliverables.budget.requirements.forEach(req => {
+                    deliverables += `<li>${req}</li>`;
+                });
+                deliverables += `</ul>`;
+                if (project.deliverables.budget.note) {
+                    deliverables += `<p><em>Note: ${project.deliverables.budget.note}</em></p>`;
+                }
+            }
+            
+            return `
+                <div class="project-page">
+                    <div class="project-header">
+                        <h1>${project.title}</h1>
+                        <div class="project-meta-info">
+                            <p><strong>Format:</strong> ${project.format}</p>
+                            <p><strong>Duration:</strong> ${project.duration}</p>
+                            <p><strong>Weeks:</strong> ${project.startWeek} - ${project.endWeek}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="project-content">
+                        <h2>Description</h2>
+                        <p>${project.description}</p>
+                        
+                        <h2>Constraints</h2>
+                        <ul>
+                            ${project.constraints.map(constraint => `<li>${constraint}</li>`).join('')}
+                        </ul>
+                        
+                        <h2>Tools</h2>
+                        <ul>
+                            ${project.tools.map(tool => `<li>${tool}</li>`).join('')}
+                        </ul>
+                        
+                        <h2>Deliverables</h2>
+                        ${deliverables}
+                        
+                        <h2>Submission Format</h2>
+                        <p>${project.submissionFormat}</p>
+                        
+                        <h2>Timeline</h2>
+                        <p><strong>Start:</strong> ${project.dates.startDate}</p>
+                        <p><strong>End:</strong> ${project.dates.endDate}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Function to handle description editing
+        function editDescription(index) {
+            const row = document.querySelectorAll('#scheduleBody tr')[index];
+            const cell = row.querySelector('.editable-description');
+            const currentText = scheduleData[index].description;
+            
+            // Create input field
+            const input = document.createElement('textarea');
+            input.value = currentText;
+            input.className = 'edit-mode';
+            input.style.width = '100%';
+            input.style.resize = 'vertical';
+            
+            // Replace cell content with input
+            cell.innerHTML = '';
+            cell.appendChild(input);
+            input.focus();
+            
+            // Handle saving
+            function saveDescription() {
+                const newValue = input.value;
+                scheduleData[index].description = newValue;
+                cell.innerHTML = newValue || '<span class="empty-description">Click to add description...</span>';
+                
+                // Save changes to external file (would require backend)
+                saveScheduleData();
+                console.log('Saved description for:', scheduleData[index]);
+            }
+            
+            // Save on blur or Enter (with Ctrl/Cmd)
+            input.addEventListener('blur', saveDescription);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    saveDescription();
+                }
+                if (e.key === 'Escape') {
+                    cell.innerHTML = currentText || '<span class="empty-description">Click to add description...</span>';
+                }
+            });
+        }
+        
+        // Function to save schedule data (for future backend integration)
+        async function saveScheduleData() {
+            try {
+                // This would send data to a backend endpoint
+                // For now, just log the data that would be saved
+                console.log('Schedule data to save:', JSON.stringify(scheduleData, null, 2));
+                
+                // Example backend call:
+                // await fetch('api/save-schedule', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(scheduleData)
+                // });
+                
+            } catch (error) {
+                console.error('Error saving schedule data:', error);
+            }
+        }
+        
+        // Function to scroll to class type definition
+        function scrollToDefinition(classType) {
+            const elementId = `def-${classType.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.backgroundColor = '#f8f8f8';
+                setTimeout(() => {
+                    element.style.backgroundColor = '#ffffff';
+                }, 2000);
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, starting initialization...');
+            
+            // Set up hash change listener for URL routing
+            window.addEventListener('hashchange', handleHashChange);
+            
+            // Set up click handler to clear project highlighting
+            document.addEventListener('click', handleGlobalClick);
+            
+            // Load data and then check for URL hash
+            loadData().then(() => {
+                // After data is loaded, check if we should load a specific class from URL
+                loadFromURL();
+            });
+        });
+        
+        // Handle global clicks to clear project highlighting
+        function handleGlobalClick(event) {
+            // Don't clear if clicking on project card, class card, or sidebar content
+            if (event.target.closest('.project-card') || 
+                event.target.closest('.class-card') || 
+                event.target.closest('.sidebar-content') ||
+                event.target.closest('.main-content')) {
+                return;
+            }
+            
+            // Clear highlighting if clicked outside
+            if (selectedProject) {
+                clearProjectHighlighting();
+            }
+        }
+        
+        // Function to generate individual class pages (for future development)
+        function generateClassPage(classData) {
+            // This function will eventually create individual HTML pages for each class
+            // Following a consistent template structure
+            console.log('Generating page for:', classData);
+        }
+        
+        // Function to export schedule data (for saving changes)
+        function exportScheduleData() {
+            return {
+                schedule: scheduleData,
+                definitions: classTypeDefinitions
+            };
+        }
+        
+        // Week and class expand/collapse functions (updated for card layout)
+        function toggleWeekGroup(weekKey) {
+            const icon = document.getElementById(`week-icon-${weekKey}`);
+            const weekClassesDiv = document.getElementById(`week-classes-${weekKey}`);
+            
+            if (icon && weekClassesDiv) {
+                const isExpanded = !icon.classList.contains('collapsed');
+                
+                if (isExpanded) {
+                    // Collapse
+                    icon.classList.add('collapsed');
+                    weekClassesDiv.style.maxHeight = '0px';
+                    weekClassesDiv.classList.add('collapsed');
+                } else {
+                    // Expand
+                    icon.classList.remove('collapsed');
+                    weekClassesDiv.classList.remove('collapsed');
+                    weekClassesDiv.style.maxHeight = weekClassesDiv.scrollHeight + 'px';
+                    
+                    // Reset max-height after animation completes
+                    setTimeout(() => {
+                        if (!weekClassesDiv.classList.contains('collapsed')) {
+                            weekClassesDiv.style.maxHeight = 'none';
+                        }
+                    }, 300);
+                }
+            }
+        }
+        
+        function toggleClassDescription(iconElement) {
+            const classCard = iconElement.closest('.class-card');
+            const descriptionDiv = classCard.querySelector('.class-description-line');
+            const isExpanded = iconElement.textContent === '▼';
+            
+            // Toggle icon
+            iconElement.textContent = isExpanded ? '▶' : '▼';
+            
+            // Toggle description visibility with animation
+            if (descriptionDiv) {
+                if (isExpanded) {
+                    // Collapse
+                    descriptionDiv.style.maxHeight = '0px';
+                    descriptionDiv.classList.add('collapsed');
+                } else {
+                    // Expand
+                    descriptionDiv.classList.remove('collapsed');
+                    descriptionDiv.style.maxHeight = descriptionDiv.scrollHeight + 'px';
+                    
+                    // Reset max-height after animation completes
+                    setTimeout(() => {
+                        if (!descriptionDiv.classList.contains('collapsed')) {
+                            descriptionDiv.style.maxHeight = 'none';
+                        }
+                    }, 200);
+                }
+            }
+        }
+        
+        // Function to toggle assignment details
+        function toggleAssignmentDetails(assignmentElement) {
+            const expandedDiv = assignmentElement.querySelector('.assignment-expanded');
+            const icon = assignmentElement.querySelector('.expand-icon');
+            const isExpanded = icon.textContent === '▼';
+            
+            // Toggle icon
+            icon.textContent = isExpanded ? '▶' : '▼';
+            
+            // Toggle expanded content
+            if (expandedDiv) {
+                if (isExpanded) {
+                    // Collapse
+                    expandedDiv.style.display = 'none';
+                    assignmentElement.classList.remove('expanded');
+                } else {
+                    // Expand
+                    expandedDiv.style.display = 'block';
+                    assignmentElement.classList.add('expanded');
+                }
+            }
+        }
+        
+        // Function to edit week descriptions
+        function editWeekDescription(weekKey) {
+            const weekDescElement = document.querySelector(`[data-week="${weekKey}"]`);
+            if (!weekDescElement) return;
+            
+            const currentText = weekDescElement.textContent.trim();
+            const isEmptyDescription = weekDescElement.querySelector('.empty-description') !== null;
+            
+            // Create input field
+            const input = document.createElement('textarea');
+            input.value = isEmptyDescription ? '' : currentText;
+            input.className = 'edit-mode';
+            input.style.width = '100%';
+            input.style.resize = 'vertical';
+            input.style.minHeight = '60px';
+            input.placeholder = 'Add week description...';
+            
+            // Replace element content with input
+            weekDescElement.innerHTML = '';
+            weekDescElement.appendChild(input);
+            input.focus();
+            
+            // Handle saving
+            function saveWeekDescription() {
+                const newValue = input.value.trim();
+                weekDescElement.innerHTML = newValue || '<span class="empty-description">Click to add week description...</span>';
+                
+                // Store week description (you could extend your data structure to include this)
+                console.log(`Saved description for Week ${weekKey}:`, newValue);
+            }
+            
+            // Save on blur or Enter (with Ctrl/Cmd)
+            input.addEventListener('blur', saveWeekDescription);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    saveWeekDescription();
+                }
+                if (e.key === 'Escape') {
+                    weekDescElement.innerHTML = currentText || '<span class="empty-description">Click to add week description...</span>';
+                }
+            });
+        }
+        
+        // Sidebar mobile functionality
+        function openSidebar() {
+            const sidebar = document.getElementById('scheduleSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('open');
+            overlay.classList.add('show');
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('scheduleSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+        
+        // Close sidebar when clicking overlay
+        document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+        
+        // Resize functionality
+        let isResizing = false;
+        
+        document.getElementById('resizeHandle').addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.addEventListener('mousemove', handleResize);
+            document.addEventListener('mouseup', stopResize);
+            e.preventDefault();
+        });
+        
+        function handleResize(e) {
+            if (!isResizing) return;
+            
+            const sidebar = document.getElementById('scheduleSidebar');
+            const newWidth = e.clientX;
+            
+            if (newWidth >= 300 && newWidth <= window.innerWidth * 0.6) {
+                sidebar.style.width = newWidth + 'px';
+            }
+        }
+        
+        function stopResize() {
+            isResizing = false;
+            document.removeEventListener('mousemove', handleResize);
+            document.removeEventListener('mouseup', stopResize);
+        }
+        
+        // Class page loading functionality
+        function loadClassPage(classType, date) {
+            const contentTitle = document.getElementById('contentTitle');
+            const contentBody = document.getElementById('contentBody');
+            
+            // Close mobile sidebar if open
+            closeSidebar();
+            
+            // Update content title
+            contentTitle.textContent = `${classType} - ${date}`;
+            
+            // Update URL hash
+            updateURLHash(classType, date);
+            
+            // Create a simple class page (this would load actual content in real implementation)
+            const classContent = generateClassPageContent(classType, date);
+            contentBody.innerHTML = classContent;
+        }
+        
+        // Update URL hash for bookmarking/sharing
+        function updateURLHash(classType, date) {
+            const encodedClass = encodeURIComponent(classType);
+            const encodedDate = encodeURIComponent(date);
+            window.location.hash = `class=${encodedClass}&date=${encodedDate}`;
+        }
+        
+        // Parse URL hash to extract class/date or project
+        function parseURLHash() {
+            const hash = window.location.hash.substring(1); // Remove #
+            if (!hash) return null;
+            
+            const params = new URLSearchParams(hash);
+            
+            // Check for project hash
+            const projectId = params.get('project');
+            if (projectId) {
+                return {
+                    type: 'project',
+                    projectId: decodeURIComponent(projectId)
+                };
+            }
+            
+            // Check for class hash
+            const classType = params.get('class');
+            const date = params.get('date');
+            if (classType && date) {
+                return {
+                    type: 'class',
+                    classType: decodeURIComponent(classType),
+                    date: decodeURIComponent(date)
+                };
+            }
+            
+            return null;
+        }
+        
+        // Handle hash changes (back/forward navigation)
+        function handleHashChange() {
+            const hashData = parseURLHash();
+            if (hashData) {
+                const contentTitle = document.getElementById('contentTitle');
+                const contentBody = document.getElementById('contentBody');
+                
+                if (hashData.type === 'project') {
+                    // Load project page
+                    const project = projectsData.find(p => p.id === hashData.projectId);
+                    if (project) {
+                        contentTitle.textContent = project.title;
+                        const projectContent = generateProjectPageContent(project);
+                        contentBody.innerHTML = projectContent;
+                    }
+                } else if (hashData.type === 'class') {
+                    // Load class page
+                    contentTitle.textContent = `${hashData.classType} - ${hashData.date}`;
+                    const classContent = generateClassPageContent(hashData.classType, hashData.date);
+                    contentBody.innerHTML = classContent;
+                }
+            }
+        }
+        
+        // Load class page from URL on page load
+        function loadFromURL() {
+            const hashData = parseURLHash();
+            if (hashData) {
+                // Use setTimeout to ensure DOM is ready
+                setTimeout(() => {
+                    handleHashChange();
+                }, 100);
+            }
+        }
+        
+        // Helper function to generate a shareable URL for a class
+        function getClassURL(classType, date) {
+            const baseURL = window.location.href.split('#')[0];
+            const encodedClass = encodeURIComponent(classType);
+            const encodedDate = encodeURIComponent(date);
+            return `${baseURL}#class=${encodedClass}&date=${encodedDate}`;
+        }
+        
+        // Helper function to copy class URL to clipboard
+        function copyClassURL(classType, date) {
+            const url = getClassURL(classType, date);
+            navigator.clipboard.writeText(url).then(() => {
+                console.log('Class URL copied to clipboard:', url);
+                // Could show a toast notification here
+            }).catch(err => {
+                console.error('Failed to copy URL:', err);
+            });
+        }
+        
+        // Generate sample class page content
+        function generateClassPageContent(classType, date) {
+            // Check if there's an assignment due for this class
+            const assignment = assignmentData[date];
+            let assignmentInfo = '';
+            
+            if (assignment) {
+                const timeInfo = getTimeUntilDue(assignment.dueDate);
+                assignmentInfo = `
+                    <div class="assignment-info" onclick="toggleAssignmentDetails(this)">
+                        <div class="assignment-summary">
+                            <div class="assignment-label">Assignment Due <span class="expand-icon">▶</span></div>
+                            <div class="assignment-title">${assignment.title}</div>
+                            <div class="submission-type">Type: ${assignment.submissionType}</div>
+                            <div class="assignment-details">
+                                <div class="due-date">Due: ${new Date(assignment.dueDate + ' 23:59:59').toLocaleDateString('en-US', { 
+                                    weekday: 'short', 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                })}</div>
+                                <div class="countdown-timer ${timeInfo.expired ? 'expired' : 'active'}" data-due-date="${assignment.dueDate}">
+                                    ${timeInfo.text}
+                                </div>
+                            </div>
+                            <a href="${assignment.canvasLink}" target="_blank" class="canvas-link" onclick="event.stopPropagation()">
+                                Submit on Canvas
+                            </a>
+                        </div>
+                        <div class="assignment-expanded" style="display: none;">
+                            <div class="assignment-description">
+                                <div class="description-label">Description:</div>
+                                <p>${assignment.description}</p>
+                                <div class="full-due-info">
+                                    <strong>Due:</strong> ${new Date(assignment.dueDate + ' 23:59:59').toLocaleDateString('en-US', { 
+                                        weekday: 'long', 
+                                        month: 'long', 
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    })} at 11:59 PM
+                                </div>
+                                <div class="assignment-submit-section">
+                                    <a href="${assignment.canvasLink}" target="_blank" class="canvas-link-detailed" onclick="event.stopPropagation()">
+                                        Submit on Canvas →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="class-page">
+                    <div class="class-header">
+                        <div class="class-header-main">
+                            <h1>${classType}</h1>
+                            <p class="class-date">${date}</p>
+                        </div>
+                        ${assignmentInfo}
+                    </div>
+                    
+                    <div class="class-content">
+                        <div class="section">
+                            <h2>Overview</h2>
+                            <p>This is a ${classType} session scheduled for ${date}. Detailed content for this class would be loaded here.</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Learning Objectives</h2>
+                            <ul>
+                                <li>Understand the core concepts related to this class type</li>
+                                <li>Apply practical skills through hands-on activities</li>
+                                <li>Collaborate effectively with peers</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Materials Needed</h2>
+                            <ul>
+                                <li>Laptop/computer</li>
+                                <li>Course software and tools</li>
+                                <li>Notebook for sketching and notes</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Class Activities</h2>
+                            <p>Specific activities and exercises for this session would be outlined here.</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Resources</h2>
+                            <ul>
+                                <li><a href="#" onclick="alert('This would link to actual resources')">Reading materials</a></li>
+                                <li><a href="#" onclick="alert('This would link to actual resources')">Tutorial videos</a></li>
+                                <li><a href="#" onclick="alert('This would link to actual resources')">Reference documentation</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Add CSS for class page content
+        const classPageStyles = `
+            <style>
+                .class-page {
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+                
+                .class-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 30px;
+                    padding-bottom: 20px;
+                    border-bottom: 2px solid #eee;
+                    gap: 30px;
+                }
+                
+                .class-header-main {
+                    flex: 1;
+                }
+                
+                .class-header h1 {
+                    font-size: 28px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                    color: #000;
+                }
+                
+                .class-date {
+                    font-size: 16px;
+                    color: #666;
+                    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+                }
+                
+                .assignment-info {
+                    background: #f8f8f8;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 4px;
+                    padding: 12px;
+                    min-width: 220px;
+                    flex-shrink: 0;
+                    cursor: pointer;
+                    transition: background-color 0.2s ease;
+                }
+                
+                .assignment-info:hover {
+                    background: #f0f0f0;
+                }
+                
+                .assignment-info.expanded {
+                    min-width: 280px;
+                    max-width: 320px;
+                }
+                
+                .assignment-label {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #666666;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .expand-icon {
+                    font-size: 10px;
+                    color: #999999;
+                    transition: transform 0.2s ease;
+                }
+                
+                .assignment-title {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin-bottom: 6px;
+                    line-height: 1.3;
+                }
+                
+                .submission-type {
+                    font-size: 11px;
+                    color: #666666;
+                    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+                    margin-bottom: 8px;
+                }
+                
+                .assignment-details {
+                    margin-bottom: 10px;
+                }
+                
+                .assignment-info .due-date {
+                    font-size: 12px;
+                    color: #666666;
+                    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+                    margin-bottom: 4px;
+                    display: block;
+                }
+                
+                .assignment-info .countdown-timer {
+                    font-size: 11px;
+                    font-weight: 500;
+                    padding: 2px 6px;
+                    border-radius: 2px;
+                    display: inline-block;
+                    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+                }
+                
+                .assignment-info .countdown-timer.active {
+                    background: #e8e8e8;
+                    color: #333333;
+                    border: 1px solid #cccccc;
+                }
+                
+                .assignment-info .countdown-timer.expired {
+                    background: #e0e0e0;
+                    color: #666666;
+                    border: 1px solid #cccccc;
+                }
+                
+                .assignment-info .canvas-link {
+                    background: #000000;
+                    color: #ffffff;
+                    padding: 6px 10px;
+                    text-decoration: none;
+                    border-radius: 3px;
+                    font-weight: 500;
+                    font-size: 12px;
+                    display: block;
+                    text-align: center;
+                    transition: background-color 0.2s ease;
+                }
+                
+                .assignment-info .canvas-link:hover {
+                    background: #333333;
+                    color: #ffffff;
+                }
+                
+                /* Assignment Expanded Content */
+                .assignment-expanded {
+                    margin-top: 12px;
+                    padding-top: 12px;
+                    border-top: 1px solid #e0e0e0;
+                }
+                
+                .description-label {
+                    font-size: 11px;
+                    font-weight: 500;
+                    color: #666666;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                }
+                
+                .assignment-expanded p {
+                    font-size: 12px;
+                    line-height: 1.4;
+                    color: #333333;
+                    margin-bottom: 10px;
+                }
+                
+                .full-due-info {
+                    font-size: 12px;
+                    color: #666666;
+                    margin-bottom: 10px;
+                    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+                }
+                
+                .assignment-submit-section {
+                    margin-top: 10px;
+                    padding-top: 8px;
+                    border-top: 1px solid #e8e8e8;
+                }
+                
+                .canvas-link-detailed {
+                    background: #000000;
+                    color: #ffffff;
+                    padding: 6px 10px;
+                    text-decoration: none;
+                    border-radius: 3px;
+                    font-weight: 500;
+                    font-size: 11px;
+                    display: inline-block;
+                    transition: background-color 0.2s ease;
+                }
+                
+                .canvas-link-detailed:hover {
+                    background: #333333;
+                    color: #ffffff;
+                }
+                
+                .section {
+                    margin-bottom: 30px;
+                }
+                
+                .section h2 {
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin-bottom: 12px;
+                    color: #000;
+                }
+                
+                .section p {
+                    line-height: 1.6;
+                    color: #333;
+                    margin-bottom: 12px;
+                }
+                
+                .section ul {
+                    padding-left: 20px;
+                }
+                
+                .section li {
+                    line-height: 1.6;
+                    color: #333;
+                    margin-bottom: 8px;
+                }
+                
+                .section a {
+                    color: #000;
+                    text-decoration: underline;
+                }
+                
+                .section a:hover {
+                    color: #666;
+                }
+                
+                .section-divider {
+                    border: none;
+                    border-top: 1px solid #eee;
+                    margin: 30px 0;
+                }
+            </style>
+        `;
+        
+        // Inject class page styles
+        document.head.insertAdjacentHTML('beforeend', classPageStyles);
+        
+        // Update existing functions for sidebar context
+        function scrollToDefinition(classType) {
+            // For now, just load a class page showing definition
+            loadClassPage(classType, 'Definition');
+        }
+        
+        // Generate filter buttons based on data - COMMENTED OUT (using Projects instead)
+        /*
+        function generateFilterButtons() {
+            generateClassTypeFilters();
+            generateWeekFilters();
+        }
+        
+        function generateClassTypeFilters() {
+            const container = document.getElementById('classTypeFilters');
+            const classTypes = [...new Set(scheduleData
+                .filter(item => item.classType && item.classType !== '')
+                .map(item => item.classType))];
+            
+            container.innerHTML = '';
+            classTypes.forEach(classType => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = classType;
+                button.onclick = () => toggleClassTypeFilter(classType, button);
+                container.appendChild(button);
+            });
+        }
+        
+        function generateWeekFilters() {
+            const container = document.getElementById('weekFilters');
+            const weeks = [...new Set(scheduleData
+                .filter(item => item.week && item.week !== '' && item.week !== 'BREAK')
+                .map(item => item.week))];
+            
+            container.innerHTML = '';
+            weeks.forEach(week => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = `Week ${week}`;
+                button.onclick = () => toggleWeekFilter(week, button);
+                container.appendChild(button);
+            });
+        }
+        */
+        
+        // Filter toggle functions
+        function toggleClassTypeFilter(classType, button) {
+            if (activeFilters.classTypes.has(classType)) {
+                activeFilters.classTypes.delete(classType);
+                button.classList.remove('active');
+            } else {
+                activeFilters.classTypes.add(classType);
+                button.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function toggleWeekFilter(week, button) {
+            if (activeFilters.weeks.has(week)) {
+                activeFilters.weeks.delete(week);
+                button.classList.remove('active');
+            } else {
+                activeFilters.weeks.add(week);
+                button.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        // View mode functions
+        function showPastEvents() {
+            activeFilters.viewMode = 'past';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function showUpcoming() {
+            activeFilters.viewMode = 'upcoming';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function showCurrentWeek() {
+            activeFilters.viewMode = 'current';
+            updateViewModeButtons();
+            applyFilters();
+        }
+        
+        function clearAllFilters() {
+            activeFilters.classTypes.clear();
+            activeFilters.weeks.clear();
+            activeFilters.viewMode = 'all';
+            updateAllFilterButtons();
+            applyFilters();
+        }
+        
+        function toggleExpandAll() {
+            isExpandedAll = !isExpandedAll;
+            const button = document.querySelector('.expand-all');
+            if (isExpandedAll) {
+                button.textContent = 'Collapse All';
+                button.classList.add('active');
+                expandAllRows();
+            } else {
+                button.textContent = 'Expand All';
+                button.classList.remove('active');
+                collapseAllRows();
+            }
+        }
+        
+        function updateViewModeButtons() {
+            document.querySelectorAll('.filter-controls .filter-btn').forEach(btn => {
+                if (btn.textContent.includes('Past') || 
+                    btn.textContent.includes('Upcoming') || 
+                    btn.textContent.includes('Current Week')) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            const activeBtn = document.querySelector(`[onclick*="${activeFilters.viewMode}"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+        
+        function updateAllFilterButtons() {
+            document.querySelectorAll('#classTypeFilters .filter-btn, #weekFilters .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.filter-controls .filter-btn').forEach(btn => {
+                if (!btn.classList.contains('expand-all')) {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Apply all active filters
+        function applyFilters() {
+            const rows = document.querySelectorAll('#scheduleBody tr');
+            
+            rows.forEach((row, index) => {
+                const item = scheduleData[index];
+                if (!item) return;
+                
+                let shouldShow = true;
+                
+                // Apply class type filter
+                if (activeFilters.classTypes.size > 0) {
+                    shouldShow = shouldShow && activeFilters.classTypes.has(item.classType);
+                }
+                
+                // Apply week filter
+                if (activeFilters.weeks.size > 0) {
+                    shouldShow = shouldShow && activeFilters.weeks.has(item.week);
+                }
+                
+                // Apply view mode filter
+                if (activeFilters.viewMode !== 'all') {
+                    const scheduleDate = parseScheduleDate(item.date);
+                    const dateStatus = getDateStatus(scheduleDate);
+                    
+                    switch (activeFilters.viewMode) {
+                        case 'past':
+                            shouldShow = shouldShow && dateStatus === 'past';
+                            break;
+                        case 'upcoming':
+                            shouldShow = shouldShow && (dateStatus === 'upcoming' || dateStatus === 'future');
+                            break;
+                        case 'current':
+                            shouldShow = shouldShow && dateStatus === 'current';
+                            break;
+                    }
+                }
+                
+                // Special handling for break row
+                if (item.week === 'BREAK') {
+                    shouldShow = true; // Always show break
+                }
+                
+                // Apply visibility
+                if (shouldShow) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+        
+        function expandAllRows() {
+            const rows = document.querySelectorAll('#scheduleBody tr');
+            rows.forEach(row => row.classList.remove('hidden'));
+        }
+        
+        function collapseAllRows() {
+            // Collapse based on current filters
+            applyFilters();
+        }
+    </script>
+</body>
+</html>

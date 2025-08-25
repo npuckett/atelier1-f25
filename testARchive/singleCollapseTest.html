@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Collapsible Test</title>
+</head>
+<body style="margin: 0; padding: 20px; font-family: system-ui, sans-serif; background: #ffffff;">
+    
+    <h1 style="font-size: 16pt; margin-bottom: 20px; color: #333;">Single Collapsible Element Test</h1>
+    
+    <!-- Single collapsible element - open by default -->
+    <details open style="margin-bottom: 16px; border: 1px solid #cccccc; border-radius: 0px; padding: 0; background: #ffffff;">
+        <summary style="padding: 8px 12px; background: #f8f8f8; color: black; cursor: pointer; border-radius: 0px; list-style: none;">
+            <h2 style="margin: 0; color: black; font-size: 12pt;">Workshop 1 - Real Things, Fake Project</h2>
+        </summary>
+        <div style="padding: 16px; background: #ffffff;">
+            <p style="margin: 0 0 10px 0; color: #333333; font-size: 12pt;">
+                This is a test of a single collapsible element. It should be open by default when the page loads.
+            </p>
+            <p style="margin: 0; color: #666666; font-size: 11pt;">
+                If this content is visible immediately when you load the page, then the 'open' attribute is working correctly.
+                If you have to click the summary to see this content, then Canvas is removing or ignoring the 'open' attribute.
+            </p>
+        </div>
+    </details>
+    
+    <p style="font-size: 11pt; color: #666; margin-top: 20px;">
+        This test page contains a single details/summary element with the 'open' attribute.
+        The content should be visible by default without clicking anything.
+    </p>
+    
+</body>
+</html>
