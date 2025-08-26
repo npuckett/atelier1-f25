@@ -1,0 +1,278 @@
+Atelier 1 – Fall 25
+
+General Themes
+•	Public Code
+•	Using the web to develop experimental ways to interact with data, devices, places
+o	Experiences are specific, spatial, location specific
+o	Web is a distribution mechanism
+•	Using code to personalize experience 
+o	Inputs can do whatever you want (not just a button)
+o	Data can be shown however you want (not just an icon/pie chart)
+•	Focus on playtesting and feedback from peers
+
+Schedule
+Rough idea : 2, 3-week projects, then a longer 6 week one
+Week Plan.xlsx
+
+Format
+•	All projects individual
+•	Smaller assigned peer work/testing groups
+o	These groups are used for in-class workshops/sessions
+
+Project Descriptions
+Intro Project Data
+•	Personal Data / Climate data visualization
+
+Intro Project Inputs
+•	Start with a physical object in their life that is not currently interactive
+•	Find a way to ‘digitize’ it. 
+o	Photograph it
+o	Draw it , Paint it
+o	3D scan it
+•	Use one of the very standard/boring inputs to make it interactive
+o	Focus on how interactive is NOT just reactive, how to make that jump to interactive
+o	Set a timeframe that it should be interesting for.
+o	Templates from last year that need building upon https://github.com/DigitalFuturesOCADU/experimentalux
+o	Phone Only
+•	Will talk about coding stuff in the AI world
+o	Focus on creating an in-between that shows the intent and breaks it down into components
+	Drawing
+	Diagram
+	??
+o	Explain the importance of understanding the basics of coding when using these tools.
+	https://npuckett.github.io/preposition-programming/
+	Notions of Algorithmic Thinking ala Frieder Nake - https://designobserver.com/tell-dont-show-algorithmic-thinking-for-beginners/
+	https://p5js.org/tutorials/criticalai1-chatting-with-about-code/ 
+Big Project – Something
+I think it would be helpful if we gave them a fairly heavy handed brief to either work with or against to help us curate the work in a direction.
+•	Design an interactive experience for at least 10(might be too many) people that ******* (Give them a specific issue/issues to address, otherwise we’ll get generic games)
+o	Must involve at least 1 device (but can be more)
+o	Must be hosted via a webpage
+o	Creating it primarily for the members of their dev group, but should be engaging to people outside of it.
+
+	Possible Themes
+•	Might be possible to do still do something around public domain content, just with a few more guardrails on it this time
+•	Maybe instead of themes we give them questions to explore
+** We can’t require it, but we should really be pushing them to show the work at Open Show.
+
+Readings
+
+Core Readings
+We Need to ReWild the Internet. – Maria Farrell and Robin Berjon
+Core text of the Atelier that describes the current state of the internet as an anemic walled garden.
+Tiktok’s Enshittification. – Cory Doctorow
+Description of how online platforms grow and die
+Games, Play, Joy. – Jane Friedhoff
+Collection of short essays that discuss strategies for creating Joy in playful interactions
+My website is a shifting house next to a river of knowledge. - Laurel Schwulst 
+
+EIS_DS_OpenSource_Ideology_SPC_2023.pdf 
+
+AI Stuff 
+A.I. Can’t Give You Good Taste. – Elizabeth Goodspeed
+Essay describing the role of designers in an age where content creation is “easy”
+
+Contemporary Web
+Everyone’s a Sellout Now. – Rebecca Jennings
+A slightly depressing, but accurate description of the contemporary relationship between creative practice, social media, and self-promotion
+
+What is Public?
+Hatchette V Internet Archive. – Electronic Frontier Foundation
+Lawsuit brought by publishers against the non profit Internet Archive
+John Oliver Trolls Disney with Steamboat Willie Promo. – Todd Spangler
+Overview of the bits on Last Week Tonight using Steamboat Willie
+ 
+
+Web History
+Evolving Out of the Virtual Mud. – Margaret Wertheim & Ed Burton
+Interview on the creation of Soda Constructor. An early example of virtual creatures that could be created online.
+Le Random Timeline, 1990s Net Era.
+Timeline of key interactive works from the 1990s
+Le Random Timeline, 2000s Tooling Era.
+Timeline of key interactive works from the 2000s
+
+
+
+
+
+
+Understanding the basics of how coding/interaction work
+Structuring interactive experiences not just reactive experiences
+Expanding expectations around standard input/output methods
+Screens exist in spaces and places with people and things
+Designing the plan as much as the thing
+The hand made and the generative
+
+
+Workshop 1 : Real Things, Fake Project (Opt 2 – How It’s Made)
+Workshop 2 : Uncommon Everyday
+Project : Digitizing 
+
+
+Atelier 1
+Working in Public – Fundamentals of Experimental Interaction Design
+In this Atelier we will be looking at the methods, concepts, and tools used to create engaging interactive experiences for the ‘public’. We will focus on creating new possibilities for ‘screen – based’ work that pushes beyond the current expectations for this mode of interaction. 
+This work will be broken down into multiple streams that we will develop over the semester
+Designing Tension and Action
+How do you get someone to interact? How do they know what to do? What keeps them interested? We will look at examples and techniques for designing interactions at multiple stages of the process.
+
+Visualization
+How do you explain something that doesn’t exist yet? Finding ways to visualize your intentions is a key tool for working through your ideas and discussing them with others. This can be drawings, renders, collages, or whatever works best for your process. However, we will be treating these parts of the project as importantly as the prototypes themselves.
+
+Tools
+How do I create the interaction? How do people get to use it? From the technical side, we will be looking at the web-based coding languages of p5.js, ml5, and three.js. This will be done in the context of contemporary coding tools that leverage AI models. No, it doesn’t just do the coding for you, so we will be looking at the important fundamentals and tools for writing code.
+
+Testing & Feedback
+How do people respond to the work? Do they act the way you thought they would? The development methods will focus on testing your designs early and often with your classmates. 
+
+
+Course Structure
+The semester is essentially split in half. In the first 6 weeks there will be two, 3-week workshops that introduce the various themes of the course. The second 6 weeks 
+
+Assignments
+Workshop 1 – Real Things, Fake Project
+Format – Groups of 3 (randomly assigned)
+Description
+Workshop 1 asks you to imagine and design a new interactive experience for the entry lobby of 205 Richmond that changes the way people currently use the space. The design must incorporate a screen or many screens and some form of interactivity. The goal is to design the space using products available today, but with no limitation on the budget. You do not need to actually program the media or interaction, but you do need to produce drawings, images, videos that explain how it COULD work.
+Constraints
+The design can engage any surface or space within the entry lobby. Walls, floor, doors, windows, stairs. The boundary is set by : the front doors, the elevator doors, the doors to xfab, and the doors to the 1st floor. 
+While your proposal in no way needs to be practical, you should consider how it would overlay with the existing functions of the space.
+
+Tools
+-Photoshop
+-3d modelling software Blender/Maya
+Deliverables
+Interactive 
+-None
+Documentation
+Description
+100 – 200 words that describe the concept of the project and how it works
+Visualizations
+2-3 images that show how the experience would look in the space.
+1-2 drawings or diagrams that explain how the system works
+Optional
+Mock-up video showing the interaction and effects
+Component Budget Breakdown
+There is no maximum budget for what you propose, but you must produce an estimate of the total cost in Canadian Dollars. In addition to the total cost, the budget should be broken down by item and include:
+--1 sentence description of its purpose
+--price per unit
+--quantity
+--link to supplier
+Note: You do not have to consider product lead time or availability, but it does need to be components that currently exist.
+
+Submission Format
+The Description, Visualizations, and Budget should be submitted as a single pdf file. Optional videos should be submitted as links to Vimeo/Youtube within the pdf.
+
+Workshop 2 – Uncommon Everyday
+Format – Individual
+Description
+Workshop 2 requires you to take a new look at an activity you have likely done many times before : Looking at animated gifs on your phone. For this project we will be looking at how to transform this from passive viewing to active participation. You must create an experience that uses one or more of the base modes of interacting with your phone: Touch/scroll, Microphone, or Gyroscope/Accelerometer to control an interaction with an animated Gif. We will use the functionality available in p5.js to enable new ways to read , interpret, and apply the inputs to the gif. You also have the option to create custom cases or props for interacting with the phone. 
+The goal is to design an interaction that is specific to the Gif’s content and movement to create an engaging experience. 
+Constraints
+The design must exist as a public url that can be shared with your classmates. 
+You must create the animated Gif yourself, don’t simply use an existing one.
+The experience must be designed for phones. No laptops
+Don’t do anything that could damage yours or others phones.
+If you are creating optional phone cases or props, you must fabricate enough for 5 people to use them.
+Tools
+-p5.js
+-VSCode + Github Copilot
+-Github
+Deliverables
+Interactive
+A web application hosted on a public url that allows users to interact with your gif via their phone’s web browser.
+Documentation
+A pdf that contains
+100 – 200 word description of the concept and interaction
+url of the website hosting your experience.
+Youtube/vimeo link demonstrating the interaction
+Concept image / drawing describing the interaction
+
+Main Project – Building Character(s)
+Format – Individual 
+Description
+For the main project, you will work to take an existing physical object and convert it into an interactive digital character that operates on your phone. You must design its personality, movement, and appearance in response to inputs. In addition to the methods explored in Workshop 2, we will expand to examine more complex methods of input such as hand/body tracking via the camera.
+Constraints
+The design must exist as a public url that can be shared with your classmates. 
+You must create the animated Gif yourself, don’t simply use an existing one.
+The experience must be designed for phones. No laptops
+
+Project Steps / Phases
+Project development is never fully linear. You may well have to backtrack during the process, but this is the general structure of how you will develop the work over 6 weeks.
+Choose an Object
+Your character must be based on an existing, inanimate, physical object, so first you need to choose one. It can be anything of any size. You will be creating a personality and interactions for this object, so consider how its physical traits can provide hints as to how it will behave.
+Digitize It. 
+Once you have chosen your object, the next step is to decide how you want to bring it into digital space. There are many different techniques (or combinations) you can use including photography, drawing, painting, 3d scanning, videos, or other methods. It is important to consider how this phase can change the object into a character. It should be recognizable, but you should take creative freedom in what you add, delete, or accentuate. This process will likely involve combinations of several techniques and software. Consider how the object can be broken into smaller parts to allow for more complex movement and response. 
+At this phase we will explore the tools within p5.js that let you dynamically display and manipulate multiple types of media on screen.
+Develop Its Personality and Story
+Now that your object is digital you have the freedom to create its backstory and personality. 
+What is this Creature? What does it like? What does it dislike? What does it want? How does it move? Create this through writings, drawings, renders whatever technique works for you.
+Code the First Interactions
+Now that you have a clear plan and visualizations of what you want your character to do, we’ll work on converting that to code using p5.js. This conversion can be a bit abstract, but we will look at several techniques that allows you to translate the nuance of your character’s personality into response and motion. Start with a few of the core interactions, don’t try to implement them all at once
+Playtest the First Interactions
+At this stage you will formally playtest your first interactions with your classmates. It is important to use the materials you created to design the personality of your character to quickly describe your concept. Additionally, you should consider what questions you want to ask. Be specific. There will be several people testing at once, so create a system for gathering feedback.
+Develop Version 2
+Building on the Playtest Feedback and overall goals, add and refine your character’s interactions. This is the chance to build more detail and move from reactive to interactive systems. To do this, you’ll need to consider issues such as memory and evolution of responses over time.
+Playtest Version 2
+Like the first round, you will playtest the second version of your character. You will still have time to implement updates, so this is an important round of inputs. For the second version you should also consider how to improve on the way you collect feedback from your testers. 
+Project Documentation
+Following the second playtest you will have an additional 2 weeks to implement any changes and finishes to your site. In this time you will also create comprehensive documentation which will be posted to the course website. 
+
+
+
+Course Late Policy
+This policy will be applied to all students except in the case of formal accommodations. 
+-	All assignment types have an automatic extension. 
+-	No penalty will be assessed if submitted within the in-built extension window
+-	You do not need to send a formal Doctor’s note. I won’t read it.
+-	Assignments will not be accepted beyond the automatic extension window
+
+Ongoing Development – 13 Assignments, 25% of Final Grade
+These assignments make up the majority of your grade in this course. Though the specific requirements will change, the overall goal is consistent – to foster co-working and development in class.
+Grading Type : Pass / Fail
+Due : 630pm on the class day
+Automatic Extension Window : until 11:59pm on the class day
+Automatic Accommodation for absence : You may miss 3 of these assignments without penalty. Applied automatically in Canvas
+Assignments:
+**list them here with due dates
+
+Workshop 1 & 2 : Testing and Feedback – 2 Assignments, 10% of Final Grade
+These assignments are meant to capture the data from the feedback and testing sessions for the first two workshops.
+Grading Type : Letter Grade
+Due : 11:59 on the class day
+Automatic Extension: 1 week from due date
+Assignments:
+**list them here with due dates
+
+Workshop 1 & 2 : Documentation – 2 Assignments, 15% of Final Grade
+Specific requirements for the documentation is outlined on the assignment page for each Workshop
+Grading Type : Letter Grade
+Due : The Tuesday following the Feedback/Playtest session by 11:59pm
+Automatic Extension: 1 week from due date
+Assignments:
+**list them here with due dates
+
+Main Project : Playtest 1 – 1 Assignment, 15% of Final Grade
+This assignment captures what was tested and the feedback gathered.
+Grading Type: Letter Grade
+Due: The Friday following the Playtest by 11:59pm
+Automatic Extension: 1 week from due date
+Assignments:
+**list them here with due dates
+
+Main Project : Playtest 2 – 1 Assignment, 15% of Final Grade
+This assignment captures what was tested and the feedback gathered.
+Grading Type: Letter Grade
+Due: The Friday following the Playtest by 11:59pm
+Automatic Extension: 1 week from due date
+Assignments:
+**list them here with due dates
+
+Main Project : Final Documentation – 1 Assignment, 20% of Final Grade
+This assignment2 captures both the working prototype and documentation of its development.
+Grading Type: Letter Grade
+Due: 1 week after the final class
+Automatic Extension: 1 week from due date
+Assignments:
+**list them here with due dates
+
