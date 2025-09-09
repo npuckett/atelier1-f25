@@ -1,0 +1,170 @@
+<h2 style="color: #333; font-size: 24px; margin-bottom: 16px;">Introduction</h2>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Knight Rider is a 1980s American TV show that featured an autonomous, artificially intelligent car with some really cool (at the time) lights:</p>
+
+<div style="text-align: center; margin: 20px 0; width: 100%;">
+    <iframe class="giphy-embed" title="embedded content" src="https://giphy.com/embed/7STA5KhSsBGFq1CULw" width="100%" height="400" loading="lazy" allowfullscreen="allowfullscreen" style="border: 1px solid #ddd; max-width: 100%;"></iframe>
+</div>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Today we will create a circuit that features LEDs a la Knight Rider. What we are creating is based on the <a class="inline_disabled external" title="Link" href="https://docs.arduino.cc/built-in-examples/control-structures/ForLoopIteration" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">For Loop (Knight Rider) example</a> from Arduino. We have modified this example for use with the Arduino Nano 33 IoT.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">If you are new to circuits, this is worth investing time in because it is a great opportunity for skill development.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">If you are experienced with circuits, this is still worthwhile as a chance to practice soldering and circuit assembly on a protoboard.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 20px; font-style: italic;"><em>Note from Kate: I found it VERY satisfying to assemble these examples. I hope you do too!</em></p>
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 1: Gather parts from your kit.</h2>
+<ul style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/adafruit-industries-llc/239/7244929" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">(1) breadboard</a></li>
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/adafruit-industries-llc/1609/5353655" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">(1) protoboard</a></li>
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/arduino/ABX00032/10239967" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">(1) Arduino Nano 33 IoT</a></li>
+    <li><a href="https://www.digikey.ca/en/products/detail/sullins-connector-solutions/PPTC151LFBN-RC/810153" style="color: #0066cc; text-decoration: none;">Socket (F) headers 1 X 15</a></li>
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/adafruit-industries-llc/758/5353614" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">Jumper wires</a></li>
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/adafruit-industries-llc/4202/10130501" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">(6) LEDs</a></li>
+    <li><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/yageo/CFR-25JR-52-100R/11950" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">(6) 100ohm resistors (stripes: brown, black, brown, gold)</a></li>
+</ul>
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 2: Assemble the circuit on the breadboard.</h2>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Create a breadboard circuit based on the circuit illustration below.</p>
+
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Breadboards & LED Polarity</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">In order to do this, you will need to understand a little bit about the parts you are working with.</p>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Breadboards are used to prototype temporary circuits with easy connections. Learn more about how breadboards work here:<br><a href="https://arduinotogo.com/2016/08/22/chapter-2-using-a-breadboard/" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">https://arduinotogo.com/2016/08/22/chapter-2-using-a-breadboard/</a></p>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">LEDs are light-emitting diodes. In order to work, they must be connected in the correct orientation. Here are some diagrams to help you identify which side is positive and which side is negative:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <a class="inline_disabled" href="https://www.davidhaillant.com/how-to-determine-through-hole-led-polarity/" target="_blank" rel="noopener">
+                <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982860/preview" alt="image.png" style="max-width: 400px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982860" data-api-returntype="File" />
+            </a>
+        </td>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <a class="inline_disabled" href="https://owlcircuits.com/resources/how-to-determine-led-polarity/" target="_blank" rel="noopener">
+                <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982861/preview" alt="image.png" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982861" data-api-returntype="File" />
+            </a>
+        </td>
+    </tr>
+</table>
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Breadboards & Resistor NON-Polarity</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Unlike LEDs, resistors Do Not have a polarity. This means that it does not matter which end goes on which side of the circuit. They are often oriented in the same way for visual clarity, but this does not affect how the circuit performs.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/4093737/preview" alt="istockphoto-1477511856-612x612.jpg" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/4093737" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Breadboards & Wiring</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">You have two different connector types included in your kit. Jumpers and pre-cut wires</p>
+
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Jumpers</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Jumpers are flexible, fixed length connectors that allow you to quickly make connections on your breadboard. Their advantage is that they are quick to implement. Their disadvantage is that they can get messy because of their length. Jumper wires are only used on breadboards and shouldn't be soldered onto protoboards.</p>
+
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Pre-cut wires</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">The pre-cut wires are simply solid core wire that has been cut and stripped at a set length. These can be used on both breadboards and protoboards to create a cleaner profile of the circuit. Also, these can be cut to custom lengths to match the needs of your circuit.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/4093772/preview" alt="71Yh9-RygyL._AC_UL495_SR435,495_-1.jpg" style="max-width: 600px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/4093772" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Colours and organization</h4>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Regardless of whether you are using jumpers or wires, colour-coding is important. While the colour does not change the properties of the wire/jumper, it does provide you with a means to visually organize your circuit. There are many approaches, but it is important to be consistent as this will benefit you when coding and debugging your circuit.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;"><strong>A few standard conventions</strong></p>
+<ul style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+    <li>Black : Ground</li>
+    <li>Red : Power</li>
+</ul>
+
+<h4 style="color: #333; font-size: 18px; margin: 20px 0 12px 0;">Circuit Illustration</h4>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982841/preview" alt="Arduino Nano 33 - Knight Rider.png" style="max-width: 800px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982841" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 3: Program the Arduino.</h2>
+<ul style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+    <li>If you haven't already, set up the Arduino application using this guide: <a title="Install Arduino IDE and Board Library" href="https://canvascloud.ocadu.ca/courses/12242/pages/install-arduino-ide-and-board-library?wrap=1" data-course-type="wikiPages" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/pages/install-arduino-ide-and-board-library" data-api-returntype="Page" style="color: #0066cc; text-decoration: none;">Install Arduino IDE and Board Library</a></li>
+    <li>Connect the Arduino to your computer via USB cable.</li>
+    <li>Go to File → Examples → 05.Control → ForLoopExample to open the code.</li>
+    <li>Upload the code to the Arduino board board using the "upload" button on the upper left.</li>
+</ul>
+
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 4: Test the breadboard circuit.</h2>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982842/preview" alt="Arduino Nano 33 - Knight Rider - breadboard.GIF" style="max-width: 700px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982842" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 5: Create the circuit on a protoboard.</h2>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Create a protoboard circuit based on the circuit illustration in Step 2.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Solder the headers first. Prepare the headers by following these instructions: <a title="Prepare Socket Headers to attach the Arduino to the Protoboard" href="https://canvascloud.ocadu.ca/courses/12242/pages/prepare-socket-headers-to-attach-the-arduino-to-the-protoboard?wrap=1" data-course-type="wikiPages" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/pages/prepare-socket-headers-to-attach-the-arduino-to-the-protoboard" data-api-returntype="Page" style="color: #0066cc; text-decoration: none;">Prepare Socket Headers to attach the Arduino to the Protoboard</a></p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Then do the remaining components, one at a time. Be sure to double check your placement of components before soldering.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;"><strong>Here are some assembly tips:</strong></p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Be sure to add the sockets from your kit to the protoboard.</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px; font-weight: bold;">DO NOT SOLDER YOUR ARDUINO DIRECTLY TO THE BOARD</p>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;"><a class="inline_disabled" href="https://www.digikey.ca/en/products/detail/sullins-connector-solutions/PPTC151LFBN-RC/810153" target="_blank" rel="noopener" style="color: #0066cc; text-decoration: none;">Use 2 X 15 pin sockets from your kit</a></p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/4094298/preview" alt="IMG_3563.JPG" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/4094298" data-api-returntype="File" />
+        </td>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/4094016/preview" alt="PXL_20250909_132807414.jpg" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/4094016" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Tape can be used to hold components in place when soldering.</p>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982857/preview" alt="proto-taping.JPG" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982857" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">The legs of components can also be bent to provide a secure fit.</p>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982856/preview" alt="proto-bendinglegs.JPG" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982856" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Bending the legs of components such as resistors at a right angle can help them to sit flat on the protoboard.</p>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982858/preview" alt="resistors-rightangles.JPG" style="max-width: 500px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982858" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">When you are done, be sure to trim any extra wire on the back of the circuit board with a pair of small snips.</p>
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 6: Test the protoboard circuit.</h2>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+        <td style="text-align: center; padding: 10px; border: none;">
+            <img src="https://canvascloud.ocadu.ca/courses/12242/files/3982844/preview" alt="Arduino Nano 33 - Knight Rider - protoboard.GIF" style="max-width: 900px; height: auto; border: 1px solid #ddd;" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/12242/files/3982844" data-api-returntype="File" />
+        </td>
+    </tr>
+</table>
+
+<h2 style="color: #333; font-size: 20px; margin: 32px 0 16px 0;">Step 7: Post your results to this discussion!</h2>
+<p style="color: #666; font-size: 16px; line-height: 1.5; margin-bottom: 16px;">Share images or gifs of your breadboard and protoboard circuit. Share both what you found easy and what was challenging. Post your results even if it did not work as expected.</p>
