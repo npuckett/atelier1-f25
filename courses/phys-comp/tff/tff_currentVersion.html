@@ -1,0 +1,74 @@
+<table style="border-collapse: collapse; width: 70%;" border="0">
+    <tbody>
+        <tr>
+            <td style="width: 99.9694%;"><img id="3562274" src="https://canvascloud.ocadu.ca/courses/13538/files/4412806/preview" alt="tff_mainImage.jpg" width="100%" height="100%" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/13538/files/4412806" data-api-returntype="File" /></td>
+        </tr>
+        <tr>
+            <td style="width: 99.9694%;">
+                <p><strong>Keywords</strong>: Interactive Animation, Pixel Art, Sensor VS Sensing, Enclosures</p>
+                <p><strong>Format</strong>: Individual</p>
+                <p>Policy on Submissions and Late Work :&nbsp;<a title="Late Work Policy" href="https://canvascloud.ocadu.ca/courses/13538/pages/late-work-policy" data-course-type="wikiPages" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/13538/pages/late-work-policy" data-api-returntype="Page">Late Work Policy</a></p>
+                <h3>Introduction</h3>
+                <p>Create a standalone device that uses the <a class="inline_disabled" href="https://docs.arduino.cc/tutorials/uno-r4-wifi/led-matrix" target="_blank" rel="noopener">integrated LED matrix</a> and either a standard <a class="inline_disabled" href="https://www.adafruit.com/product/3942" target="_blank" rel="noopener">HC-SR04 distance sensor</a> or DIY pressure sensor to create interactive animations. This will result in a class Film Festival where all devices are displayed. The goal is to create an interactive animation on the LED Matrix that responds to input from the sensor. We will look at a variety of tools that allow you to create animations for the LED Matrix and how to link it to sensor input. We will also examine how raw sensor data can be customized for particular input using position, orientation, and data filtering methods.&nbsp;</p>
+                <p>The goal is to create an experience that has a clear connection between the object, animations, and interaction method.&nbsp;</p>
+                <h3>Animation Tools and Controls</h3>
+                <p><strong>LED Matrix Editor</strong></p>
+                <p>The <a class="inline_disabled" href="https://ledmatrix-editor.arduino.cc/" target="_blank" rel="noopener">LED Matrix Editor</a>&nbsp; is an online tool used to create animations and visual effects that can be shown on the LED Matrix. It allows you to create and manipulate frame by frame animations and convert them into code that can be shown on the arduino</p>
+                <p><strong>Playback Control</strong></p>
+                <p>The <a class="inline_disabled" href="https://github.com/DigitalFuturesOCADU/TinyFilmFestival/" target="_blank" rel="noopener">TinyFilmFestival</a> library will be used to dynamically control, manipulate, and switch animations created in the Matrix Editor. This allow you to use sensor input to&nbsp;</p>
+                <p>Set the playback type : Once, Loop, Boomerang</p>
+                <p>Set the play state : Play, Pause, Stop</p>
+                <p>Set playback properties : PlaySpeed</p>
+                <p>Set the animation to be displayed</p>
+                <h3>Coding Concepts</h3>
+                <p>This project will increase the complexity of the software created to design the relationship between the input data and results on screen.</p>
+                <p><strong>Conditional Statements</strong></p>
+                <p><a class="inline_disabled" href="https://docs.arduino.cc/language-reference/en/structure/control-structure/if/" target="_blank" rel="noopener">if/else</a> statements and&nbsp; <a class="inline_disabled" href="https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/" target="_blank" rel="noopener">switch/case</a> statements are a way to make decisions about incoming data. For example you can use these methods to play/pause an animation, change the playback type, or switch the animation being shown</p>
+                <p><strong>Remapping Data</strong></p>
+                <p>The <a class="inline_disabled" href="https://docs.arduino.cc/language-reference/en/functions/math/map/" target="_blank" rel="noopener">map</a> function as a way to relate 2 different data ranges. For example, you can use the distance a person is from the screen to control the speed of the animation.</p>
+                <p><strong>State Machines</strong></p>
+                <p>Situations in hardware and software are often described as modes or states. The concept allows for a different response to the same input. For example if the state of a machine is Off and you push the power button, it turns On. If the state is On and you push the power button, it turns Off. State Machines are a way in the code to manage this information both from the inputs, but also the current state of the media, ie : playing, paused, finished.</p>
+                <h3>Interaction Design Concepts</h3>
+                <p><strong>Interaction as Preposition</strong></p>
+                <p>Though code is the primary way to control the behaviour of your object, it is important that you can conceptually describe it as a preposition. Fundamentally, you are creating a relationship between the visual information on the LED Matrix and a person or thing. You should be able to describe that relationship through a simple preposition. For Example:</p>
+                <p class="whitespace-pre-wrap break-words">Spatial relationships: above, below, between, among, beside, behind, beneath, within, through</p>
+                <p class="whitespace-pre-wrap break-words">Movement/Direction: toward, across, along, around, into, onto, past, over, under</p>
+                <p class="whitespace-pre-wrap break-words">Time: before, after, during, since, until</p>
+                <p class="whitespace-pre-wrap break-words">Other relationships: with, without, except, like, despite, about, against</p>
+                <p class="whitespace-pre-wrap break-words"><strong>Always Be 'Alive'</strong></p>
+                <p class="whitespace-pre-wrap break-words">When creating anything interactive, it is important to design it in a way that shows a person that it is 'Alive' and able to be interacted with. This is often seen in the design of game characters where they are never static to show that they are a dynamic part of the experience.</p>
+                <p class="whitespace-pre-wrap break-words"><strong>Material and Spatial Affordances</strong></p>
+                <p class="whitespace-pre-wrap break-words">Another important aspect of creating interactive experiences is to create them in a way that it is clear how to engage with them. How might a person understand how to interact with it without detailed instructions? How does the material, scale, and location affect this?</p>
+                <p>&nbsp;</p>
+                <h3>Design Constraints / Requirements</h3>
+                <ul>
+                    <li>Arduino, Sensor and all circuitry must be contained within an enclosure.
+                        <ul>
+                            <li>Enclosure can be a maximum of 30cm wide X 30cm deep. Height can be whatever is appropriate&nbsp;</li>
+                            <li>The device should be designed to be either free-standing, sitting on a table, or worn</li>
+                            <li><span>Only the LED Matrix of the Arduino should be visible.</span>
+                                <ul>
+                                    <li><span>Consider how diffusion materials over the LED Matrix can change their visual effects</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Each device must have a cable and battery/laptop to power it.</li>
+                    <li>Write your own code. You can use the examples as a starting point, but you can't just use it verbatim&nbsp;</li>
+                    <li>The animation on screen must be "alive" at all times
+                        <ul>
+                            <li>When no-one is interacting with it, it cannot be static.</li>
+                            <li>Consider at least 2 modes / states of the animation</li>
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

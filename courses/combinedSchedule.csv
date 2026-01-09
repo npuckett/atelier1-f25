@@ -1,15 +1,15 @@
-Week,Thesis Date,Thesis Topic,Thesis Due,Phys Comp Date,Phys Comp Class,Phys Comp Topic
-1,,,January 9,Class 1,Course + Project Intro
-2,January 12,Course Introduction & Getting Started,Project Scope + Mixing Media (workshop),January 16,Class 2,Intro to Arduino + AltControl Library
-3,January 19,Project Development: Research Creation,Research Creation vs Making a Thing (workshop),January 23,Class 3,Hello Button
-4,January 26,AI Coding Tools + Project Development,Working with AI and Coding Techniques (workshop) | Project Proposal,January 30,Class 4,Project 1 Exhibition
-5,February 2,Preparing for Playtest 1,Creating Questions (workshop),February 6,Class 5,Project Introduction (Tiny Film Festival)
-6,February 9,PLAYTEST 1,Playtest 1,February 13,Class 6,Pressure & Controls
--,February 16,Reading Week,,Feb 14-21,Reading Week,
-7,February 23,PROJECT V 1.X PRESENTATIONS,V 1.X Project and Presentation,February 27,Class 7,Distance + Hello Festival
-8,March 2,Moving from V 1.X to 2.X,Tech Report | Updating the Plan (workshop),March 6,Class 8,Project 2 Exhibition
-9,March 9,Exhibition & Documentation,See Something Say Something (Groups 3 & 4),March 13,Class 9,Project Introduction (Light & Lightness)
-10,March 16,PLAYTEST 2,Playtest 2,March 20,Class 10,Servos & Mechanisms
-11,March 23,Moving from V 2.X to 3.X,Exhibition Plan | Final Stretch Plan (workshop),March 27,Class 11,Hello Lightness
-12,March 30,Project Development,See Something Say Something (Groups 7 & 8),April 3,Class 12,Project 3 Exhibition
-13,April 6,FINAL PRESENTATIONS,Version 3.X Presentation,,,
+Week,Type,Thesis Date,Thesis Topic,Phys Comp Date,,Phys Comp Class,type,Phys Comp Topic
+1,,,,2026-01-09,,Class 1,in-person,Course + Project Intro
+2,in-person,12-Jan,Course Introduction & Getting Started,16-Jan,,Class 2,in-person,Intro to Arduino + AltControl Library
+3,in-person,19-Jan,Project Development: Research Creation,23-Jan,,Class 3,in-person,Hello Button
+4,in-person,26-Jan,AI Coding Tools + Project Development,30-Jan,,Class 4,in-person,Project 1 Exhibition
+5,in-person,02-Feb,Preparing for Playtest 1,06-Feb,,Class 5,online,Project Introduction (Tiny Film Festival)
+6,in-person,09-Feb,PLAYTEST 1,13-Feb,,Class 6,in-person,Pressure & Controls
+-,,16-Feb,Reading Week,Feb 14-21,,Reading Week,,
+7,in-person,23-Feb,PROJECT V 1.X PRESENTATIONS,27-Feb,,Class 7,in-person,Distance + Hello Festival
+8,in-person,02-Mar,Moving from V 1.X to 2.X,06-Mar,,Class 8,in-person,Project 2 Exhibition
+9,online,09-Mar,Exhibition & Documentation,13-Mar,,Class 9,online,Project Introduction (Light & Lightness)
+10,in-person,16-Mar,PLAYTEST 2,20-Mar,,Class 10,in-person,Servos & Mechanisms
+11,online,23-Mar,Moving from V 2.X to 3.X,27-Mar,,Class 11,in-person,Hello Lightness
+12,in-person,30-Mar,Project Development,03-Apr,,Class 12,in-person,Project 3 Exhibition
+13,in-person,06-Apr,FINAL PRESENTATIONS,,,,,
