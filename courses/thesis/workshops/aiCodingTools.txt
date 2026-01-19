@@ -1,0 +1,23 @@
+Overview
+AI Coding tools have rapidly changed over the past year and now represent a new skill set for developing code.
+It isn't simply a "It just does it for you", there are specific methods and concepts that are now core.
+Even if your project isn't coding-heavy, these are things you should at least be aware of as they 
+provide immense opportunity for creating things that were not previously possible.
+
+Preparation
+To work with these tools, you will need to set up several things using this guide: https://digitalfuturesocadu.github.io/vsCodeSetup/guide/
+
+
+Activity
+We will be looking at general workflow for working with coding agents inside VS Code. There are many
+other platforms where this is possible, but we are with it because you get access to Copilot Pro free
+with your ocad email.
+
+Format - Individual or groups of 2-3
+
+Develop an interactive web app using either p5.js or three.js that is related to your project(s) in some way.
+The app should specifically attempt something that you haven't done before in terms of complexity
+
+Deliverable
+Create a post with a short description of your webapp and a link to it. The description should include
+a short overview of how you used the tools

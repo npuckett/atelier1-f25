@@ -1,0 +1,9 @@
+Overview
+Regardless of the type of project you are building, testing it is a critical method for its development.
+It is important to have something to test, but it is also important to ask effective questions so that
+you receive the most useful information. In preparation for Playtest 1, you will be creating, developing, and refining
+your questions.
+
+
+Activity
+Working in groups of 4-5 we will be going through several rounds to actively develop your platest questions.
