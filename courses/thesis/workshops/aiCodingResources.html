@@ -1,0 +1,614 @@
+<!-- AI Coding Tools Resources -->
+
+<div style="max-width: 800px; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+
+    <!-- Overview Section -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">AI Coding Resources</span>
+        </div>
+        <div style="padding: 16px;">
+            <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">
+                This page covers the foundational concepts for working with AI coding agents effectively. The key insight: the same documentation that helps a human collaborator understand your project will help an AI agent understand it. There is no special "AI documentation"—just good documentation.
+            </p>
+            <p style="margin: 0; font-size: 10pt; line-height: 1.6; color: #666; font-style: italic;">
+                Note: You do not need to use AI coding agents to benefit from clear project documentation. These practices are valuable for any development workflow.
+            </p>
+        </div>
+    </div>
+
+    <!-- Why Documentation Matters -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Why Documentation Matters</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    Good documentation clarifies your thinking before you write code, creates shared understanding with collaborators, and serves as reference when you return to work months later.
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">For Human Developers:</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>Forces you to think through scope before building</li>
+                        <li>Prevents misunderstandings in team projects</li>
+                        <li>Makes it easier to pick up where you left off</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">For AI Coding Agents:</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>Provides essential context for relevant code generation</li>
+                        <li>Reduces back-and-forth clarification cycles</li>
+                        <li>Helps agents understand constraints and preferences</li>
+                        <li>Produces more consistent output on first attempt</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Industry Standard Document Types -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Industry Standard Document Types</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    Professional software development uses several types of documentation. You do not need all of these for every project—choose what fits your scope.
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">README File</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">The front door to your project. Explains what it does, how to set it up, and how to use it.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Every project, regardless of size.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Product Requirements Document (PRD)</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Describes <em>what</em> you are building and <em>why</em>, without specifying <em>how</em>. Focuses on user needs, goals, and features.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Larger projects, team projects, or when communicating with non-technical stakeholders.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Software Requirements Specification (SRS)</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Detailed, formal document describing exactly what the software should do. Based on IEEE 830 standard.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Formal projects, client work with contracts, or when requirements must be unambiguous.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Technical Design Document (TDD)</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Describes <em>how</em> you will build the system—architecture, technologies, data structures, implementation approach.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> When implementation approach is not obvious, or when documenting technical decisions for a team.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Project Brief / Project Specification</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Concise document combining elements of PRDs and technical specs. Practical for smaller projects or individual work.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Thesis projects, personal projects, hackathons—this is the recommended starting point for this workshop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Choosing Documentation Level -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Choosing the Right Level</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
+                    <tr style="background: #f5f5f5;">
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Project Type</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Recommended Documentation</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Quick prototype / learning project</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">README only</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Thesis project component</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">README + Project Brief</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Team project / hackathon</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">README + lightweight PRD</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Client work / freelance</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">README + PRD + Technical Design</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Practices for Structuring Documentation -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Best Practices for Documentation</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Use Clear, Hierarchical Structure</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Organize information in logical sections with headers. Both humans and AI agents find relevant context faster when structure is clear.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Be Explicit About Constraints</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Do not assume anything is "obvious." State constraints clearly.</p>
+                    <p style="margin: 0; font-size: 10pt;"><span style="color: #c66;">❌ Vague:</span> "The installation should be responsive"</p>
+                    <p style="margin: 0; font-size: 10pt;"><span style="color: #4a9;">✓ Explicit:</span> "Sensor must detect motion within 2 meters, response latency under 100ms"</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Use Consistent, Structured Formats</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">When listing features or requirements, use the same format throughout. Tables, JSON schemas, or consistent bullet formats make parsing reliable.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Separate What from How</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Keep requirements (what) separate from implementation details (how) unless you have strong technical constraints.</p>
+                    <p style="margin: 0; font-size: 10pt;"><span style="color: #c66;">❌ Mixed:</span> "Use p5.js to create a particle system that responds to sound"</p>
+                    <p style="margin: 0; font-size: 10pt;"><span style="color: #4a9;">✓ Separated:</span> "Requirement: Visual system responds to audio input. Technical preference: p5.js (team familiarity)"</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Include Examples and Edge Cases</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Concrete examples prevent misunderstandings. What happens when there is no input? When input is extreme? When multiple users interact?</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Version and Date Your Documents</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Requirements change. Include when the document was created/updated to prevent confusion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Brief Template -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Project Brief Template</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    Use this template as a starting point for your PRD. Not every section applies to every project—adapt as needed.
+                </p>
+
+                <pre style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; margin: 0;">
+# [Project Name]
+
+**Version:** 1.0
+**Date:** [Date]
+**Author:** [Your name]
+
+## 1. Project Overview
+
+### Problem Statement
+What problem does this solve? Who has this problem?
+
+### Proposed Solution
+What are you building to solve this?
+
+### Target Users
+Who will use/experience this?
+
+## 2. Features and Requirements
+
+### Core Features (Must Have)
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| [Feature 1] | [What it does] | High |
+
+### Nice-to-Have Features
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| [Feature 1] | [What it does] | Medium |
+
+### Out of Scope
+What are you explicitly NOT building?
+
+## 3. Technical Approach
+
+### Technology Stack
+- **Platform:** [e.g., Web, Unity, Arduino]
+- **Languages:** [e.g., JavaScript, C#, Python]
+- **Key Libraries:** [e.g., p5.js, Three.js, TensorFlow]
+
+### Technical Constraints
+- [e.g., Must run in browser without plugins]
+- [e.g., Must work with existing sensor hardware]
+
+## 4. Data Structure
+
+### Key Entities
+What are the main "things" your system manages?
+
+### Relationships
+How do entities relate to each other?
+
+## 5. User Interaction
+
+### Key States/Screens
+What are the main modes or views?
+
+### User Flow
+How does a user move through the experience?
+
+## 6. Success Criteria
+How will you know it works?
+- [ ] [Specific, testable criterion]
+
+## 7. Open Questions
+What have you not figured out yet?</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Method: Agent-Assisted Documentation -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Agent-Assisted Documentation</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    If you have a rough idea but are not sure how to structure it, you can use an AI agent to help organize your thoughts. This is a collaborative process—you provide raw material, the agent helps structure it.
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 1: Brain Dump</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Write down everything you know in plain language. Include what you want to build, who it is for, features you have thought of, technical preferences, and uncertainties.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 2: Ask the Agent to Structure It</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Example prompt:</p>
+                    <p style="margin: 0; font-size: 10pt; font-style: italic; padding: 8px; background: #fff; border-left: 2px solid #ccc;">"I have a rough idea for a project. Can you help me turn this into a structured project brief? Here is what I am thinking: [paste brain dump]. Please organize this with: a problem statement, core features vs nice-to-have, technical approach, and questions I should answer before starting."</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 3: Review and Refine</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">The agent will produce a draft. Verify it captures what you meant, fill gaps, add detail, and remove incorrect assumptions. You know your project better than it does.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 4: Iterate</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Use follow-up prompts to refine specific sections. Ask the agent to identify gaps or present options with tradeoffs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Useful Prompts for Agents -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Useful Prompts for Documentation</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">When your ideas are unstructured:</p>
+                    <p style="margin: 0; font-size: 10pt; font-style: italic; padding: 8px; background: #fff; border-left: 2px solid #ccc;">"I have these rough notes about my project. Can you: 1) Identify what is clear vs what needs more detail, 2) Suggest a structure that would make this easier to understand, 3) List questions I should answer to complete the documentation."</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">When you want the agent to identify gaps:</p>
+                    <p style="margin: 0; font-size: 10pt; font-style: italic; padding: 8px; background: #fff; border-left: 2px solid #ccc;">"Review this project brief and tell me: What assumptions am I making that I should state explicitly? What edge cases have I not considered? What technical decisions am I deferring that might cause problems later?"</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">When you want options presented:</p>
+                    <p style="margin: 0; font-size: 10pt; font-style: italic; padding: 8px; background: #fff; border-left: 2px solid #ccc;">"For [feature], I am not sure about the best approach. Can you present 2-3 options with: how each would work, pros and cons, and which you would recommend for someone new to this. Do not decide for me—just lay out the options clearly."</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">When you need a specific format:</p>
+                    <p style="margin: 0; font-size: 10pt; font-style: italic; padding: 8px; background: #fff; border-left: 2px solid #ccc;">"Convert this project description into a structured format with: a features table (columns: Feature, Description, Priority), data entities in JSON format, and user stories in 'As a [user], I want [goal], so that [reason]' format."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Instruction Files -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Agent Instruction Files</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 12px 0;">
+                    Agent instruction files are configuration files that tell AI coding agents how to behave in your specific project. Think of them as "onboarding documents" for your AI assistant.
+                </p>
+                <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    Note: This section is optional. Instruction files are useful if you are working with coding agents regularly, but not required for the workshop.
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">GitHub Copilot</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Uses <code>.github/copilot-instructions.md</code> in your repository root.</p>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 10pt; margin-bottom: 16px;">
+                    <tr style="background: #f5f5f5;">
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Project Documentation</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Agent Instruction File</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Describes <em>what</em> you are building</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Describes <em>how</em> the agent should help</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Written for humans (and agents)</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Written specifically for the agent</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Focuses on requirements and design</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Focuses on conventions and preferences</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copilot Instructions Template -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Copilot Instructions Template</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    Save this as <code>.github/copilot-instructions.md</code> in your repository.
+                </p>
+
+                <pre style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; margin: 0;">
+# Copilot Instructions for [Project Name]
+
+## Project Context
+[1-2 sentences about what this project does and who it is for]
+
+## Technology Stack
+- **Platform:** [e.g., Web, Unity, Arduino]
+- **Languages:** [e.g., JavaScript, C#]
+- **Key Libraries:** [e.g., p5.js, Three.js]
+
+## Code Style Preferences
+
+### Naming Conventions
+- [e.g., Use camelCase for variables and functions]
+- [e.g., Use PascalCase for classes]
+
+### Patterns to Follow
+- [e.g., Use async/await over callbacks]
+- [e.g., Keep functions small and focused]
+
+### File Organization
+- [e.g., Sketches go in /sketches folder]
+- [e.g., Shared utilities go in /lib]
+
+## Project-Specific Rules
+- [e.g., All sensor readings must be smoothed]
+- [e.g., Use the config file for adjustable values]
+
+## Things to Avoid
+- [e.g., Do not use deprecated p5.dom methods]
+- [e.g., Do not add console.log in production]
+- [e.g., Do not use blocking delays]</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example: Installation Project -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Example: Installation Calibration Tool</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    This example shows how a thesis student might document a helper tool for their installation project.
+                </p>
+
+                <div style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap;">
+# Kinect Calibration Tool
+
+**Version:** 1.0
+**Date:** February 2026
+**Author:** [Student Name]
+
+## Problem Statement
+My thesis installation uses a Kinect sensor to track visitor
+positions. Each time I set up in a new space, I spend 30+
+minutes manually adjusting detection zones and thresholds.
+I need a tool that makes this calibration faster and visual.
+
+## Proposed Solution
+A web-based calibration interface that:
+- Shows real-time sensor data visualization
+- Allows drawing detection zones visually
+- Saves/loads calibration profiles per venue
+- Outputs config file for the main installation
+
+## Core Features
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Live view | Show sensor point cloud in browser | High |
+| Zone drawing | Click/drag to define detection areas | High |
+| Profile save | Export settings as JSON file | High |
+| Threshold adjust | Sliders for sensitivity tuning | Medium |
+
+## Out of Scope
+- This tool does NOT run the installation itself
+- No multi-sensor support in v1
+- No automatic calibration (manual only)
+
+## Technical Approach
+- **Platform:** Web browser (Chrome)
+- **Frontend:** p5.js for visualization
+- **Backend:** Node.js to bridge Kinect data
+- **Data:** WebSocket stream from Kinect
+
+## Success Criteria
+- [ ] Can calibrate a new space in under 5 minutes
+- [ ] Saved profiles load correctly
+- [ ] Detection zones work in main installation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common Mistakes -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Common Documentation Mistakes</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
+                    <tr style="background: #f5f5f5;">
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Mistake</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Why It Is a Problem</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: 600;">Better Approach</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">"Make it look good"</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Subjective, untestable</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Specify color palette, typography, reference images</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">"It should be responsive"</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Vague—responsive to what?</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">"Response latency under 100ms after motion detected"</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Mixing requirements and solutions</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Limits exploration of alternatives</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Separate what you need from how you might build it</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">No edge cases mentioned</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Agent will guess or ignore</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Explicitly state what happens in unusual situations</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Assuming technical knowledge</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Misaligned expectations</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">State your experience level and preferences</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Checklist -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Documentation Checklist</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0;">
+                    Before starting to build (with or without an agent), can you answer:
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">The Basics</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>What problem am I solving?</li>
+                        <li>Who is this for?</li>
+                        <li>What does success look like?</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">Features</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>What are the must-have features?</li>
+                        <li>What am I explicitly NOT building?</li>
+                        <li>What are the nice-to-haves if I have time?</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">Technical</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>What technologies will I use?</li>
+                        <li>What are my constraints?</li>
+                        <li>What data do I need to store or process?</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">Clarity</p>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 10pt;">
+                        <li>Would a classmate understand what I am building?</li>
+                        <li>Would an AI agent have enough context?</li>
+                        <li>Are my requirements specific enough to test?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Resources -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">External Resources</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://digitalfuturesocadu.github.io/vsCodeSetup/guide/" target="_blank" style="color: #0066cc;">VS Code Setup Guide</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Step-by-step setup for VS Code and GitHub Copilot using your OCAD account.</p>
+                </div>
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot" target="_blank" style="color: #0066cc;">GitHub Copilot Custom Instructions</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Official documentation on creating instruction files for Copilot.</p>
+                </div>
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://tom.preston-werner.com/2010/08/23/readme-driven-development.html" target="_blank" style="color: #0066cc;">README Driven Development</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Tom Preston-Werner's methodology of writing the README first, before any code. Forces clarity about what you are building.</p>
+                </div>
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://en.wikipedia.org/wiki/Software_requirements_specification" target="_blank" style="color: #0066cc;">IEEE 830</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Standard for Software Requirements Specifications. Useful reference for formal projects or client work.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Reminder -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Remember</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">The Core Principle</p>
+                    <p style="margin: 0; font-size: 10pt;">Good documentation clarifies your own thinking. It happens to also make AI agents more useful, but that is a bonus.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">The Permission Slip</p>
+                    <p style="margin: 0; font-size: 10pt;">It is okay to not know everything upfront. Document what you know, note what you are uncertain about, and iterate.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600;">The Reality Check</p>
+                    <p style="margin: 0; font-size: 10pt;">If you cannot explain what you are building to a classmate, you are not ready to build it—with or without AI.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

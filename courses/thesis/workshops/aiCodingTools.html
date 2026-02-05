@@ -9,10 +9,13 @@
         </div>
         <div style="padding: 16px;">
             <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">
-                AI Coding tools have rapidly changed over the past year and now represent a new skill set for developing code. It isn't simply a "It just does it for you", there are specific methods and concepts that are now core.
+                AI coding tools have rapidly evolved and now represent a distinct skill set for developing code. Working with these tools is not simply "it does it for you"—there are specific methods and concepts that are now core to effective use.
+            </p>
+            <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">
+                Central to working with AI coding agents is the ability to clearly describe what you want to build. This is true whether you are working with an agent or not—clear project documentation is the foundation of successful development.
             </p>
             <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">
-                Even if your project isn't coding-heavy, these are things you should at least be aware of as they provide immense opportunity for creating things that were not previously possible.
+                Even if your thesis project is not code-heavy, understanding these tools provides significant opportunity for creating things that were not previously possible within your timeline.
             </p>
         </div>
     </div>
@@ -23,8 +26,16 @@
             <span style="font-size: 18pt; color: #333333;">Preparation</span>
         </div>
         <div style="padding: 16px;">
-            <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">
-                To work with these tools, you will need to set up several things using this guide: <a href="https://digitalfuturesocadu.github.io/vsCodeSetup/guide/" target="_blank" rel="noopener">https://digitalfuturesocadu.github.io/vsCodeSetup/guide/</a>
+            <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">
+                <strong>Before the workshop:</strong>
+            </p>
+            <ul style="margin: 0 0 16px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+                <li>Set up VS Code and GitHub Copilot using this guide: <a href="https://digitalfuturesocadu.github.io/vsCodeSetup/guide/" target="_blank" rel="noopener" style="color: #0066cc;">VS Code Setup Guide</a></li>
+                <li>Review the <a href="https://canvascloud.ocadu.ca/courses/12811/pages/coding-reference" target="_blank" style="color: #0066cc;"><strong>AI Coding Resources</strong></a> page for context on project documentation and agent instruction files</li>
+                <li>Think about one aspect of your thesis project that involves code or could benefit from a custom tool</li>
+            </ul>
+            <p style="margin: 0; font-size: 10pt; line-height: 1.6; color: #666; font-style: italic;">
+                Note: You get Copilot Pro free with your OCAD email. Other tools (Claude Code, Cursor) work similarly but may require separate accounts.
             </p>
         </div>
     </div>
@@ -37,14 +48,60 @@
         <div style="padding: 16px;">
             <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
                 <p style="margin: 0 0 12px 0;">
-                    We will be looking at general workflow for working with coding agents inside VS Code. There are many other platforms where this is possible, but we are with it because you get access to Copilot Pro free with your OCAD email.
+                    We will be working through the process of creating clear project documentation that can be used with AI coding agents—or with any development workflow.
                 </p>
-                
-                <p style="margin: 0 0 12px 0; font-weight: 600;">Format - Individual or groups of 2-3</p>
-                
-                <p style="margin: 0 0 8px 0;">
-                    Develop an interactive web app using either p5.js or three.js that is related to your project(s) in some way. The app should specifically attempt something that you haven't done before in terms of complexity.
+
+                <p style="margin: 0 0 12px 0; font-weight: 600;">Format: Individual or groups of 2-3</p>
+
+                <p style="margin: 0 0 16px 0;">
+                    Choose ONE of the following to document:
                 </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Option A: Code for Your Project</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">An interactive component, visualization, or technical system that is part of your thesis work. This should attempt something beyond what you have done before.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Option B: A Tool That Helps You Make Your Project</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">A utility, generator, converter, or helper that would speed up your thesis development process. Think: asset generators, data processors, testing tools, or workflow automation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workshop Steps Section -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Workshop Steps</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 1: Brain Dump (10 min)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Write down everything you know about what you want to build in plain language. Don't worry about structure—capture features, constraints, uncertainties, and preferences.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 2: Structure with Template or Agent (15 min)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Use the Project Brief template (see Resources) OR ask an AI agent to help structure your brain dump. Review what it produces—you know your project better than it does.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 3: Peer Review (10 min)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Exchange documents with a partner. Can they understand what you're building? What questions do they have? What's unclear or missing?</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 4: Refine Your PRD (15 min)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Based on feedback, fill gaps and clarify ambiguities. Add explicit constraints, examples, and edge cases. This is your Product Requirements Document.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #4a9;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Step 5: Start Building (remaining time)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Use your PRD to guide development with Copilot or another coding agent. Notice where your documentation helps and where you need to clarify further.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -55,9 +112,85 @@
             <span style="font-size: 18pt; color: #333333;">Deliverable</span>
         </div>
         <div style="padding: 16px;">
-            <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">
-                Create a post with a short description of your webapp and a link to it. The description should include a short overview of how you used the tools.
+            <p style="margin: 0 0 16px 0; font-size: 11pt; line-height: 1.6; color: #333333;">
+                Submit a post containing:
             </p>
+            <ol style="margin: 0 0 16px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+                <li><strong>Your PRD</strong> — The structured project documentation you created (can be linked as a file or pasted as text)</li>
+                <li><strong>Link to your project/tool</strong> — A working prototype, GitHub repo, or hosted version</li>
+                <li><strong>Brief reflection</strong> — 2-3 sentences on how the documentation process affected your development workflow</li>
+            </ol>
+
+            <!-- Credit Requirements -->
+            <div style="margin-top: 20px;">
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #666; margin-bottom: 12px;">
+                    <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 8px;">Students taking 0.5 credit Thesis:</div>
+                    <div style="font-size: 11pt; line-height: 1.6; color: #333333;">
+                        Complete the PRD and initial prototype. The code does not need to be fully functional, but should demonstrate progress toward your documented goals.
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #666;">
+                    <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 8px;">Students taking 1.0 credit Thesis:</div>
+                    <div style="font-size: 11pt; line-height: 1.6; color: #333333;">
+                        Complete the PRD and a more developed prototype. Additionally, create a <code>.github/copilot-instructions.md</code> file (or equivalent) that captures your project's coding conventions. Include this in your submission.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Ideas by Medium -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Project Ideas by Medium</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 12px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    Not sure what to build? Here are starting points based on your thesis type:
+                </p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Games / Interactive Experiences</p>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 10pt; color: #666;">
+                        <li>A core mechanic prototype (one interaction loop, polished)</li>
+                        <li>Level generator or asset randomizer</li>
+                        <li>Save/load system or state manager</li>
+                        <li>Dialogue or quest system tool</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Installations / Physical Computing</p>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 10pt; color: #666;">
+                        <li>Sensor data visualizer or debugger</li>
+                        <li>Calibration tool for projections or sensors</li>
+                        <li>State machine for installation modes</li>
+                        <li>Data logger for user interaction patterns</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">Visual / Motion Media</p>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 10pt; color: #666;">
+                        <li>Batch image processor or resizer</li>
+                        <li>Color palette generator from reference images</li>
+                        <li>SVG or graphics generator</li>
+                        <li>Animation timing calculator</li>
+                    </ul>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0; font-weight: 600;">UX / App Projects</p>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 10pt; color: #666;">
+                        <li>Interactive prototype (beyond Figma)</li>
+                        <li>Data visualization dashboard</li>
+                        <li>Form or survey with custom logic</li>
+                        <li>API integration proof of concept</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 

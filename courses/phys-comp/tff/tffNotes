@@ -1,0 +1,60 @@
+Workshop 1 - https://canvascloud.ocadu.ca/courses/13538/assignments/108890
+Workshop 2 - https://canvascloud.ocadu.ca/courses/13538/assignments/108891
+
+
+# Introduction
+Create an interactive object or wearable that creates a clear and engaging interaction for 1 - 3 people based around a preposition. The input to this interaction will come from either the Distance Sensor inlcuded in your kit, a custom pressure sensor, or both. The feedback to the user will come via the 96 LED matrix on your Arduino. A key skill when working with electronics is learning how to use generic components (sensors, LEDs, etc) and create specific experiences, and this is what you will be exploring in Project 2.
+
+
+# Interacting with Lights
+LEDs are one of the most common modes of output in physical computing projects. They are seemingly simple, but provide huge opportunity for expression. They also come in many shapes, sizes, and capabilities for developing visual languages to give a user feedback about what is happening. The specific LEDs you will be using in this project 
+- 12 X 8 Matrix 
+- All LEDs are single color (RED)
+- All LEDs can only be turned ON/OFF
+## Interaction Design Concepts
+In this project you will be designing a closed loop of input and output so we will be exploring core interaction design principles 
+### Interaction as Preposition
+Though code is the primary way to control the behaviour of your object, it is important that you can conceptually describe it as a preposition. Fundamentally, you are creating a relationship between the visual information on the LED Matrix and a person or thing. You should be able to describe that relationship through a simple preposition. For Example:
+
+Spatial relationships: above, below, between, among, beside, behind, beneath, within, through
+Movement/Direction: toward, across, along, around, into, onto, past, over, under
+Time: before, after, during, since, until
+Other relationships: with, without, except, like, despite, about, against
+### Aliveness
+When creating anything interactive, it is important to design it in a way that shows a person that it is 'Alive' and able to be interacted with. This is often seen in the design of game characters where they are never static to show that they are a dynamic part of the experience.
+### Material and Spatial Affordances
+Another important aspect of creating interactive experiences is to create them in a way that it is clear how to engage with them. How might a person understand how to interact with it without detailed instructions? How does the material, scale, and location affect this?
+
+## Coding Concepts
+### Thresholds 
+Thresholds are a simple technique that allow you to take the data from a sensor and break it up into different sections using either if/else[https://docs.arduino.cc/language-reference/en/structure/control-structure/if/] or switch/case [https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/] For example when working with a distance sensor it allow you to set whether a person/object is close/medium/far or with the pressure sensor determine if it is light/medium/strong pressure
+### Re-mapping Data
+The map [https://docs.arduino.cc/language-reference/en/functions/math/map/] functioon is common across programming languages as a way to relate 2 different types of data together. For example, this could allow you to relate the value from a distance sensor in centimeters to control the speed of an animation in millisecods. Most importantly it is calculated each loop allowing it to form a dynamic relationship
+### State Machines
+State Machines are a simple programming strategy for organizing the relationship between input and output. They allow a program to respond differently to data based on their current 'state' or 'mode'. They allow you to break up interaction design programs into clear parts to deal with complexity
+### Timing without delay()
+An important technique to learn with Arduino is how to deal with controlling the timing of different outputs in a way that doesn't block the reading of inputs. The main method to avoid is using delay(). You can find an extensive explanation of the issue on the class github Delay vs Millis[https://github.com/DigitalFuturesOCADU/PhysComp-f26-502/blob/main/projects/01-AltController/DelayVsMillis.md]
+
+# Tiny Film Festival Library
+We will be working with the Tiny Film Festival [https://digitalfuturesocadu.github.io/TinyFilmFestival/docs/#home] to control the LEDs on your Arduino. It provides multiple methods for controlling pre-made animations, drawing to the screen directly, or both.
+
+# Design Constraints
+- Your primary interaction must be defined by a preposition that you choose. 
+- Your project must be interactive using the distance sensor, pressure sensor, or both
+- The arduino and sensor must be designed as a fully enclosed object or wearable
+- The LED Matrix must have a physical cover that works as a magnifier, diffuser, or both. Bare LEDs should not be visible
+- Whatever is happening on screen can never be off or static. It always must be alive
+- Your object can be powered by your laptop or a battery
+
+
+# Design Goals and Considerations
+- Consider how to link the on-screen animation to the scale and material of the object to create a clear narrative
+- The screen is very small. Consider how this changes the physical relationship between the person and the object
+- Multiple people will be interacting with your work during the project exhibition consider how to make it robust enough to handle that.
+- Distance Sensor - Be sure to consider how these change the interaction
+- - What direction it is pointing Up/Down/Out
+- - Is it fixed or moving
+- - What is it 'looking' for people? Other objects? The floor/ceiling?
+- Pressure Sensor - Be sure to consider how these change the interaction
+- - Material it is embedded in - smooth? fluffy? squishy?
+- - How is the pressure applied
