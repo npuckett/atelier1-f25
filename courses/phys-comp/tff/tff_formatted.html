@@ -38,12 +38,16 @@
         <table style="border-collapse: collapse; width: 100%;" border="0">
             <tbody>
                 <tr>
-                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa; width: 30%; font-weight: 600; color: #333333;">February 13</td>
-                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;">Workshop 1</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa; width: 30%; font-weight: 600; color: #333333;">February 6</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;"><a href="https://canvascloud.ocadu.ca/courses/13538/assignments/108890" data-course-type="assignments" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/13538/assignments/108890" data-api-returntype="Assignment">Workshop 1</a></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa; font-weight: 600; color: #333333;">February 13</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;"><a href="https://canvascloud.ocadu.ca/courses/13538/assignments/108891" data-course-type="assignments" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/13538/assignments/108891" data-api-returntype="Assignment">Workshop 2</a></td>
                 </tr>
                 <tr>
                     <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa; font-weight: 600; color: #333333;">February 27</td>
-                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;">Workshop 2</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;"><a href="https://canvascloud.ocadu.ca/courses/13538/assignments/108892" data-course-type="assignments" data-published="true" data-api-endpoint="https://canvascloud.ocadu.ca/api/v1/courses/13538/assignments/108892" data-api-returntype="Assignment">Workshop 3</a></td>
                 </tr>
                 <tr>
                     <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background-color: #fafafa; font-weight: 600; color: #333333;">March 6</td>
@@ -64,9 +68,39 @@
         <span style="font-size: 18pt; font-weight: 600; color: #333333;">Introduction</span>
     </div>
     <div style="padding: 16px;">
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Create a standalone device that uses the <a href="https://docs.arduino.cc/tutorials/uno-r4-wifi/led-matrix" target="_blank" rel="noopener">integrated LED matrix</a> and either a standard <a href="https://www.adafruit.com/product/3942" target="_blank" rel="noopener">HC-SR04 distance sensor</a> or DIY pressure sensor to create interactive animations. This will result in a class Film Festival where all devices are displayed.</p>
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">The goal is to create an interactive animation on the LED Matrix that responds to input from the sensor. We will look at a variety of tools that allow you to create animations for the LED Matrix and how to link it to sensor input. We will also examine how raw sensor data can be customized for particular input using position, orientation, and data filtering methods.</p>
-        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">The goal is to create an experience that has a clear connection between the object, animations, and interaction method.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Create an interactive object or wearable that establishes a clear and engaging interaction for 1-3 people based around a preposition. The input to this interaction will come from either the Distance Sensor included in your kit, a custom pressure sensor, or both. The feedback to the user will come via the 96 LED matrix on your Arduino.</p>
+        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">A key skill when working with electronics is learning how to use generic components (sensors, LEDs, etc) and create specific experiences. This project will push you to transform simple inputs and outputs into a cohesive interactive narrative.</p>
+    </div>
+</div>
+
+<!-- Inputs Section -->
+<div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+    <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+        <span style="font-size: 18pt; font-weight: 600; color: #333333;">Inputs</span>
+    </div>
+    <div style="padding: 16px;">
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">This project introduces analog sensing, which provides a range of values rather than the simple on/off of digital inputs from Project 1. You will work with one or both of the following:</p>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Distance Sensor (HC-SR04)</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">The ultrasonic distance sensor in your kit measures how far away an object is by emitting sound waves and timing their return. It provides distance readings in centimeters with a usable range of approximately 2cm to 400cm. This sensor allows you to detect presence, proximity, and movement of people or objects.</p>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Custom Pressure Sensor</p>
+        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">You will create your own pressure sensor using conductive materials such as conductive fabric, Velostat, or conductive foam. Unlike the distance sensor, pressure sensing requires direct physical contact. The material choices you make (soft, rigid, textured) directly affect how people engage with your object.</p>
+    </div>
+</div>
+
+<!-- LED Matrix Output Section -->
+<div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+    <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+        <span style="font-size: 18pt; font-weight: 600; color: #333333;">LED Matrix Output</span>
+    </div>
+    <div style="padding: 16px;">
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">LEDs are one of the most common modes of output in physical computing projects. They are seemingly simple, but provide significant opportunity for expression. They also come in many shapes, sizes, and capabilities for developing visual languages to give a user feedback about what is happening.</p>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">The specific LEDs you will be using in this project:</p>
+        <ul style="margin: 0 0 12px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>12 x 8 Matrix (96 LEDs total)</li>
+            <li>All LEDs are single color (RED)</li>
+            <li>All LEDs can only be turned ON/OFF</li>
+        </ul>
+        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">You will control these LEDs using the <a href="https://github.com/DigitalFuturesOCADU/TinyFilmFestival/" target="_blank" rel="noopener">TinyFilmFestival Library</a>, which provides multiple methods for controlling pre-made animations, drawing to the screen directly, or both.</p>
     </div>
 </div>
 
@@ -96,12 +130,21 @@
     </div>
     <div style="padding: 16px;">
         <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">This project will increase the complexity of the software created to design the relationship between the input data and results on screen.</p>
-        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Conditional Statements</p>
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;"><a href="https://docs.arduino.cc/language-reference/en/structure/control-structure/if/" target="_blank" rel="noopener">if/else</a> statements and <a href="https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/" target="_blank" rel="noopener">switch/case</a> statements are a way to make decisions about incoming data. For example you can use these methods to play/pause an animation, change the playback type, or switch the animation being shown.</p>
+        
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Thresholds</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Thresholds are a simple technique that allow you to take data from a sensor and break it up into different sections using either <a href="https://docs.arduino.cc/language-reference/en/structure/control-structure/if/" target="_blank" rel="noopener">if/else</a> or <a href="https://docs.arduino.cc/language-reference/en/structure/control-structure/switchCase/" target="_blank" rel="noopener">switch/case</a>. For example, when working with a distance sensor this allows you to set whether a person/object is close/medium/far, or with the pressure sensor determine if it is light/medium/strong pressure.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;"><strong>In this project:</strong> Use thresholds to define zones that map to your preposition. If your concept is "toward," you might define far/approaching/near/contact as distinct states with different visual responses.</p>
+        
         <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Remapping Data</p>
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">The <a href="https://docs.arduino.cc/language-reference/en/functions/math/map/" target="_blank" rel="noopener">map</a> function as a way to relate 2 different data ranges. For example, you can use the distance a person is from the screen to control the speed of the animation.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">The <a href="https://docs.arduino.cc/language-reference/en/functions/math/map/" target="_blank" rel="noopener">map()</a> function is common across programming languages as a way to relate 2 different data ranges together. For example, you can use the distance a person is from the screen to control the speed of the animation. Most importantly, it is calculated each loop allowing it to form a dynamic relationship.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;"><strong>In this project:</strong> Map sensor values directly to visual properties. Distance could control animation speed, pixel density, or position. Pressure could control brightness intensity or the number of active pixels.</p>
+        
         <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">State Machines</p>
-        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">Situations in hardware and software are often described as modes or states. The concept allows for a different response to the same input. For example if the state of a machine is Off and you push the power button, it turns On. If the state is On and you push the power button, it turns Off. State Machines are a way in the code to manage this information both from the inputs, but also the current state of the media, ie: playing, paused, finished.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Situations in hardware and software are often described as modes or states. The concept allows for a different response to the same input. For example if the state of a machine is Off and you push the power button, it turns On. If the state is On and you push the power button, it turns Off. State Machines are a way in the code to manage this information both from the inputs, but also the current state of the media, ie: playing, paused, finished.</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;"><strong>In this project:</strong> Use states to manage the different phases of interaction: idle, sensing, responding, and returning to idle. Each state can have its own animation and transition logic.</p>
+        
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Timing without delay()</p>
+        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">An important technique to learn with Arduino is how to control the timing of different outputs in a way that doesn't block the reading of inputs. The main method to avoid is using delay(). You can find an extensive explanation of the issue on the class github: <a href="https://github.com/DigitalFuturesOCADU/PhysComp-f26-502/blob/main/projects/01-AltController/DelayVsMillis.md" target="_blank" rel="noopener">Delay vs Millis</a></p>
     </div>
 </div>
 
@@ -111,18 +154,46 @@
         <span style="font-size: 18pt; font-weight: 600; color: #333333;">Interaction Design Concepts</span>
     </div>
     <div style="padding: 16px;">
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">In this project you will be designing a closed loop of input and output, exploring core interaction design principles.</p>
+        
         <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Interaction as Preposition</p>
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Though code is the primary way to control the behaviour of your object, it is important that you can conceptually describe it as a preposition. Fundamentally, you are creating a relationship between the visual information on the LED Matrix and a person or thing. You should be able to describe that relationship through a simple preposition. For Example:</p>
-        <ul style="margin: 0 0 12px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
-            <li>Spatial relationships: above, below, between, among, beside, behind, beneath, within, through</li>
-            <li>Movement/Direction: toward, across, along, around, into, onto, past, over, under</li>
-            <li>Time: before, after, during, since, until</li>
-            <li>Other relationships: with, without, except, like, despite, about, against</li>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">Though code is the primary way to control the behaviour of your object, it is important that you can conceptually describe it as a preposition. Fundamentally, you are creating a relationship between the visual information on the LED Matrix and a person or thing. You should be able to describe that relationship through a simple preposition.</p>
+        
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Recommended Prepositions:</p>
+        <p style="margin: 0 0 4px 0; font-size: 11pt; font-style: italic; color: #333333;">Works well with Distance Sensing:</p>
+        <ul style="margin: 0 0 8px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li><strong>toward / away</strong> - animation responds to approach or retreat</li>
+            <li><strong>between</strong> - detecting presence in a specific zone</li>
+            <li><strong>above / below</strong> - orientation-based relationships</li>
+            <li><strong>through</strong> - passing across the sensor's field</li>
         </ul>
-        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Always Be 'Alive'</p>
-        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">When creating anything interactive, it is important to design it in a way that shows a person that it is 'Alive' and able to be interacted with. This is often seen in the design of game characters where they are never static to show that they are a dynamic part of the experience.</p>
+        <p style="margin: 0 0 4px 0; font-size: 11pt; font-style: italic; color: #333333;">Works well with Pressure Sensing:</p>
+        <ul style="margin: 0 0 8px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li><strong>against</strong> - responding to applied force</li>
+            <li><strong>within</strong> - embedding interaction inside a squeezable form</li>
+            <li><strong>upon</strong> - detecting placement or weight</li>
+        </ul>
+        <p style="margin: 0 0 4px 0; font-size: 11pt; font-style: italic; color: #333333;">Works well with Both:</p>
+        <ul style="margin: 0 0 12px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li><strong>beside</strong> - combining proximity and touch</li>
+            <li><strong>around</strong> - encircling or surrounding interactions</li>
+        </ul>
+        
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Concrete Examples:</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">An object that displays agitated, scattered pixels when someone hovers their hand <strong>ABOVE</strong> it, but consolidates into a calm pattern when they step away. A wearable pouch that shows a pattern crawling <strong>TOWARD</strong> the center when squeezed, as if the LEDs are being compressed. A tabletop object that tracks movement <strong>THROUGH</strong> its sensing zone, with pixels following the path of a hand passing over it.</p>
+        
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Aliveness</p>
+        <p style="margin: 0 0 12px 0; font-size: 11pt; line-height: 1.6; color: #333333;">When creating anything interactive, it is important to design it in a way that shows a person it is 'alive' and able to be interacted with. This is often seen in the design of game characters where they are never static to show that they are a dynamic part of the experience. Your object should always communicate that it is ready and responsive.</p>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Techniques to consider:</p>
+        <ul style="margin: 0 0 12px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li><strong>Idle animations:</strong> subtle breathing, pulsing, or drifting movement when no input is detected</li>
+            <li><strong>Acknowledgment:</strong> visual response when someone enters the sensing range, before full interaction begins</li>
+            <li><strong>Anticipation:</strong> cues that telegraph what is about to happen</li>
+            <li><strong>Recovery:</strong> returning gracefully to an idle state after interaction ends</li>
+        </ul>
+        
         <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Material and Spatial Affordances</p>
-        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">Another important aspect of creating interactive experiences is to create them in a way that it is clear how to engage with them. How might a person understand how to interact with it without detailed instructions? How does the material, scale, and location affect this?</p>
+        <p style="margin: 0; font-size: 11pt; line-height: 1.6; color: #333333;">Another important aspect of creating interactive experiences is making it clear how to engage with them. How might a person understand how to interact with your object without detailed instructions? How does the material, scale, and location affect this understanding?</p>
     </div>
 </div>
 
@@ -132,26 +203,70 @@
         <span style="font-size: 18pt; font-weight: 600; color: #333333;">Design Constraints / Requirements</span>
     </div>
     <div style="padding: 16px;">
-        <ul style="margin: 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+        <ul style="margin: 0 0 16px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>Your primary interaction <strong>must</strong> be defined by a preposition that you choose</li>
+            <li>Your project <strong>must</strong> be interactive using the distance sensor, pressure sensor, or both</li>
             <li>Arduino, Sensor and all circuitry must be contained within an enclosure
                 <ul style="padding-left: 20px; margin: 4px 0;">
                     <li>Enclosure can be a maximum of 30cm wide X 30cm deep. Height can be whatever is appropriate</li>
                     <li>The device should be designed to be either free-standing, sitting on a table, or worn</li>
-                    <li>Only the LED Matrix of the Arduino should be visible
-                        <ul style="padding-left: 20px; margin: 4px 0;">
-                            <li>Consider how diffusion materials over the LED Matrix can change their visual effects</li>
-                        </ul>
-                    </li>
+                    <li>Only the LED Matrix of the Arduino should be visible</li>
                 </ul>
             </li>
-            <li>Each device must have a cable and battery/laptop to power it</li>
-            <li>Write your own code. You can use the examples as a starting point, but you can't just use it verbatim</li>
+            <li>The LED Matrix must have a physical cover that works as a magnifier, diffuser, or both. Bare LEDs should not be visible</li>
             <li>The animation on screen must be "alive" at all times
                 <ul style="padding-left: 20px; margin: 4px 0;">
                     <li>When no-one is interacting with it, it cannot be static</li>
                     <li>Consider at least 2 modes / states of the animation</li>
                 </ul>
             </li>
+            <li>Each device must have a cable and battery/laptop to power it</li>
+            <li>Write your own code. You can use the examples as a starting point, but you can't just use it verbatim</li>
+        </ul>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Do Not:</p>
+        <ul style="margin: 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>Create a static display that ignores sensor input</li>
+            <li>Replicate existing screen-based interfaces (phone, tablet, computer)</li>
+            <li>Leave wiring exposed or circuits visible outside the enclosure</li>
+            <li>Use the LED matrix as simple on/off indicator lights</li>
+            <li>Create interactions that require verbal explanation to understand</li>
+            <li>Simply make a graph or data visualization of sensor values</li>
+            <li>Embed a screen in a stuffed animal (this is a common but unimaginative approach)</li>
+            <li>Directly copy a Tamagotchi. It can be an inspiration, but push beyond replication</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Design Goals Section -->
+<div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+    <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+        <span style="font-size: 18pt; font-weight: 600; color: #333333;">Design Goals and Considerations</span>
+    </div>
+    <div style="padding: 16px;">
+        <ul style="margin: 0 0 16px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>Consider how to link the on-screen animation to the scale and material of the object to create a clear narrative</li>
+            <li>The screen is very small. Consider how this changes the physical relationship between the person and the object</li>
+            <li>Multiple people will be interacting with your work during the project exhibition. Consider how to make it robust enough to handle that</li>
+            <li>During the exhibition, each work will display its chosen preposition. Visitors will experience your piece and judge whether the interaction clearly embodies that word</li>
+            <li>Consider the overall craft and finish of your enclosure</li>
+            <li>Hide all wiring and electronics within the form</li>
+            <li>Make material choices that support and reinforce your preposition concept</li>
+            <li>Create connections that can withstand repeated handling</li>
+            <li>Think about the dialogue between the object and the person. What is the sequence of action and response? How does the object invite interaction, acknowledge input, respond, and then invite the next action? Design this conversation intentionally</li>
+        </ul>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Distance Sensor Considerations:</p>
+        <ul style="margin: 0 0 12px 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>What direction is it pointing? Up/Down/Out?</li>
+            <li>Is it fixed or can it move?</li>
+            <li>What is it sensing? People? Other objects? The floor/ceiling?</li>
+            <li>How does someone discover the sensing zone?</li>
+        </ul>
+        <p style="margin: 0 0 8px 0; font-size: 11pt; font-weight: 600; color: #333333;">Pressure Sensor Considerations:</p>
+        <ul style="margin: 0; padding-left: 20px; font-size: 11pt; line-height: 1.8; color: #333333;">
+            <li>What material is it embedded in? Smooth? Fluffy? Squishy? Rigid?</li>
+            <li>How is the pressure applied? Squeeze? Poke? Weight?</li>
+            <li>Does the material choice reinforce the preposition?</li>
+            <li>Is it clear where and how to apply pressure?</li>
         </ul>
     </div>
 </div>
