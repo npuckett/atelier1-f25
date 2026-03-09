@@ -431,7 +431,7 @@ What have you not figured out yet?</pre>
                     This example shows how a thesis student might document a core game mechanic. Notice that it focuses on how the movement should <em>feel</em> and behave, not on implementation code.
                 </p>
 
-                <div style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap;">
+                <pre style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; margin: 0;">
 # 3D Character Movement System
 
 **Version:** 1.0
@@ -512,7 +512,228 @@ character with some lag.
 - [ ] Coyote time works reliably at ledges
 - [ ] Landing recovery feels snappy, not sticky
 - [ ] Slopes do not cause jittering
-- [ ] Runs at 60fps in test environment</div>
+- [ ] Runs at 60fps in test environment</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example: Simple UX - Portfolio Website -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Example: Simple UX -- Portfolio Website</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    This example shows how a student might document a straightforward web project. Notice that even a "simple" site benefits from clear descriptions of layout, navigation, and content structure.
+                </p>
+
+                <pre style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; margin: 0;">
+# Portfolio Website
+
+**Version:** 1.0
+**Date:** March 2026
+**Author:** [Student Name]
+
+## What Is This?
+A single-page portfolio website to present thesis work
+and selected projects. The site needs to load fast, work
+on mobile, and feel minimal -- the work itself should be
+the focus, not the website design.
+
+## Experience Description
+A visitor lands on the page and sees a brief introduction
+and a grid of project thumbnails. Clicking a thumbnail
+opens a detail view with images, a short description, and
+a link to the full project. The site uses smooth scroll
+navigation between sections. No login, no CMS, no blog --
+just a clean showcase.
+
+## Interaction Model
+
+### Navigation
+- Fixed top nav bar with section links (About, Work, Contact)
+- Clicking a nav link smooth-scrolls to section
+- Nav bar highlights the current section on scroll
+
+### Project Grid
+- Thumbnails arranged in a responsive grid
+- Hover: thumbnail dims slightly showing project title
+- Click: opens a detail overlay or navigates to detail section
+
+### Key States
+| State | What Happens | Transitions To |
+|-------|-------------|----------------|
+| Landing | Hero section with name and one-line bio | Scroll or nav click |
+| Browsing work | Grid of project thumbnails visible | Click thumbnail |
+| Project detail | Overlay with images, description, links | Close overlay or back |
+| Contact | Simple contact form or email link | Form submit |
+
+## Core Features
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Responsive layout | Works on phone, tablet, desktop | High |
+| Project grid | Thumbnail grid with hover states | High |
+| Project detail view | Overlay or section with full project info | High |
+| Smooth scroll nav | Section-based navigation with scroll | High |
+| Contact section | Email link or simple contact form | Medium |
+| Dark/light toggle | Switch between color modes | Low |
+
+## Out of Scope
+- Content management system or admin panel
+- Blog or news section
+- User accounts or authentication
+- E-commerce or payment processing
+
+## Visual and Audio Requirements
+
+### Visual Style
+- Minimal, mostly white space with one accent color
+- Typography-driven: large headings, clean body text
+- Project images are the primary visual element
+- No decorative illustrations or background patterns
+
+### Audio
+- None
+
+### Performance Targets
+- Page load under 2 seconds on 3G connection
+- All images lazy-loaded and optimized (WebP)
+- Lighthouse performance score above 90
+
+## Technical Approach
+- **Platform:** Static website (hosted on GitHub Pages)
+- **Languages:** HTML, CSS, JavaScript
+- **Key Libraries:** None required (vanilla JS)
+- **Build:** None -- plain files, no bundler needed
+
+## Success Criteria
+- [ ] Site loads and displays correctly on Chrome, Safari, Firefox
+- [ ] Layout works at 320px, 768px, and 1440px widths
+- [ ] All project thumbnails link to correct detail views
+- [ ] Nav highlights update correctly on scroll
+- [ ] Lighthouse accessibility score above 90
+- [ ] All images have alt text</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example: Interactive Art Installation -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Example: Interactive Art Installation</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    This example shows how a student might document a creative coding or installation project. Notice the emphasis on describing the experience and sensory qualities rather than technical implementation.
+                </p>
+
+                <pre style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap; margin: 0;">
+# Tide Pool -- Generative Projection Installation
+
+**Version:** 1.0
+**Date:** March 2026
+**Author:** [Student Name]
+
+## What Is This?
+A floor-projected interactive installation where
+projected visuals respond to people walking through the
+space. Abstract organic forms -- inspired by tide pools
+and bioluminescence -- grow, drift, and react to presence
+and movement. Built with p5.js and a depth camera.
+
+## Experience Description
+Visitors enter a darkened room with a large floor
+projection (roughly 3m x 3m). When no one is present,
+slow-moving abstract shapes drift across the surface like
+organisms in still water. As a person steps into the
+projection area, forms gather near their feet and pulse
+outward in rings. Multiple people create overlapping
+ripple patterns. When everyone leaves, the system
+gradually returns to its idle drift over about 30 seconds.
+
+## Interaction Model
+
+### Input
+- Depth camera (Kinect v2) mounted overhead, pointed down
+- Tracks position and movement speed of up to 4 people
+- No touch, no buttons, no explicit interaction required
+
+### Behavior
+- Presence triggers attraction: shapes migrate toward
+  detected positions
+- Movement speed affects energy: walking fast creates
+  larger, brighter ripples; standing still creates gentle
+  pulsing clusters
+- Proximity between people blends their ripple fields
+
+### Key States
+| State | What Happens | Transitions To |
+|-------|-------------|----------------|
+| Idle | Slow organic drift, muted colors, no interaction | Active (person detected) |
+| Active | Shapes attract to people, ripples pulse outward | Multi (2+ people), Idle (all leave) |
+| Multi | Overlapping fields blend, colors shift and mix | Active (one leaves), Idle (all leave) |
+| Fade-out | Energy slowly dissipates over 30 seconds | Idle |
+
+## Core Features
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Presence detection | Track up to 4 people via depth camera | High |
+| Attraction behavior | Shapes migrate toward detected positions | High |
+| Ripple generation | Movement creates expanding ring patterns | High |
+| Idle animation | Ambient drift when no one is present | High |
+| Speed responsiveness | Faster movement = larger/brighter ripples | Medium |
+| Multi-person blending | Overlapping fields create mixed colors | Medium |
+| Fade-out transition | Gradual return to idle after people leave | Medium |
+
+## Out of Scope
+- Sound reactivity (potential future addition)
+- Hand or gesture tracking (full body only)
+- Remote or web-based viewing
+- Recording or playback of sessions
+
+## Visual and Audio Requirements
+
+### Visual Style
+- Dark background, shapes in cool blues and greens
+- Bioluminescent quality: soft glow, no hard edges
+- Forms are organic and rounded, never geometric
+- Color palette shifts slowly over time (cycle of
+  about 5 minutes) to keep the experience evolving
+
+### Audio
+- Ambient generative drone that shifts with activity
+  level (louder/more complex when active, quieter at
+  idle) -- handled by a separate Max/MSP patch
+  receiving OSC data from the visuals
+
+### Performance Targets
+- Must run at 60fps with 4 people tracked
+- Projection resolution: 1920x1080 minimum
+- Depth camera latency under 50ms
+
+## Technical Approach
+- **Platform:** Desktop application (macOS)
+- **Language:** JavaScript
+- **Key Libraries:** p5.js, Kinectron (depth camera bridge)
+- **Audio:** Max/MSP receiving OSC messages
+- **Display:** Short-throw projector, ceiling-mounted,
+  pointed at floor
+
+## Technical Constraints
+- Computer must be within 5m of Kinect (USB cable)
+- Room must be dark enough for projection to read clearly
+- Kinect requires clear overhead view (no obstructions
+  between camera and floor)
+
+## Success Criteria
+- [ ] Shapes visibly respond to a person within 0.5s
+- [ ] Ripple scale changes based on movement speed
+- [ ] System returns to idle within 30s of last person leaving
+- [ ] Runs at 60fps with 4 simultaneous people
+- [ ] Works in ambient light conditions of gallery space
+- [ ] Installation runs unattended for 8 hours without crashing</pre>
             </div>
         </div>
     </div>
@@ -625,7 +846,12 @@ character with some lag.
 
                 <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
                     <p style="margin: 0 0 4px 0;"><strong><a href="https://gameuidatabase.com/" target="_blank" rel="noopener" style="color: #0066cc;">Game UI Database</a></strong></p>
-                    <p style="margin: 0; font-size: 10pt; color: #666;">Over 1,300 games and 55,000 UI screenshots. Browse and filter by category, animation, colour, layout, genre. Covers HUDs, inventories, minimaps, settings screens, character editors, and more. Similar in spirit to <a href="https://component.gallery/components/" target="_blank" rel="noopener" style="color: #0066cc;">component.gallery</a> but for game interfaces.</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Over 1,300 games and 55,000 UI screenshots. Browse and filter by category, animation, colour, layout, genre. Covers HUDs, inventories, minimaps, settings screens, character editors, and more.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://component.gallery/components/" target="_blank" rel="noopener" style="color: #0066cc;">Component Gallery</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Catalogue of common UI components (accordions, breadcrumbs, carousels, modals, tabs, tooltips, and more) with links to examples across multiple design systems. Useful for understanding standard web and app interface patterns and naming conventions when writing documentation.</p>
                 </div>
 
                 <p style="margin: 16px 0 8px 0; font-weight: 600; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666;">Programming Patterns and Architecture</p>
