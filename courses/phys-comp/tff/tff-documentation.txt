@@ -1,0 +1,32 @@
+
+The Post must include:
+Project Title
+Your Name
+Project Description 100 – 200 words
+    This should describe the overall concept of the project and interaction in relation to the preposition
+
+Link to the Code on Github 
+    Do NOT Copy/Paste the code directly in your documentation post 
+    How to Share Your Code [https://canvascloud.ocadu.ca/courses/13538/pages/how-to-share-your-code]
+
+Main Project Image: A high quality image that best describes the work.
+    This must be set as the “Featured Image” in the post.
+    It should also be included at the top of the post
+    The image should be well composed to show the project and interaction
+    Take care with the background and lighting
+
+Main Project Video: A high quality video (10 -20 seconds) that shows both the input and the output. This will require creating a video of the input method and a screen recording of the response. Video should be uploaded to an external service: Vimeo, Youtube, Yuja, etc and embedded in the post.
+    This video should be taken outside of class to allow you to control the environment/sound/etc
+    Use a tripod
+    Take care to control the background
+    You will likely have to take multiple videos and combine them.
+    This can be split screen or linear editing
+    Pointing your phone camera at the Arduino while you are interacting with it is not sufficient
+
+
+Post must have the Category Tiny Screens
+Post must have a Featured Image
+Ensure that Post has actually been Published
+    If the Post is created correctly it will show up on the Tiny Screens page on the website[https://blogs.ocaduwebspace.ca/digf-2002-502-2025wi/tiny-screens/] with an image
+ 
+

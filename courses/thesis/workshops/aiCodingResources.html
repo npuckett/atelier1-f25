@@ -69,8 +69,8 @@
 
                 <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
                     <p style="margin: 0 0 4px 0; font-weight: 600;">Product Requirements Document (PRD)</p>
-                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Describes <em>what</em> you are building and <em>why</em>, without specifying <em>how</em>. Focuses on user needs, goals, and features.</p>
-                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Larger projects, team projects, or when communicating with non-technical stakeholders.</p>
+                    <p style="margin: 0 0 8px 0; font-size: 10pt; color: #666;">Describes <em>what</em> you are building and <em>why</em>, without specifying <em>how</em>. For creative coding projects -- games, AR experiences, generative visuals, projection mapping, interactive installations -- this means describing the experience, interactions, and behaviors rather than implementation details. Written as a Markdown (.md) file.</p>
+                    <p style="margin: 0; font-size: 10pt;"><strong>When to use:</strong> Any project with enough complexity that you need to think through what you are building before you build it. This is the focus of the workshop.</p>
                 </div>
 
                 <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
@@ -192,16 +192,29 @@
 
 ## 1. Project Overview
 
-### Problem Statement
-What problem does this solve? Who has this problem?
+### What Is This?
+One paragraph describing what you are building.
 
-### Proposed Solution
-What are you building to solve this?
+### Experience Description
+What does someone see/hear/feel when they encounter this?
+Describe the experience from the audience/player/user perspective.
 
-### Target Users
-Who will use/experience this?
+### Who Is It For?
+Who will use or experience this? What context are they in?
 
-## 2. Features and Requirements
+## 2. Interaction Model
+
+### How Does It Work?
+Describe the primary interaction. What does the user do,
+and what happens in response?
+
+### Key States
+What are the distinct modes or states of the experience?
+| State | What Happens | Transitions To |
+|-------|-------------|----------------|
+| [e.g., Idle] | [What the system does] | [Next state] |
+
+## 3. Features and Requirements
 
 ### Core Features (Must Have)
 | Feature | Description | Priority |
@@ -216,36 +229,35 @@ Who will use/experience this?
 ### Out of Scope
 What are you explicitly NOT building?
 
-## 3. Technical Approach
+## 4. Visual and Audio Requirements
+
+### Visual Style
+Describe the look: colors, mood, references, aesthetic.
+
+### Audio
+What sounds exist? Music? Ambient? Reactive?
+
+### Performance Targets
+- [e.g., Must run at 60fps]
+- [e.g., Must support 1920x1080 projection]
+
+## 5. Technical Approach
 
 ### Technology Stack
-- **Platform:** [e.g., Web, Unity, Arduino]
+- **Platform:** [e.g., Web, Unity, Arduino, Unreal]
 - **Languages:** [e.g., JavaScript, C#, Python]
-- **Key Libraries:** [e.g., p5.js, Three.js, TensorFlow]
+- **Key Libraries:** [e.g., p5.js, Three.js, Shader Graph]
 
 ### Technical Constraints
 - [e.g., Must run in browser without plugins]
 - [e.g., Must work with existing sensor hardware]
-
-## 4. Data Structure
-
-### Key Entities
-What are the main "things" your system manages?
-
-### Relationships
-How do entities relate to each other?
-
-## 5. User Interaction
-
-### Key States/Screens
-What are the main modes or views?
-
-### User Flow
-How does a user move through the experience?
+- [e.g., Must build for Windows standalone]
 
 ## 6. Success Criteria
 How will you know it works?
 - [ ] [Specific, testable criterion]
+- [ ] [e.g., Player can complete one full interaction loop]
+- [ ] [e.g., Runs at target framerate on target hardware]
 
 ## 7. Open Questions
 What have you not figured out yet?</pre>
@@ -408,60 +420,99 @@ What have you not figured out yet?</pre>
         </div>
     </div>
 
-    <!-- Example: Installation Project -->
+    <!-- Example: 3D Movement System -->
     <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
         <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
-            <span style="font-size: 18pt; color: #333333;">Example: Installation Calibration Tool</span>
+            <span style="font-size: 18pt; color: #333333;">Example: 3D Movement System</span>
         </div>
         <div style="padding: 16px;">
             <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
                 <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
-                    This example shows how a thesis student might document a helper tool for their installation project.
+                    This example shows how a thesis student might document a core game mechanic. Notice that it focuses on how the movement should <em>feel</em> and behave, not on implementation code.
                 </p>
 
                 <div style="padding: 16px; background: #f9f9f9; border: 1px solid #ddd; font-family: monospace; font-size: 10pt; line-height: 1.6; white-space: pre-wrap;">
-# Kinect Calibration Tool
+# 3D Character Movement System
 
 **Version:** 1.0
-**Date:** February 2026
+**Date:** March 2026
 **Author:** [Student Name]
 
-## Problem Statement
-My thesis installation uses a Kinect sensor to track visitor
-positions. Each time I set up in a new space, I spend 30+
-minutes manually adjusting detection zones and thresholds.
-I need a tool that makes this calibration faster and visual.
+## What Is This?
+A third-person character movement system for a 3D
+exploration game built in Unity. The movement needs to
+feel responsive and satisfying -- the player spends the
+entire game moving through space, so this has to be right.
 
-## Proposed Solution
-A web-based calibration interface that:
-- Shows real-time sensor data visualization
-- Allows drawing detection zones visually
-- Saves/loads calibration profiles per venue
-- Outputs config file for the main installation
+## Experience Description
+The player controls a character moving through large,
+vertical environments. Movement should feel grounded and
+weighty but not sluggish. Jumping should feel generous
+(forgiving input timing). The camera follows behind the
+character with some lag.
+
+## Interaction Model
+
+### Input
+- Left stick / WASD: movement relative to camera
+- A button / Space: jump
+- Left trigger / Shift: sprint
+
+### Key States
+| State | What Happens | Transitions To |
+|-------|-------------|----------------|
+| Idle | Character stands, small breathing animation | Walk, Jump |
+| Walk | Acceleration curve to max speed over 0.2s | Idle, Sprint, Jump, Fall |
+| Sprint | 1.8x walk speed, wider camera FOV | Walk, Jump, Fall |
+| Jump | Upward force, reduced air control (70%) | Fall |
+| Fall | Gravity increases over time (fast fall) | Land |
+| Land | Brief recovery (0.1s), squash animation | Idle, Walk |
 
 ## Core Features
 | Feature | Description | Priority |
 |---------|-------------|----------|
-| Live view | Show sensor point cloud in browser | High |
-| Zone drawing | Click/drag to define detection areas | High |
-| Profile save | Export settings as JSON file | High |
-| Threshold adjust | Sliders for sensitivity tuning | Medium |
+| Ground movement | Acceleration/deceleration curves | High |
+| Jump | Variable height based on button hold | High |
+| Coyote time | 0.15s grace period after leaving edge | High |
+| Sprint | Hold to run faster, release to slow | High |
+| Slope handling | Adjust speed on inclines, slide on steep | Medium |
+| Input buffering | Queue jump input 0.1s before landing | Medium |
 
 ## Out of Scope
-- This tool does NOT run the installation itself
-- No multi-sensor support in v1
-- No automatic calibration (manual only)
+- Wall running or climbing (separate system later)
+- Swimming or other special movement modes
+- Multiplayer synchronization
+- Mobile/touch controls
+
+## Visual and Audio Requirements
+
+### Visual
+- Squash/stretch on landing proportional to fall time
+- Dust particles on hard landings and direction changes
+- Sprint adds subtle camera shake and FOV increase
+
+### Audio
+- Footstep sounds vary by surface material
+- Wind sound layer during sprint
+- Landing impact sound scales with fall distance
+
+### Performance Targets
+- Must run at 60fps on mid-range hardware
+- Movement physics at fixed timestep (FixedUpdate)
 
 ## Technical Approach
-- **Platform:** Web browser (Chrome)
-- **Frontend:** p5.js for visualization
-- **Backend:** Node.js to bridge Kinect data
-- **Data:** WebSocket stream from Kinect
+- **Platform:** Unity (Windows build)
+- **Language:** C#
+- **Input:** New Input System package
+- **Physics:** CharacterController (not Rigidbody)
 
 ## Success Criteria
-- [ ] Can calibrate a new space in under 5 minutes
-- [ ] Saved profiles load correctly
-- [ ] Detection zones work in main installation</div>
+- [ ] Character accelerates/decelerates smoothly
+- [ ] Jump height varies with button hold duration
+- [ ] Coyote time works reliably at ledges
+- [ ] Landing recovery feels snappy, not sticky
+- [ ] Slopes do not cause jittering
+- [ ] Runs at 60fps in test environment</div>
             </div>
         </div>
     </div>
@@ -554,6 +605,63 @@ A web-based calibration interface that:
                         <li>Would an AI agent have enough context?</li>
                         <li>Are my requirements specific enough to test?</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Design Component Resources -->
+    <div style="margin-bottom: 24px; border: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+            <span style="font-size: 18pt; color: #333333;">Game Design Component Resources</span>
+        </div>
+        <div style="padding: 16px;">
+            <div style="font-size: 11pt; line-height: 1.8; color: #333333;">
+                <p style="margin: 0 0 16px 0; font-size: 10pt; color: #666; font-style: italic;">
+                    Reference sites for game UI, programming patterns, and design mechanics. Useful when writing PRDs for game projects -- browse these to identify the systems and patterns relevant to what you are building.
+                </p>
+
+                <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666;">UI and Visual References</p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://gameuidatabase.com/" target="_blank" rel="noopener" style="color: #0066cc;">Game UI Database</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Over 1,300 games and 55,000 UI screenshots. Browse and filter by category, animation, colour, layout, genre. Covers HUDs, inventories, minimaps, settings screens, character editors, and more. Similar in spirit to <a href="https://component.gallery/components/" target="_blank" rel="noopener" style="color: #0066cc;">component.gallery</a> but for game interfaces.</p>
+                </div>
+
+                <p style="margin: 16px 0 8px 0; font-weight: 600; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666;">Programming Patterns and Architecture</p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://gameprogrammingpatterns.com/contents.html" target="_blank" rel="noopener" style="color: #0066cc;">Game Programming Patterns</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">The definitive reference for game engine building blocks. Catalogs patterns including Command, Flyweight, Observer, State, Game Loop, Component, Event Queue, Object Pool, and more.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://www.patternsgameprog.com" target="_blank" rel="noopener" style="color: #0066cc;">Patterns Game Prog</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Free book-style approach to learning design patterns through game programming, with Python and Pygame examples.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://www.habrador.com/tutorials/programming-patterns/" target="_blank" rel="noopener" style="color: #0066cc;">Habrador -- Game Programming Patterns in Unity</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Practical walkthrough of game programming patterns implemented in Unity with C# code. Covers Component, Event Queue, State, Double Buffer, Service Locator, and more with working examples.</p>
+                </div>
+
+                <p style="margin: 16px 0 8px 0; font-weight: 600; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666;">Game Design and Mechanics</p>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://nightblade9.github.io/game-design-library/" target="_blank" rel="noopener" style="color: #0066cc;">Game Design Library</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Curated catalogue of game-design links covering mechanics like crafting systems, boss design, feedback loops, health systems, side quests, metroidvania map design, and progression.</p>
+                </div>
+
+                <div style="padding: 12px; background: #fafafa; margin-bottom: 12px; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://www.peachpit.com/store/game-mechanics-advanced-game-design-9780321820273" target="_blank" rel="noopener" style="color: #0066cc;">Game Mechanics: Advanced Game Design</a></strong> (Book)</p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">By Joris Dormans and Ernest Adams. Includes a formal Design Pattern Library covering mechanics patterns like static/dynamic engines, converter engines, friction, and escalation mechanics. Also covers the Machinations tool for visualizing game economies.</p>
+                </div>
+
+                <p style="margin: 16px 0 8px 0; font-weight: 600; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; color: #666;">Courses</p>
+
+                <div style="padding: 12px; background: #fafafa; border-left: 3px solid #999;">
+                    <p style="margin: 0 0 4px 0;"><strong><a href="https://learn.holistic3d.com/course/designpatterns/" target="_blank" rel="noopener" style="color: #0066cc;">Holistic 3D -- Design Patterns for Game Programming</a></strong></p>
+                    <p style="margin: 0; font-size: 10pt; color: #666;">Hands-on Unity course by Penny de Byl covering the top 12 game programming design patterns with C#. Includes 2D and 3D scenarios.</p>
                 </div>
             </div>
         </div>

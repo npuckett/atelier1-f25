@@ -1,0 +1,9 @@
+# AI Coding Tools Where We Are Now : from Vibe Coding to Agentic Engineering 
+Since GPT launched, asking LLMs coding questions has been pretty common. In the beginning they were pretty bad at it, and everything involved a bunch of copy/pasting. This changed with tools like Cursor and VSCode integrating these tools into the existing toolset rather than externals and they had more power to do small tasks. This brought on a label that is objectively dumb/inaccurate, but stuck: Vibe Coding
+https://canvascloud.ocadu.ca/courses/12811/files/folder/Uploaded%20Media?preview=4588106
+It coincided with the launch of Claude Code https://claude.com/product/claude-code , which at the time was a small research project at Anthropic built in the command line, but has now completely re-shaped software development, and at this point as its creator explains "Now writes 100% of its own code". Essentially, these have gone from 'toys' to something that software engineers are actually using. 
+
+That doesn't mean you have to - but you do need to know that they exist and their basics. It also matters HOW you use them as shown by Anthropic's own research paper outlines [https://www.anthropic.com/research/AI-assistance-coding-skills]
+
+# What is helpful regardless of how you are working
+The biggest shift in how the tools work is that instead of 'prompts' the focus is around creating clearly structured files that explain the project, its components, testing methods, etc. This practice is built around industry standards for dev teams. The primary language for these files is markdown [https://www.markdownguide.org/] an open text format that allows for hierachically structured text. You probably know it from Github README files. 
