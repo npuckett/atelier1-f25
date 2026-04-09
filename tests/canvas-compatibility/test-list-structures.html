@@ -1,0 +1,145 @@
+<!--
+  CANVAS COMPATIBILITY TEST 2: List Structures
+  
+  Instructions:
+  1. Copy everything below this comment block
+  2. In Canvas, create a new Page
+  3. Switch to HTML editor view in the RCE
+  4. Paste the content and Save
+  5. View the page and note which tests render correctly
+  
+  Report format: "Test 2.X: PASS / STRIPPED / BROKEN"
+-->
+
+<div style="max-width: 800px; margin: 0 auto; font-family: system-ui, sans-serif; color: #333;">
+
+  <h2 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">Test 2: List Structures</h2>
+
+  <!-- TEST 2.1: definition list -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.1 -- Definition list (dl/dt/dd)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Bold terms with indented definitions below each.</p>
+    <dl style="margin: 0;">
+      <dt style="font-weight: bold; color: #495057; margin-bottom: 4px;">RCE</dt>
+      <dd style="margin: 0 0 12px 20px; color: #6c757d;">Rich Content Editor -- the WYSIWYG editor in Canvas for creating page content.</dd>
+      <dt style="font-weight: bold; color: #495057; margin-bottom: 4px;">Module</dt>
+      <dd style="margin: 0 0 12px 20px; color: #6c757d;">A container in Canvas that groups pages, assignments, and files into units.</dd>
+      <dt style="font-weight: bold; color: #495057; margin-bottom: 4px;">Front Page</dt>
+      <dd style="margin: 0 0 0 20px; color: #6c757d;">The landing page students see when they open a Canvas course.</dd>
+    </dl>
+  </div>
+
+  <!-- TEST 2.2: styled definition list (left-border accent) -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.2 -- Styled definition list (border accent)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Each term/definition pair has a left blue border accent.</p>
+    <dl style="margin: 0;">
+      <div style="border-left: 3px solid #0066cc; padding-left: 12px; margin-bottom: 12px;">
+        <dt style="font-weight: bold; color: #495057;">Inline Style</dt>
+        <dd style="margin: 4px 0 0 0; color: #6c757d;">CSS applied directly via the style attribute on an HTML element.</dd>
+      </div>
+      <div style="border-left: 3px solid #0066cc; padding-left: 12px; margin-bottom: 12px;">
+        <dt style="font-weight: bold; color: #495057;">Semantic HTML</dt>
+        <dd style="margin: 4px 0 0 0; color: #6c757d;">HTML that uses meaningful elements (details, figure, dl) rather than generic divs.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- TEST 2.3: ordered list with start attribute -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.3 -- Ordered list with start="5"</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Numbering begins at 5 (5, 6, 7).</p>
+    <ol start="5" style="margin: 0; padding-left: 24px; color: #495057;">
+      <li style="margin-bottom: 4px;">This should be item 5</li>
+      <li style="margin-bottom: 4px;">This should be item 6</li>
+      <li>This should be item 7</li>
+    </ol>
+  </div>
+
+  <!-- TEST 2.4: reversed ordered list -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.4 -- Reversed ordered list</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Numbering counts down (3, 2, 1).</p>
+    <ol reversed style="margin: 0; padding-left: 24px; color: #495057;">
+      <li style="margin-bottom: 4px;">This should be item 3</li>
+      <li style="margin-bottom: 4px;">This should be item 2</li>
+      <li>This should be item 1</li>
+    </ol>
+  </div>
+
+  <!-- TEST 2.5: letter-type ordered list -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.5 -- Ordered list type="A" (uppercase letters)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Items labeled A, B, C instead of 1, 2, 3.</p>
+    <ol type="A" style="margin: 0; padding-left: 24px; color: #495057;">
+      <li style="margin-bottom: 4px;">This should be item A</li>
+      <li style="margin-bottom: 4px;">This should be item B</li>
+      <li>This should be item C</li>
+    </ol>
+  </div>
+
+  <!-- TEST 2.6: roman numeral ordered list -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.6 -- Ordered list type="i" (lowercase roman numerals)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Items labeled i, ii, iii.</p>
+    <ol type="i" style="margin: 0; padding-left: 24px; color: #495057;">
+      <li style="margin-bottom: 4px;">This should be item i</li>
+      <li style="margin-bottom: 4px;">This should be item ii</li>
+      <li>This should be item iii</li>
+    </ol>
+  </div>
+
+  <!-- TEST 2.7: nested mixed lists -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.7 -- Nested mixed lists (ol > ul > ol)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Three levels of nesting with different marker types at each level.</p>
+    <ol style="margin: 0; padding-left: 24px; color: #495057;">
+      <li style="margin-bottom: 8px;">First numbered item
+        <ul style="margin: 4px 0 0 0; padding-left: 20px;">
+          <li style="margin-bottom: 4px;">Bullet sub-item
+            <ol type="a" style="margin: 4px 0 0 0; padding-left: 20px;">
+              <li>Lettered sub-sub-item a</li>
+              <li>Lettered sub-sub-item b</li>
+            </ol>
+          </li>
+          <li>Another bullet sub-item</li>
+        </ul>
+      </li>
+      <li>Second numbered item</li>
+    </ol>
+  </div>
+
+  <!-- TEST 2.8: unordered list with inline-styled custom markers -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.8 -- Custom list markers via list-style-type</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Square markers, circle markers, and none (no markers).</p>
+    <p style="margin: 0 0 4px 0; font-weight: bold; font-size: 12px;">Square:</p>
+    <ul style="margin: 0 0 12px 0; padding-left: 24px; list-style-type: square; color: #495057;">
+      <li>Square marker item</li>
+      <li>Square marker item</li>
+    </ul>
+    <p style="margin: 0 0 4px 0; font-weight: bold; font-size: 12px;">Circle:</p>
+    <ul style="margin: 0 0 12px 0; padding-left: 24px; list-style-type: circle; color: #495057;">
+      <li>Circle marker item</li>
+      <li>Circle marker item</li>
+    </ul>
+    <p style="margin: 0 0 4px 0; font-weight: bold; font-size: 12px;">None:</p>
+    <ul style="margin: 0; padding-left: 24px; list-style-type: none; color: #495057;">
+      <li>No marker item</li>
+      <li>No marker item</li>
+    </ul>
+  </div>
+
+  <!-- TEST 2.9: emoji-prefixed list (no-marker list with emoji) -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 2.9 -- Emoji-prefixed checklist style</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: No bullet markers. Each item starts with a checkbox-like or status symbol.</p>
+    <ul style="margin: 0; padding-left: 0; list-style-type: none; color: #495057;">
+      <li style="margin-bottom: 4px; padding-left: 24px; text-indent: -24px;">&#9745; Completed task (ballot box with check)</li>
+      <li style="margin-bottom: 4px; padding-left: 24px; text-indent: -24px;">&#9744; Incomplete task (empty ballot box)</li>
+      <li style="margin-bottom: 4px; padding-left: 24px; text-indent: -24px;">&#9888; Warning item (warning sign)</li>
+      <li style="padding-left: 24px; text-indent: -24px;">&#10148; Action item (arrow)</li>
+    </ul>
+  </div>
+
+</div>

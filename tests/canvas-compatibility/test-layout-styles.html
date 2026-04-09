@@ -1,0 +1,177 @@
+<!--
+  CANVAS COMPATIBILITY TEST 7: Layout and Inline CSS Properties
+  
+  Instructions:
+  1. Copy everything below this comment block
+  2. In Canvas, create a new Page
+  3. Switch to HTML editor view in the RCE
+  4. Paste the content and Save
+  5. View the page and note which tests render correctly
+  
+  Report format: "Test 7.X: PASS / STRIPPED / BROKEN"
+  
+  This file tests which inline CSS properties Canvas preserves.
+  Many of these may be stripped -- that is expected and useful data.
+-->
+
+<div style="max-width: 800px; margin: 0 auto; font-family: system-ui, sans-serif; color: #333;">
+
+  <h2 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">Test 7: Layout and Inline CSS Properties</h2>
+
+  <!-- TEST 7.1: display: flex -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.1 -- display: flex</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Three colored boxes side by side in a horizontal row with equal spacing.</p>
+    <div style="display: flex; gap: 12px;">
+      <div style="flex: 1; background: #0066cc; color: #fff; padding: 12px; text-align: center; font-size: 12px;">Box 1</div>
+      <div style="flex: 1; background: #ff9913; color: #fff; padding: 12px; text-align: center; font-size: 12px;">Box 2</div>
+      <div style="flex: 1; background: #c14282; color: #fff; padding: 12px; text-align: center; font-size: 12px;">Box 3</div>
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If stacked vertically, flex was stripped.</p>
+  </div>
+
+  <!-- TEST 7.2: display: grid -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.2 -- display: grid</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A 2x2 grid of colored boxes with equal sizes.</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div style="background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px; text-align: center; font-size: 12px;">Grid Cell 1</div>
+      <div style="background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px; text-align: center; font-size: 12px;">Grid Cell 2</div>
+      <div style="background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px; text-align: center; font-size: 12px;">Grid Cell 3</div>
+      <div style="background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px; text-align: center; font-size: 12px;">Grid Cell 4</div>
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If stacked vertically in a single column, grid was stripped.</p>
+  </div>
+
+  <!-- TEST 7.3: background linear-gradient -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.3 -- background: linear-gradient</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A div with a gradient from blue on the left to white on the right.</p>
+    <div style="background: linear-gradient(to right, #0066cc, #ffffff); padding: 20px; color: #fff; font-size: 14px; font-weight: bold;">
+      Gradient background text
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If background is plain white/transparent, gradient was stripped.</p>
+  </div>
+
+  <!-- TEST 7.4: box-shadow -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.4 -- box-shadow</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A white card with a visible shadow/glow around it.</p>
+    <div style="background: #fff; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; margin: 8px;">
+      <p style="margin: 0; font-size: 12px; color: #495057;">This card should appear elevated with a shadow beneath it.</p>
+    </div>
+  </div>
+
+  <!-- TEST 7.5: text-shadow -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.5 -- text-shadow</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Large text with a subtle shadow behind it.</p>
+    <p style="margin: 0; font-size: 24px; font-weight: bold; color: #495057; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">Shadow Text</p>
+  </div>
+
+  <!-- TEST 7.6: opacity -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.6 -- opacity</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Three identical blue boxes at different transparency levels (100%, 50%, 20%).</p>
+    <div style="display: flex; gap: 12px;">
+      <div style="width: 80px; height: 60px; background: #0066cc; opacity: 1; text-align: center; line-height: 60px; color: #fff; font-size: 11px;">100%</div>
+      <div style="width: 80px; height: 60px; background: #0066cc; opacity: 0.5; text-align: center; line-height: 60px; color: #fff; font-size: 11px;">50%</div>
+      <div style="width: 80px; height: 60px; background: #0066cc; opacity: 0.2; text-align: center; line-height: 60px; color: #fff; font-size: 11px;">20%</div>
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If all three look the same, opacity was stripped. Note: this test also depends on flex (7.1).</p>
+  </div>
+
+  <!-- TEST 7.7: transform -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.7 -- transform: rotate</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Text rotated slightly (-3 degrees) like a tilted label.</p>
+    <div style="display: inline-block; transform: rotate(-3deg); background: #ff9913; color: #fff; padding: 8px 16px; font-size: 14px; font-weight: bold;">
+      Rotated Label
+    </div>
+  </div>
+
+  <!-- TEST 7.8: overflow: hidden with fixed height -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.8 -- overflow: hidden</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A box with a fixed height of 60px. Text that exceeds it should be clipped (not visible).</p>
+    <div style="height: 60px; overflow: hidden; border: 1px solid #dee2e6; padding: 8px; font-size: 12px; color: #6c757d;">
+      <p style="margin: 0;">Line 1: This text should be visible.</p>
+      <p style="margin: 0;">Line 2: This text should be visible.</p>
+      <p style="margin: 0;">Line 3: This text might be clipped.</p>
+      <p style="margin: 0;">Line 4: This text should be hidden by overflow.</p>
+      <p style="margin: 0;">Line 5: This text should definitely be hidden.</p>
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If all 5 lines are visible, overflow:hidden was stripped.</p>
+  </div>
+
+  <!-- TEST 7.9: position: relative with offset child -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.9 -- position: relative + absolute</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A gray box with small blue label positioned in the top-right corner.</p>
+    <div style="position: relative; background: #f8f8f8; border: 1px solid #dee2e6; padding: 16px; height: 80px;">
+      <span style="position: absolute; top: 4px; right: 4px; background: #0066cc; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 2px;">NEW</span>
+      <p style="margin: 0; font-size: 12px; color: #495057;">Main content area. The "NEW" badge should be in the top-right corner.</p>
+    </div>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If "NEW" appears inline with normal text flow, position was stripped.</p>
+  </div>
+
+  <!-- TEST 7.10: max-width and margin: auto centering -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.10 -- max-width + margin auto centering</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A narrow centered box (max 300px wide) with content inside, centered on the page.</p>
+    <div style="max-width: 300px; margin: 0 auto; background: #f8f8f8; border: 1px solid #dee2e6; padding: 16px; text-align: center;">
+      <p style="margin: 0; font-size: 12px; color: #495057;">This box should be centered and no wider than 300px even if the page is wider.</p>
+    </div>
+  </div>
+
+  <!-- TEST 7.11: min-height -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.11 -- min-height</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A box that is at least 100px tall even though the content is short.</p>
+    <div style="min-height: 100px; background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px;">
+      <p style="margin: 0; font-size: 12px; color: #495057;">Short content. Box should still be 100px tall.</p>
+    </div>
+  </div>
+
+  <!-- TEST 7.12: vertical-align on inline elements -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.12 -- vertical-align</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Large text with a small "TM" raised to the top and a small "note" dropped to the bottom.</p>
+    <p style="margin: 0; font-size: 20px; color: #495057;">
+      Brand Name<span style="font-size: 10px; vertical-align: super;">TM</span>
+      Product<span style="font-size: 10px; vertical-align: sub;">note</span>
+    </p>
+  </div>
+
+  <!-- TEST 7.13: white-space: nowrap and text-overflow -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.13 -- white-space: nowrap + text-overflow: ellipsis</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A long sentence truncated with "..." at the end of a 250px-wide box.</p>
+    <div style="width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid #dee2e6; padding: 8px; font-size: 12px; color: #495057;">
+      This is a very long sentence that should be truncated with an ellipsis at the end because it overflows the container width
+    </div>
+  </div>
+
+  <!-- TEST 7.14: fieldset and legend -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.14 -- fieldset/legend as content frame</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A bordered box with a title ("Project Requirements") breaking the top border line.</p>
+    <fieldset style="border: 1px solid #dee2e6; padding: 12px; margin: 0;">
+      <legend style="font-size: 13px; font-weight: bold; color: #495057; padding: 0 8px;">Project Requirements</legend>
+      <ul style="margin: 0; padding-left: 20px; font-size: 12px; color: #6c757d;">
+        <li>Interactive prototype</li>
+        <li>User testing with 3 participants</li>
+        <li>Documentation (500 words + images)</li>
+      </ul>
+    </fieldset>
+  </div>
+
+  <!-- TEST 7.15: letter-spacing and word-spacing -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 7.15 -- letter-spacing and word-spacing</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: First line has wide letter spacing (spaced-out characters). Second line has wide word spacing.</p>
+    <p style="margin: 0 0 8px 0; font-size: 14px; color: #495057; letter-spacing: 4px; text-transform: uppercase;">Spaced Letters</p>
+    <p style="margin: 0; font-size: 14px; color: #495057; word-spacing: 12px;">These words have extra spacing between them.</p>
+  </div>
+
+</div>

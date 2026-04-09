@@ -1,0 +1,121 @@
+<!--
+  CANVAS COMPATIBILITY TEST 3: Figure and Media Elements
+  
+  Instructions:
+  1. Copy everything below this comment block
+  2. In Canvas, create a new Page
+  3. Switch to HTML editor view in the RCE
+  4. Paste the content and Save
+  5. View the page and note which tests render correctly
+  
+  Note: Media tests (audio/video) use placeholder sources.
+  Image tests use a simple inline data URI so no external files are needed.
+  
+  Report format: "Test 3.X: PASS / STRIPPED / BROKEN"
+-->
+
+<div style="max-width: 800px; margin: 0 auto; font-family: system-ui, sans-serif; color: #333;">
+
+  <h2 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">Test 3: Figure and Media Elements</h2>
+
+  <!-- TEST 3.1: figure with figcaption (caption below) -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.1 -- figure/figcaption (caption below image)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A colored rectangle with a caption underneath, slightly indented from main text.</p>
+    <figure style="margin: 0 0 0 20px; padding: 0;">
+      <div style="width: 200px; height: 120px; background: #0066cc; border: 1px solid #dee2e6;"></div>
+      <figcaption style="font-size: 11px; color: #6c757d; margin-top: 4px; font-style: italic;">Figure 1: A blue rectangle placeholder representing an image.</figcaption>
+    </figure>
+  </div>
+
+  <!-- TEST 3.2: figure with figcaption (caption above) -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.2 -- figure/figcaption (caption above)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Caption appears above the colored rectangle.</p>
+    <figure style="margin: 0 0 0 20px; padding: 0;">
+      <figcaption style="font-size: 11px; color: #6c757d; margin-bottom: 4px; font-style: italic;">Figure 2: Caption placed before the image element.</figcaption>
+      <div style="width: 200px; height: 120px; background: #c14282; border: 1px solid #dee2e6;"></div>
+    </figure>
+  </div>
+
+  <!-- TEST 3.3: figure used for code block -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.3 -- figure wrapping a code block</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A code block with a caption below, semantically grouped.</p>
+    <figure style="margin: 0 0 0 20px; padding: 0;">
+      <pre style="background: #f8f8f8; border: 1px solid #dee2e6; padding: 12px; font-family: monospace; font-size: 12px; overflow-x: auto; margin: 0;">function setup() {
+  createCanvas(400, 300);
+  background(220);
+}</pre>
+      <figcaption style="font-size: 11px; color: #6c757d; margin-top: 4px; font-style: italic;">Listing 1: Basic p5.js setup function.</figcaption>
+    </figure>
+  </div>
+
+  <!-- TEST 3.4: picture element -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.4 -- picture element</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A small red square image rendered from a data URI. If picture is stripped, the fallback img should still display.</p>
+    <picture>
+      <source media="(min-width: 600px)" srcset="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' fill='%230066cc'%3E%3Crect width='100' height='60'/%3E%3C/svg%3E">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' fill='%23cc0000'%3E%3Crect width='100' height='60'/%3E%3C/svg%3E" alt="Test image placeholder" style="border: 1px solid #dee2e6;">
+    </picture>
+    <p style="font-size: 11px; color: #999; margin: 8px 0 0 0;">If you see a blue rectangle, picture + source works. Red rectangle means only img fallback rendered.</p>
+  </div>
+
+  <!-- TEST 3.5: audio element with controls -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.5 -- audio element with controls</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A native audio player widget. It will not play (no real source) but the control bar should appear.</p>
+    <audio controls style="width: 100%; max-width: 400px;">
+      <source src="placeholder.mp3" type="audio/mpeg">
+      Your browser does not support the audio element. (If you see this text, the audio element was stripped.)
+    </audio>
+  </div>
+
+  <!-- TEST 3.6: video element with controls and poster -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.6 -- video element with controls</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A native video player widget with a poster area. It will not play (no real source).</p>
+    <video controls width="320" height="180" style="background: #000; border: 1px solid #dee2e6;">
+      <source src="placeholder.mp4" type="video/mp4">
+      Your browser does not support the video element. (If you see this text, the video element was stripped.)
+    </video>
+  </div>
+
+  <!-- TEST 3.7: image with inline-styled effects -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.7 -- Image with border-radius (rounded corners)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: Three versions of the same square -- sharp corners, rounded corners, full circle.</p>
+    <div style="display: flex; gap: 16px; align-items: flex-start;">
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; background: #ff9913; border: 1px solid #dee2e6; border-radius: 0;"></div>
+        <p style="font-size: 10px; color: #999; margin: 4px 0 0 0;">radius: 0</p>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; background: #ff9913; border: 1px solid #dee2e6; border-radius: 12px;"></div>
+        <p style="font-size: 10px; color: #999; margin: 4px 0 0 0;">radius: 12px</p>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; background: #ff9913; border: 1px solid #dee2e6; border-radius: 50%;"></div>
+        <p style="font-size: 10px; color: #999; margin: 4px 0 0 0;">radius: 50%</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 3.8: image with box-shadow -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.8 -- Box shadow on containers</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A container with a subtle drop shadow effect around it.</p>
+    <div style="padding: 16px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); border-radius: 4px;">
+      <p style="margin: 0; color: #495057;">This box should have a soft shadow behind it, giving it a raised/card appearance.</p>
+    </div>
+  </div>
+
+  <!-- TEST 3.9: data URI image (inline base64) -->
+  <div style="border: 1px solid #dee2e6; padding: 16px; margin-bottom: 16px;">
+    <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #495057;">Test 3.9 -- Data URI image (base64 encoded)</h3>
+    <p style="font-size: 11px; color: #999; margin: 0 0 8px 0;">Expected: A tiny 4x4 pixel red/blue checkerboard image. Tests whether Canvas allows data: URIs in img src.</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAADklEQVQI12P4z8BQDwAEgAF/QualIQAAAABJRU5ErkJggg==" alt="Tiny test image" style="width: 80px; height: 80px; image-rendering: pixelated; border: 1px solid #dee2e6;">
+  </div>
+
+</div>
