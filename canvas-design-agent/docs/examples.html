@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examples -- Canvas Design Agent</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background: #fff;
+    }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav .brand { font-weight: 700; font-size: 18px; color: #fff; }
+    nav .links a {
+      color: #b3d9ff;
+      margin-left: 24px;
+      font-size: 15px;
+    }
+    nav .links a:hover { color: #fff; text-decoration: none; }
+
+    /* LAYOUT */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 48px 0; }
+    section + section { border-top: 1px solid #dee2e6; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e, #0d3b6e);
+      color: #fff;
+      padding: 56px 24px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+    .hero p { font-size: 17px; color: #b3d9ff; max-width: 640px; margin: 0 auto; }
+
+    /* HEADINGS */
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #0066cc;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin: 24px 0 12px;
+    }
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #495057;
+      margin: 16px 0 8px;
+    }
+
+    /* TEXT */
+    p { margin-bottom: 12px; color: #495057; }
+    ul, ol { margin-bottom: 12px; padding-left: 24px; color: #495057; }
+    li { margin-bottom: 6px; }
+
+    /* EXAMPLE CARD */
+    .example {
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .example-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: #f8f8f8;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .example-label {
+      background: #1a1a2e;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .example-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+    }
+    .example-desc {
+      padding: 16px 20px;
+      background: #fff;
+      border-bottom: 1px solid #dee2e6;
+      font-size: 14px;
+      color: #495057;
+    }
+    .example-desc p:last-child { margin-bottom: 0; }
+
+    /* TWO-PANE LAYOUT */
+    .example-panes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 700px) {
+      .example-panes { grid-template-columns: 1fr; }
+    }
+    .pane {
+      padding: 0;
+      border-right: 1px solid #dee2e6;
+    }
+    .pane:last-child { border-right: none; }
+    .pane-label {
+      padding: 8px 16px;
+      background: #f0f4ff;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .pane-label.output { background: #f0fff4; color: #155724; }
+    .pane pre {
+      margin: 0;
+      padding: 16px;
+      background: #f8f8f8;
+      font-family: monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      height: 420px;
+      overflow-y: auto;
+    }
+    .pane-preview {
+      padding: 16px;
+      height: 420px;
+      overflow-y: auto;
+      background: #fff;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* CODE */
+    code {
+      background: #f8f8f8;
+      border: 1px solid #dee2e6;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    /* CALLOUT */
+    .callout {
+      border-left: 4px solid #0066cc;
+      background: #f8f9ff;
+      padding: 14px 18px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* FOOTER */
+    footer {
+      background: #f8f8f8;
+      border-top: 1px solid #dee2e6;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #6c757d;
+    }
+
+    /* DOWNLOAD LINK */
+    .source-link {
+      display: inline-block;
+      padding: 6px 14px;
+      border: 1px solid #dee2e6;
+      border-radius: 3px;
+      font-size: 13px;
+      color: #495057;
+      background: #fff;
+      margin-top: 8px;
+    }
+    .source-link:hover {
+      background: #f8f8f8;
+      text-decoration: none;
+    }
+
+    /* Preview resets -- prevent outer page styles from leaking in */
+    .pane-preview table { border-collapse: collapse; width: 100%; }
+    .pane-preview p { margin-bottom: 8px; }
+    .pane-preview h1,
+    .pane-preview h2,
+    .pane-preview h3,
+    .pane-preview h4,
+    .pane-preview h5 { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">Canvas Design Agent</span>
+  <span class="links">
+    <a href="index.html">Home</a>
+    <a href="elements.html">Element Catalog</a>
+    <a href="examples.html">Examples</a>
+  </span>
+</nav>
+
+<div class="hero">
+  <h1>Course Page Examples</h1>
+  <p>Three real Canvas pages generated with this tool, alongside the plain-text prompts that produced them.</p>
+</div>
+
+<div class="container">
+
+  <!-- INTRO -->
+  <section id="intro">
+    <h2>How to Read These Examples</h2>
+    <p>Each example below shows a Canvas page type used in a real studio course (Atelier 1, Fall 2025). On the left is the plain-text prompt -- the markdown the instructor wrote. On the right is the Canvas-compatible HTML the agent produced.</p>
+    <p>These three page types cover most of what a Canvas course needs:</p>
+    <ul>
+      <li><strong>Course Homepage</strong> -- Course info, instructor, and full project schedule. Created once at the start of term.</li>
+      <li><strong>Project Page</strong> -- One page per project or assignment. Contains the brief, constraints, steps, and linked assignments.</li>
+      <li><strong>Class Page</strong> -- One page per class session. Contains the schedule for that day, resources, and next steps.</li>
+    </ul>
+    <div class="callout">
+      <p><strong>To use these prompts:</strong> Copy the markdown text, open a conversation with your AI agent (with <code>SKILL.md</code> active), paste the markdown, and ask it to generate a Canvas page. You can substitute your own course content into the same structure.</p>
+    </div>
+  </section>
+
+  <!-- EXAMPLE 1: COURSE HOMEPAGE -->
+  <section id="homepage">
+    <h2>Example 1 -- Course Homepage</h2>
+    <p>The course homepage is the first page students see. It carries course logistics, instructor contact, policies, and the full project schedule -- all in one scrollable page. Each project is a collapsible section so the page doesn't feel overwhelming.</p>
+
+    <div class="example">
+      <div class="example-header">
+        <span class="example-label">Homepage</span>
+        <span class="example-title">Atelier 1 -- Course Overview and Schedule</span>
+      </div>
+      <div class="example-desc">
+        <p>Two-column layout: left column holds the course image and description, right column holds an info box with schedule and instructor details plus a course topics box. Below the header area the full project list uses collapsible <code>&lt;details&gt;</code> sections, each containing the project brief and a weekly schedule in the right column.</p>
+        <a href="source/homepage-prompt.md" class="source-link" download>Download prompt (markdown)</a>
+      </div>
+      <div class="example-panes">
+        <div class="pane">
+          <div class="pane-label">Markdown Prompt (input)</div>
+          <pre># Atelier 1: Working in Public
+
+## Schedule
+- Wednesdays and Fridays 3:10 - 6:10
+- Room 320, 205 Richmond
+- First Class September 3, Last Class November 28
+
+## Instructor
+- Nick Puckett (link to puckettrand.com)
+  npuckett@ocadu.ca (mailto link)
+
+## Course Policies
+- Late Policy: [link]
+- Generative AI Usage: [link]
+
+## Introduction
+Welcome to the Atelier courses! The
+goal of each course is to provide time,
+structure, and space for you to develop
+refined work for your portfolio.
+
+## Course Topics
+
+### Designing Tension and Action
+How do you get someone to interact?
+What keeps them interested?
+
+### Visualization
+How do you explain something that
+doesn't exist yet?
+
+### Tools
+p5.js, ml5, three.js -- in the context
+of contemporary AI coding tools.
+
+### Testing & Feedback
+How do people respond to the work?
+
+## Projects
+
+### Workshop 1 – Real Things, Fake Project
+Format: Groups of 3
+Dates: September 3 – September 23
+
+Description: Design an interactive
+experience for the entry lobby of
+205 Richmond. Must include screens
+and interactivity. No budget limit.
+
+Progress assignments: [links]
+Final documentation: [link]
+
+### Workshop 2 – Uncommon Everyday
+Format: Individual
+Dates: September 24 – October 14
+
+### Main Project – Building Character(s)
+Format: Individual
+Dates: October 22 – December 12
+
+---
+
+Layout: two-column table, 60/40.
+Left: image + description.
+Right: info box + topics box.
+Projects use collapsible details with
+week groups in right column.
+Colors: #495057 headings, #6c757d body,
+#0066cc links, #f8f8f8 backgrounds.</pre>
+        </div>
+        <div class="pane">
+          <div class="pane-label output">Canvas HTML Preview (output)</div>
+          <div class="pane-preview">
+            <!-- Simplified preview of the course homepage -->
+            <table style="width: 100%; border-collapse: collapse; border: none;">
+              <tr>
+                <td style="width: 60%; vertical-align: top; padding-right: 16px; border: none;">
+                  <div style="margin-bottom: 16px; background: #f8f8f8; border: 1px solid #cccccc; padding: 12px; text-align: center; color: #6c757d; font-size: 10pt;">[Course Image]</div>
+                  <h1 style="margin: 0 0 10px 0; color: #495057; font-size: 14pt; font-weight: bold;">Working in Public -- Fundamentals of Experimental Interaction Design</h1>
+                  <p style="margin: 0; color: #6c757d; font-size: 10pt; line-height: 1.4;">Welcome to the Atelier courses! The goal of each of these courses is to provide the time, structure, and space for you to develop refined work that you want to put in your portfolio.</p>
+                </td>
+                <td style="width: 40%; vertical-align: top; border: none;">
+                  <div style="margin-bottom: 12px; padding: 12px; background: #f8f8f8; border: 1px solid #cccccc;">
+                    <p style="margin: 0 0 4px 0; color: #495057; font-size: 11pt; font-weight: bold;">Wednesdays and Fridays 3:10 - 6:10</p>
+                    <p style="margin: 0 0 10px 0; color: #495057; font-size: 11pt; font-weight: bold;">Room 320 - 205 Richmond</p>
+                    <p style="margin: 0 0 4px 0; color: #495057; font-size: 9pt; font-weight: bold;">Instructor</p>
+                    <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc;">Nick Puckett</a> -- <a href="#" style="color: #0066cc;">npuckett@ocadu.ca</a></p>
+                    <p style="margin: 0 0 4px 0; color: #495057; font-size: 9pt; font-weight: bold;">Course Policies</p>
+                    <p style="margin: 0 0 2px 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc;">Late Policy</a></p>
+                    <p style="margin: 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc;">Generative AI Usage</a></p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <h2 style="margin: 12px 0 8px 0; color: #495057; font-size: 13pt; font-weight: bold;">Projects</h2>
+            <details style="margin-bottom: 8px; border: 1px solid #cccccc; background: #f8f8f8;">
+              <summary style="padding: 8px 12px; cursor: pointer; list-style: none;">
+                <span style="color: #666; font-size: 10pt; margin-right: 6px;">&#9660;</span>
+                <strong style="color: black; font-size: 11pt;">Workshop 1 -- Real Things, Fake Project</strong>
+              </summary>
+              <div style="padding: 12px; background: #f8f8f8;">
+                <p style="margin: 0 0 6px 0; color: #6c757d; font-size: 10pt; font-style: italic;">Design an interactive installation for the entry of 205 Richmond -- don't actually build it, but show how you would.</p>
+                <p style="margin: 0; color: #495057; font-size: 9pt;"><strong>Duration:</strong> 3 weeks &nbsp; <strong>Format:</strong> Groups of 3</p>
+              </div>
+            </details>
+            <details style="margin-bottom: 8px; border: 1px solid #cccccc; background: #f8f8f8;">
+              <summary style="padding: 8px 12px; cursor: pointer; list-style: none;">
+                <span style="color: #666; font-size: 10pt; margin-right: 6px;">&#9660;</span>
+                <strong style="color: black; font-size: 11pt;">Main Project -- Building Character(s)</strong>
+              </summary>
+              <div style="padding: 12px; background: #f8f8f8;">
+                <p style="margin: 0 0 6px 0; color: #6c757d; font-size: 10pt; font-style: italic;">Take an existing physical object and convert it into an interactive digital character.</p>
+                <p style="margin: 0; color: #495057; font-size: 9pt;"><strong>Duration:</strong> 6 weeks &nbsp; <strong>Format:</strong> Individual</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLE 2: PROJECT PAGE -->
+  <section id="project">
+    <h2>Example 2 -- Project Page</h2>
+    <p>Each project or workshop gets its own Canvas page. This page is linked from the homepage schedule and serves as the authoritative reference for the assignment throughout the project. It carries the brief, constraints, tools, step-by-step phases, linked assignments, and a per-week schedule.</p>
+
+    <div class="example">
+      <div class="example-header">
+        <span class="example-label">Project</span>
+        <span class="example-title">Main Project -- Building Character(s)</span>
+      </div>
+      <div class="example-desc">
+        <p>Two-column layout: left column (60%) holds the full project brief -- description, constraints, tools, numbered development phases, files, and assignment links. Right column (40%) holds a schedule grouped by week, with each class day as a clickable link.</p>
+        <a href="source/project-prompt.md" class="source-link" download>Download prompt (markdown)</a>
+      </div>
+      <div class="example-panes">
+        <div class="pane">
+          <div class="pane-label">Markdown Prompt (input)</div>
+          <pre># Main Project – Building Character(s)
+
+Format: Individual
+Duration: 6 weeks
+
+## Description
+Take an existing physical object and
+convert it into an interactive digital
+character that operates on your phone.
+Design its personality, movement, and
+appearance in response to inputs.
+
+## Constraints
+- Must be a public URL
+- Character based on existing physical object
+- Must be interactive with specific inputs
+- Keep user engaged for at least 2 minutes
+- Designed for phones only
+
+## Tools
+- p5.js, p5play, ML5
+- VSCode + Github Copilot
+- Github
+
+## Project Steps / Phases
+
+### 1. Choose an Object
+Your character must be based on an
+existing, inanimate, physical object.
+
+### 2. Digitize It
+Bring it into digital space using
+photography, drawing, 3d scanning,
+or other methods.
+
+### 3. Develop Its Personality and Story
+Create backstory, personality, and
+movement through drawings and writing.
+
+### 4. Code the First Interactions
+Convert your plan to code using p5.js.
+Start with a few core interactions.
+
+### 5. Playtest the First Interactions
+Formally playtest with classmates and
+collect targeted feedback.
+
+[... steps 6-8 ...]
+
+## Project Assignments
+
+### Progress
+- October 24 Dev Day Work: [link]
+- October 29 Dev Day Work: [link]
+- November 5 Playtesting: [link]
+
+### Deliverables
+- December 12 Final Documentation: [link]
+  - Interactive character URL
+  - Demo video
+  - Process documentation PDF
+
+## Class Schedule
+Week 7: Oct 22 Project Introduction
+         Oct 24 Intro to P5 Play
+Week 8: Oct 29 First Interactions
+         Oct 31 Online - Data Structures
+Week 9: Nov 5  Intro to ML5
+         Nov 7  Interaction Dev + Guest
+
+---
+
+Layout: two-column, 60/40. Left:
+brief + steps + assignments. Right:
+week-grouped schedule with links.
+Colors: #495057/#6c757d/#0066cc.
+Steps use h5 sub-headings.</pre>
+        </div>
+        <div class="pane">
+          <div class="pane-label output">Canvas HTML Preview (output)</div>
+          <div class="pane-preview">
+            <table style="width: 100%; border-collapse: collapse; border: none;">
+              <tr>
+                <td style="width: 60%; vertical-align: top; padding-right: 16px; border: none;">
+                  <h1 style="margin: 0 0 8px 0; color: black; font-size: 13pt; font-weight: bold;">Main Project -- Building Character(s)</h1>
+                  <p style="margin: 0 0 6px 0; color: #495057; font-size: 9pt;"><strong>Duration:</strong> 6 weeks &nbsp; <strong>Format:</strong> Individual</p>
+                  <h4 style="margin: 10px 0 4px 0; color: #495057; font-size: 9pt; font-weight: bold;">Description</h4>
+                  <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 9pt; line-height: 1.4;">Take an existing physical object and convert it into an interactive digital character that operates on your phone.</p>
+                  <h4 style="margin: 8px 0 4px 0; color: #495057; font-size: 9pt; font-weight: bold;">Constraints</h4>
+                  <ul style="margin: 0 0 8px 0; padding-left: 14px; color: #6c757d; font-size: 9pt; line-height: 1.4;">
+                    <li>Must exist as a public URL</li>
+                    <li>Character based on a physical object</li>
+                    <li>Designed for phones only</li>
+                  </ul>
+                  <h4 style="margin: 8px 0 4px 0; color: #495057; font-size: 9pt; font-weight: bold;">Project Steps / Phases</h4>
+                  <h5 style="margin: 6px 0 2px 0; color: #495057; font-size: 9pt; font-weight: bold;">1. Choose an Object</h5>
+                  <p style="margin: 0 0 4px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Your character must be based on an existing, inanimate, physical object.</p>
+                  <h5 style="margin: 6px 0 2px 0; color: #495057; font-size: 9pt; font-weight: bold;">2. Digitize It</h5>
+                  <p style="margin: 0 0 4px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Bring it into digital space via photography, drawing, or 3d scanning.</p>
+                  <h5 style="margin: 6px 0 2px 0; color: #495057; font-size: 9pt; font-weight: bold;">3. Develop Its Personality and Story</h5>
+                  <p style="margin: 0 0 4px 0; color: #6c757d; font-size: 9pt; line-height: 1.3;">Create backstory and personality through drawings and writing.</p>
+                </td>
+                <td style="width: 40%; vertical-align: top; border: none;">
+                  <div style="border-left: 3px solid #dee2e6; padding-left: 12px;">
+                    <h3 style="margin: 0 0 10px 0; color: #495057; font-size: 10pt; font-weight: bold;">Schedule</h3>
+                    <div style="margin-bottom: 8px; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 3px;">
+                      <p style="margin: 0 0 6px 0; color: #495057; font-size: 9pt; font-weight: bold;">Week 7: October 22-24</p>
+                      <a href="#" style="display: block; margin-bottom: 4px; padding: 3px 6px; background: #f8f8f8; border: 1px solid #eee; color: black; text-decoration: none; font-size: 9pt;">W - October 22 &nbsp; <span style="color: #666;">Project Introduction</span></a>
+                      <a href="#" style="display: block; padding: 3px 6px; background: #f8f8f8; border: 1px solid #eee; color: black; text-decoration: none; font-size: 9pt;">F - October 24 &nbsp; <span style="color: #666;">Intro to P5 Play</span></a>
+                    </div>
+                    <div style="margin-bottom: 8px; padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 3px;">
+                      <p style="margin: 0 0 6px 0; color: #495057; font-size: 9pt; font-weight: bold;">Week 8: October 29-31</p>
+                      <a href="#" style="display: block; margin-bottom: 4px; padding: 3px 6px; background: #f8f8f8; border: 1px solid #eee; color: black; text-decoration: none; font-size: 9pt;">W - October 29 &nbsp; <span style="color: #666;">First Interactions</span></a>
+                      <a href="#" style="display: block; padding: 3px 6px; background: #f1f3f4; border: 1px solid #adb5bd; color: #495057; text-decoration: none; font-size: 9pt;">F - October 31 &nbsp; <span style="color: #6c757d;">Online Class</span></a>
+                    </div>
+                    <div style="padding: 8px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 3px;">
+                      <p style="margin: 0 0 6px 0; color: #495057; font-size: 9pt; font-weight: bold;">Week 9: November 5-7</p>
+                      <a href="#" style="display: block; margin-bottom: 4px; padding: 3px 6px; background: #f8f8f8; border: 1px solid #eee; color: black; text-decoration: none; font-size: 9pt;">W - November 5 &nbsp; <span style="color: #666;">Intro to ML5</span></a>
+                      <a href="#" style="display: block; padding: 3px 6px; background: #f8f8f8; border: 1px solid #eee; color: black; text-decoration: none; font-size: 9pt;">F - November 7 &nbsp; <span style="color: #666;">Guest Lecture</span></a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLE 3: CLASS PAGE -->
+  <section id="class-page">
+    <h2>Example 3 -- Class Page</h2>
+    <p>Each class session has its own page. Students navigate here during class and refer back to it afterward. It shows what project is currently active, what is due today, the day's resources, a time-blocked schedule for the full session, and what to do before the next class.</p>
+
+    <div class="example">
+      <div class="example-header">
+        <span class="example-label">Class Page</span>
+        <span class="example-title">Class 1 -- Wednesday, September 3</span>
+      </div>
+      <div class="example-desc">
+        <p>Single-column content (no outer container -- Canvas provides the page wrapper). Class topic as a header, then a gray info box with current project, due items, and resources. Below: a three-column schedule table with a highlighted break row. Closes with a "What to Work on" list.</p>
+        <a href="source/class-prompt.md" class="source-link" download>Download prompt (markdown)</a>
+      </div>
+      <div class="example-panes">
+        <div class="pane">
+          <div class="pane-label">Markdown Prompt (input)</div>
+          <pre># Class 1 -- Wednesday, September 3
+## Introducing the Course and Workshop 1
+
+Current Project: Workshop 1
+Project Link: [url]
+
+## Due Today
+Nothing Due Today
+
+## Resources
+- 205 Entry: [link]
+- Late Policy: [link]
+- A.I. Usage Policy: [link]
+- Intro Slides: [link]
+- Concept Slides: [link]
+
+## Schedule
+- 3:10 - 3:30: Let everyone find
+  the room
+- 3:30 - 4:15: Introduction to
+  the course | Intro Slides
+- 4:15 - 4:35: Break (20 minutes)
+- 4:35 - 4:45: Re-arrange the room
+  for your groups | Each of the 12
+  groups gets a table
+- 4:45 - 5:15: Individually draw
+  Concepts | Sketch a first concept,
+  draw on top of the image files,
+  add to your group's slide
+- 5:15 - 6:10: Quick run-through
+  of sketches
+
+## What to Work on for Next Class
+- Read the project description
+  for Workshop 1
+- Get through Steps 1 & 2
+- Install Maya or Blender
+
+---
+
+Layout: no outer container.
+Class topic as light gray h2.
+Info box (gray bg, gray border):
+  project link, Due Today, Resources.
+Schedule: 3-column table (time,
+activity, notes). Break row gray bg.
+What to Work on: bullet list.
+Colors: #6c757d title, #495057
+headings/times, #0066cc links.</pre>
+        </div>
+        <div class="pane">
+          <div class="pane-label output">Canvas HTML Preview (output)</div>
+          <div class="pane-preview">
+            <h2 style="margin: 0 0 14px 0; color: #6c757d; font-size: 14pt; font-weight: normal;">Introducing the Course and Workshop 1</h2>
+            <div style="margin-bottom: 20px; padding: 12px; background: #f8f8f8; border: 1px solid #cccccc; border-radius: 0;">
+              <h2 style="margin: 0 0 8px 0; color: #495057; font-size: 13pt; font-weight: bold;"><a href="#" style="color: #0066cc; text-decoration: none;">Workshop 1</a></h2>
+              <h3 style="margin: 10px 0 6px 0; color: #495057; font-size: 11pt; font-weight: bold;">Due Today</h3>
+              <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 10pt;">Nothing Due Today</p>
+              <h3 style="margin: 0 0 6px 0; color: #495057; font-size: 11pt; font-weight: bold;">Resources</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                  <tr><td style="padding: 2px 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc; text-decoration: none;">205 Entry</a></td></tr>
+                  <tr><td style="padding: 2px 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc; text-decoration: none;">Late Policy</a></td></tr>
+                  <tr><td style="padding: 2px 0; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc; text-decoration: none;">A.I. Usage Policy</a></td></tr>
+                  <tr><td style="padding: 2px 0; color: #6c757d; font-size: 9pt;">Intro Slides</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="margin-bottom: 18px;">
+              <h3 style="margin: 0 0 12px 0; color: #495057; font-size: 12pt; font-weight: bold;">Schedule</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                  <tr>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: bold; font-size: 9pt; width: 20%;">3:10 - 3:30</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt; width: 45%;">Let everyone find the room</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt; width: 35%;"></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: bold; font-size: 9pt;">3:30 - 4:15</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;">Introduction to the course</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;"><a href="#" style="color: #0066cc; text-decoration: none;">Intro Slides</a></td>
+                  </tr>
+                  <tr style="background: #f8f8f8;">
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #cccccc; color: #495057; font-weight: bold; font-size: 9pt;">4:15 - 4:35</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #cccccc; color: #6c757d; font-style: italic; font-size: 9pt;">Break (20 minutes)</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #cccccc; color: #6c757d; font-size: 9pt;"></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: bold; font-size: 9pt;">4:35 - 4:45</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;">Re-arrange the room for your groups</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;">Each group gets a table</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #495057; font-weight: bold; font-size: 9pt;">4:45 - 5:15</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;">Individually draw Concepts</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid #dee2e6; color: #6c757d; font-size: 9pt;">Sketch on top of image files</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 10px; color: #495057; font-weight: bold; font-size: 9pt;">5:15 - 6:10</td>
+                    <td style="padding: 6px 10px; color: #6c757d; font-size: 9pt;">Quick run-through of sketches</td>
+                    <td style="padding: 6px 10px; color: #6c757d; font-size: 9pt;"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h3 style="margin: 0 0 10px 0; color: #495057; font-size: 12pt; font-weight: bold;">What to Work on for Next Class</h3>
+              <ul style="margin: 0; padding-left: 16px; color: #6c757d; font-size: 9pt;">
+                <li style="margin-bottom: 4px;">Read the project description for <a href="#" style="color: #0066cc; text-decoration: none;">Workshop 1</a></li>
+                <li style="margin-bottom: 4px;">Get through Steps 1 &amp; 2</li>
+                <li>If you haven't already, install Maya or Blender</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT STEPS -->
+  <section id="next-steps">
+    <h2>Using These Examples</h2>
+    <p>These examples are starting points. To build your own version:</p>
+    <ol>
+      <li><strong>Download the prompt</strong> for the page type you need (links above each example).</li>
+      <li><strong>Replace the content</strong> with your own course information -- keep the structure and layout notes at the bottom of each prompt.</li>
+      <li><strong>Open a conversation</strong> with your AI agent and make sure <code>SKILL.md</code> is active (either in <code>.github/</code> for a local agent, or uploaded for a web agent).</li>
+      <li><strong>Paste your prompt</strong> and ask: <em>"Transform this into a Canvas page."</em></li>
+      <li><strong>Copy the HTML output</strong> and paste it into Canvas via the HTML editor (<code>&lt;/&gt;</code> button in the RCE toolbar).</li>
+    </ol>
+    <div class="callout">
+      <p><strong>Adapt the layout notes.</strong> The layout and color instructions at the bottom of each prompt are what give the agent its design direction. You can change these to match your own course's visual identity -- different colors, different column proportions, or different structural choices.</p>
+    </div>
+    <p>See the <a href="index.html#methods">Methods section</a> on the main page for guidance on building a reusable course template that carries your preferences automatically into every page.</p>
+  </section>
+
+</div>
+
+<footer>
+  Canvas Design Agent -- A portable skill for generating Canvas LMS-compatible HTML.
+</footer>
+
+</body>
+</html>
